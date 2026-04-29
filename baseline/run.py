@@ -11,7 +11,8 @@ import re
 import os
 
 import stream_dataset as sd
-from models import DynamicLSTM, DynamicGRU, DynamicTransformerDecoderOnly, DynamicTransformerEncoderDecoder, DynamicESN
+from models import DynamicLSTM, DynamicGRU, DynamicTransformerDecoderOnly, \
+    DynamicTransformerEncoderDecoder, DynamicESN, DynamicDynamicalTransformer
 
 def set_seed(seed):
     np.random.seed(seed)
@@ -98,13 +99,16 @@ def find_best_threshold(preds_logits, targets, timesteps):
 
 def run_experiment():
     parser = argparse.ArgumentParser(description="Run Stream Dataset Evaluation")
-    parser.add_argument('--model_types', nargs='+', default=['lstm'], choices=['lstm', 'gru', 'transformer_decoder', 'transformer_encdec', 'esn'], help='Type de modèle à entrainer')
+    parser.add_argument('--model_types', nargs='+', default=['lstm'], 
+                        choices=['lstm', 'gru', 'transformer_decoder', 'transformer_encdec', 'esn', 'dynamical_transformer'], 
+                        help='Type de modèle à entrainer')
     parser.add_argument('--tasks', nargs='+', default=['all'], help='Liste des tâches')
     parser.add_argument('--difficulties', nargs='+', default=['small'], choices=['small', 'medium', 'large'], help='Niveaux de difficulté')
     parser.add_argument('--sizes', nargs='+', type=int, default=[1000, 10000], help='Tailles des paramètres visées')
+    parser.add_argument('--lrs', nargs='+', type=float, default=[1e-2, 3e-3, 1e-3, 3e-4, 1e-4], help='Learning rates à tester (Ignoré par ESN)')
     parser.add_argument('--seeds', type=int, default=10, help='Nombre de seeds par run')
     parser.add_argument('--epochs', type=int, default=50, help='Nombre d\'epochs (Ignoré par ESN)')
-    parser.add_argument('--batch_size', type=int, default=64, help='Taille du batch (Ignoré par ESN)')
+    parser.add_argument('--batch_size', type=int, default=10, help='Taille du batch (Ignoré par ESN)')
     parser.add_argument('--patience', type=int, default=10, help='Nombre d\'epochs sans amélioration (Ignoré par ESN)')
     parser.add_argument('--device', type=str, default='cuda' if torch.cuda.is_available() else 'cpu', help='Device (cuda/cpu)')
     parser.add_argument('--dtype', type=str, default='float32', help='Type de données Pytorch')
@@ -121,11 +125,14 @@ def run_experiment():
     torch_dtype = getattr(torch, args.dtype)
     device = torch.device(args.device)
     
+    lr_models = [args.model_types[i] for i in range(len(args.model_types)) if args.model_types[i] != 'esn']
     results = []
-    combinations = list(itertools.product(args.model_types, args.tasks, args.difficulties, args.sizes, range(args.seeds)))
+    combinations = list(itertools.product(lr_models, args.tasks, args.difficulties, args.sizes, args.lrs, range(args.seeds)))
+    if 'esn' in args.model_types:
+        combinations += list(itertools.product(['esn'], args.tasks, args.difficulties, args.sizes, [None], range(args.seeds)))
     
-    for model_type, task_name, difficulty, size, seed in combinations:
-        print(f"\n--- Model: {model_type.upper()} | Task: {task_name} | Diff: {difficulty} | Size: {size} | Seed: {seed} ---")
+    for model_type, task_name, difficulty, size, lr, seed in combinations:
+        print(f"\n--- Model: {model_type.upper()} | Task: {task_name} | Diff: {difficulty} | Size: {size} | LR: {lr} | Seed: {seed} ---")
         
         try:
             task_data = sd.build_task(task_name, difficulty=difficulty, seed=seed)
@@ -211,8 +218,10 @@ def run_experiment():
                 model = DynamicTransformerDecoderOnly(input_dim=input_dim, output_dim=output_dim, target_params=size).to(device, dtype=torch_dtype)
             elif model_type == 'transformer_encdec':
                 model = DynamicTransformerEncoderDecoder(input_dim=input_dim, output_dim=output_dim, target_params=size).to(device, dtype=torch_dtype)
+            elif model_type == 'dynamical_transformer':
+                model = DynamicDynamicalTransformer(input_dim=input_dim, output_dim=output_dim, target_params=size).to(device, dtype=torch_dtype)
             
-            optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+            optimizer = torch.optim.Adam(model.parameters(), lr=lr)
             print(f"Modèle {model_type.upper()} initialisé avec ~{model.actual_params} paramètres (Cible: {size}).")
             
             best_val_score = float('inf')
@@ -278,6 +287,7 @@ def run_experiment():
             'Difficulty': difficulty,
             'Target_Params': size,
             'Actual_Params': model.actual_params,
+            'LR': lr if model_type != 'esn' else 'N/A',
             'Seed': seed,
             'Category': category,
             'Best_Val_Score': best_val_score,

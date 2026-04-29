@@ -6,6 +6,8 @@ import reservoirpy as rpy
 from reservoirpy.nodes import Reservoir, Ridge
 import numpy as np
 import stream_dataset as sd
+from DT.DynamicalTransformer import DynamicalTransformer
+
 
 # Désactiver les logs trop verbeux de reservoirpy pendant les expériences
 rpy.verbosity(0)
@@ -260,4 +262,97 @@ class DynamicESN:
             preds.append(y)
             
         return np.stack(preds, axis=0)
+    
+
+
+class DynamicDynamicalTransformer(nn.Module):
+    def __init__(self, input_dim, output_dim, target_params, num_layers=2, nhead=2):
+        super().__init__()
+        
+        # Recherche binaire pour trouver la bonne dimension d'attention (D)
+        low, high = 2, 128
+        best_d = nhead
+        best_diff = float('inf')
+        
+        # On fixe quelques hyperparamètres par défaut pour l'architecture
+        memory_units = 4
+        if target_params == 1000:
+            memory_units = 4 
+        elif target_params == 10000:
+            memory_units = 8
+        elif target_params == 100000:
+            memory_units = 12
+
+        m_connectivity = 0.1
+
+        while low <= high:
+            mid = (low + high) // 2
+            # S'assurer que d_model est divisible par le nombre de têtes d'attention
+            d_model = max(nhead, mid - (mid % nhead))
+
+            if d_model * 0.1 >= 10:
+                m_connectivity = 0.1
+            elif d_model * 0.2 >= 10:
+                m_connectivity = 0.2
+            elif d_model * 0.5 >= 10:
+                m_connectivity = 0.5
+            else:
+                m_connectivity = 1
+
+            # Instanciation temporaire (sur CPU pour aller vite) juste pour compter les paramètres
+            temp_model = DynamicalTransformer(
+                num_layers=num_layers,
+                attention_dim=d_model,
+                attention_heads=nhead,
+                memory_units=memory_units,
+                memory_dim=2*d_model,
+                input_dim=input_dim,
+                output_dim=output_dim,
+                memory_connectivity=m_connectivity,
+                device='cpu'
+            )
+            
+            # Remplacement crucial : On utilise un Linear au lieu d'un Embedding 
+            # pour accepter le format [Batch, Time, Features] du Stream Dataset
+            temp_model.input_projection = nn.Linear(input_dim, d_model)
+            
+            params = sum(p.numel() for p in temp_model.parameters() if p.requires_grad)
+            
+            # Garder en mémoire la taille qui s'approche le plus de target_params
+            if abs(params - target_params) < best_diff:
+                best_diff = abs(params - target_params)
+                best_d = d_model
+                
+            if params < target_params:
+                low = mid + 1
+            else:
+                high = mid - 1
+                
+        # Instanciation finale avec le meilleur hyperparamètre trouvé
+        self.model = DynamicalTransformer(
+            num_layers=num_layers,
+            attention_dim=best_d,
+            attention_heads=nhead,
+            memory_units=memory_units,
+            memory_dim=2*best_d,
+            input_dim=input_dim,
+            output_dim=output_dim,
+            memory_connectivity=m_connectivity,
+            device='cpu', # Le .to(device) de PyTorch dans run.py s'occupera du transfert
+            dtype=torch.float32,
+        )
+        # Remplacement final de la couche d'entrée
+        self.model.input_projection = nn.Linear(input_dim, best_d, device='cpu', dtype=torch.float32)
+        
+        self.actual_params = sum(p.numel() for p in self.model.parameters() if p.requires_grad)
+
+    def to(self, device, dtype=None):
+        self.model.input_projection = self.model.input_projection.to(device)
+        self.model.to(device)
+        return self
+
+    def forward(self, x):
+        # On passe directement la séquence [B, T, Features]
+        # Le DynamicalTransformer retourne [B, T, O] qui est parfaitement compatible
+        return self.model(x)
         
