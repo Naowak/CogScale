@@ -5,7 +5,6 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=2
 #SBATCH --cpus-per-task=8
-#SBATCH --gres=gpu:2  # CRUCIAL : Demande explicite de 2 GPUs
 
 # 1. Récupération des paramètres passés lors du sbatch
 # La syntaxe ${1:-"valeur_par_defaut"} permet d'avoir un comportement par défaut si tu ne passes rien
@@ -29,7 +28,7 @@ conda init
 conda activate /beegfs/ybendiou/bstream/venv
 pip install joblib
 
-cd /beegfs/ybendiou/bstream/
+cd /beegfs/ybendiou/bstream/baseline/
 
 # Run 
 echo "Lancement sur GPU 0 des modèles : $MODELS_GPU0"
