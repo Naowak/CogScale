@@ -67,6 +67,16 @@ stream_small = {
             "positions": ['left', 'right']
         },
     },
+    'associative_recall': {
+        'fct': generate_associative_recall,
+        'category': 'classification',
+        'params': {"n_train": 100, "n_valid": 20, "n_test": 100, "sequence_length": 32, "num_pairs": 4, "n_symbols": 16},
+    },
+    'induction_heads': {
+        'fct': generate_induction_heads,
+        'category': 'classification',
+        'params': {"n_train": 100, "n_valid": 20, "n_test": 100, "sequence_length": 40, "n_symbols": 3},
+    },
 }
 
 stream_medium = {
@@ -135,6 +145,16 @@ stream_medium = {
             "positions": ['left', 'right', ('center', 'middle')]
         },
     },
+    'associative_recall': {
+        'fct': generate_associative_recall,
+        'category': 'classification',
+        'params': {"n_train": 1000, "n_valid": 200, "n_test": 1000, "sequence_length": 64, "num_pairs": 8, "n_symbols": 16},
+    },
+    'induction_heads': {
+        'fct': generate_induction_heads,
+        'category': 'classification',
+        'params': {"n_train": 1000, "n_valid": 200, "n_test": 1000, "sequence_length": 100, "n_symbols": 8},
+    },
 }
 
 stream_large = {
@@ -202,5 +222,15 @@ stream_large = {
             "colors": ['blue', 'orange', 'green', 'red', 'yellow', 'purple'], 
             "positions": ['left', 'right', ('center', 'middle'), 'top', 'bottom']
         },
+    },
+    'associative_recall': {
+        'fct': generate_associative_recall,
+        'category': 'classification',
+        'params': {"n_train": 10000, "n_valid": 2000, "n_test": 10000, "sequence_length": 128, "num_pairs": 16, "n_symbols": 32},
+    },
+    'induction_heads': {
+        'fct': generate_induction_heads,
+        'category': 'classification',
+        'params': {"n_train": 10000, "n_valid": 2000, "n_test": 10000, "sequence_length": 250, "n_symbols": 20},
     },
 }

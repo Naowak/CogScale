@@ -10,6 +10,8 @@ import copy
 import re
 import os
 
+import sys
+sys.path.append("../")
 import stream_dataset as sd
 from models import DynamicLSTM, DynamicGRU, DynamicTransformerDecoderOnly, \
     DynamicTransformerEncoderDecoder, DynamicESN, DynamicDynamicalTransformer
