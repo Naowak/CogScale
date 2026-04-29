@@ -7,6 +7,17 @@ from reservoirpy.nodes import Reservoir, Ridge
 import numpy as np
 import stream_dataset as sd
 from DT.DynamicalTransformer import DynamicalTransformer
+try:
+    from mamba_ssm import Mamba
+except ImportError:
+    Mamba = None
+try:
+    from xlstm import xLSTMBlockStack, xLSTMBlockStackConfig, mLSTMBlockConfig, sLSTMBlockConfig
+except ImportError:
+    xLSTMBlockStack = None
+    xLSTMBlockStackConfig = None
+    mLSTMBlockConfig = None
+    sLSTMBlockConfig = None
 
 
 # Désactiver les logs trop verbeux de reservoirpy pendant les expériences
@@ -118,6 +129,7 @@ class DynamicTransformerDecoderOnly(nn.Module):
             d_model=d_model, nhead=nhead, dim_feedforward=4*d_model, batch_first=True
         )
         self.transformer = nn.TransformerEncoder(encoder_layer, num_layers=num_layers)
+        self.norm = nn.LayerNorm(d_model)
         self.fc_out = nn.Linear(d_model, output_dim)
         
         self.actual_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
@@ -133,6 +145,7 @@ class DynamicTransformerDecoderOnly(nn.Module):
         
         # Application du transformer
         out = self.transformer(x_emb, mask=causal_mask, is_causal=True)
+        out = self.norm(out)
         logits = self.fc_out(out)
         return logits
 
@@ -167,6 +180,7 @@ class DynamicTransformerEncoderDecoder(nn.Module):
             num_encoder_layers=num_layers, num_decoder_layers=num_layers,
             dim_feedforward=4*d_model, batch_first=True
         )
+        self.norm = nn.LayerNorm(d_model)
         self.fc_out = nn.Linear(d_model, output_dim)
         
         self.actual_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
@@ -182,6 +196,7 @@ class DynamicTransformerEncoderDecoder(nn.Module):
         tgt_mask = nn.Transformer.generate_square_subsequent_mask(seq_len).to(x.device)
         
         out = self.transformer(src, tgt, tgt_mask=tgt_mask, tgt_is_causal=True)
+        out = self.norm(out)
         logits = self.fc_out(out)
         return logits
     
@@ -309,6 +324,7 @@ class DynamicDynamicalTransformer(nn.Module):
                 input_dim=input_dim,
                 output_dim=output_dim,
                 memory_connectivity=m_connectivity,
+                d_conv=1,
                 device='cpu'
             )
             
@@ -338,6 +354,7 @@ class DynamicDynamicalTransformer(nn.Module):
             input_dim=input_dim,
             output_dim=output_dim,
             memory_connectivity=m_connectivity,
+            d_conv=1,
             device='cpu', # Le .to(device) de PyTorch dans run.py s'occupera du transfert
             dtype=torch.float32,
         )
@@ -355,4 +372,124 @@ class DynamicDynamicalTransformer(nn.Module):
         # On passe directement la séquence [B, T, Features]
         # Le DynamicalTransformer retourne [B, T, O] qui est parfaitement compatible
         return self.model(x)
+
+
+class DynamicMamba(nn.Module):
+    def __init__(self, input_dim, output_dim, target_params, num_layers=2):
+        super(DynamicMamba, self).__init__()
+        if Mamba is None:
+            raise ImportError("mamba_ssm n'est pas installé. Lancez: pip install mamba-ssm causal-conv1d")
+        
+        # Recherche binaire pour trouver le meilleur d_model
+        low, high = 2, 2048
+        best_d = 8
+        best_diff = float('inf')
+        
+        while low <= high:
+            mid = (low + high) // 2
+            d_model = max(2, mid - (mid % 2)) # Pair pour éviter les soucis
+            
+            # Instanciation temporaire pour compter les paramètres
+            temp_encoder = nn.Linear(input_dim, d_model)
+            temp_layers = nn.ModuleList([Mamba(d_model=d_model, d_state=16, d_conv=4, expand=2) for _ in range(num_layers)])
+            temp_norm = nn.LayerNorm(d_model)
+            temp_decoder = nn.Linear(d_model, output_dim)
+            
+            params = (sum(p.numel() for p in temp_encoder.parameters()) +
+                      sum(p.numel() for p in temp_layers.parameters()) +
+                      sum(p.numel() for p in temp_norm.parameters()) +
+                      sum(p.numel() for p in temp_decoder.parameters()))
+                      
+            if abs(params - target_params) < best_diff:
+                best_diff = abs(params - target_params)
+                best_d = d_model
+                
+            if params < target_params:
+                low = mid + 1
+            else:
+                high = mid - 1
+                
+        # Instanciation finale avec le d_model optimal
+        self.encoder = nn.Linear(input_dim, best_d)
+        self.layers = nn.ModuleList([Mamba(d_model=best_d, d_state=16, d_conv=4, expand=2) for _ in range(num_layers)])
+        self.norm = nn.LayerNorm(best_d)
+        self.decoder = nn.Linear(best_d, output_dim)
+        
+        self.actual_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+
+    def forward(self, x):
+        h = self.encoder(x)
+        for layer in self.layers:
+            h = layer(h)
+        h = self.norm(h)
+        return self.decoder(h)
+
+
+class DynamicxLSTM(nn.Module):
+    def __init__(self, input_dim, output_dim, target_params, context_length, num_blocks=2):
+        super(DynamicxLSTM, self).__init__()
+        if xLSTMBlockStack is None:
+            raise ImportError("xlstm n'est pas installé. Lancez: pip install xlstm")
+            
+        low, high = 2, 2048
+        best_d = 16
+        best_diff = float('inf')
+        
+        while low <= high:
+            mid = (low + high) // 2
+            # xLSTM nécessite des dimensions divisibles par le nombre de têtes (souvent 4 ou 8 en interne)
+            d_model = max(16, mid - (mid % 16)) 
+            
+            try:
+                cfg = xLSTMBlockStackConfig(
+                    mlstm_block=None,
+                    slstm_block=None,
+                    context_length=-1, # Séquences de longueurs variables
+                    num_blocks=num_blocks,
+                    embedding_dim=d_model,
+                    slstm_at=[num_blocks // 2]
+                )
+                temp_stack = xLSTMBlockStack(cfg)
+                temp_encoder = nn.Linear(input_dim, d_model)
+                temp_norm = nn.LayerNorm(d_model)
+                temp_decoder = nn.Linear(d_model, output_dim)
+                
+                params = (sum(p.numel() for p in temp_encoder.parameters()) +
+                          sum(p.numel() for p in temp_stack.parameters()) +
+                          sum(p.numel() for p in temp_norm.parameters()) +
+                          sum(p.numel() for p in temp_decoder.parameters()))
+                          
+                if abs(params - target_params) < best_diff:
+                    best_diff = abs(params - target_params)
+                    best_d = d_model
+                    
+                if params < target_params:
+                    low = mid + 1
+                else:
+                    high = mid - 1
+            except Exception:
+                # Si xLSTM refuse une certaine dimension pour des raisons mathématiques internes
+                high = mid - 1
+                
+        # Instanciation finale
+        self.encoder = nn.Linear(input_dim, best_d)
+        cfg = xLSTMBlockStackConfig(
+            mlstm_block=mLSTMBlockConfig(),
+            slstm_block=sLSTMBlockConfig(),
+            context_length=context_length, # Séquences de longueurs variables
+            num_blocks=num_blocks,
+            embedding_dim=best_d,
+            slstm_at=[num_blocks // 2]
+        )
+        self.xlstm_stack = xLSTMBlockStack(cfg)
+        self.norm = nn.LayerNorm(best_d)
+        self.decoder = nn.Linear(best_d, output_dim)
+        
+        self.actual_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+
+    def forward(self, x):
+        h = self.encoder(x)
+        h = self.xlstm_stack(h)
+        h = self.norm(h)
+        return self.decoder(h)
         

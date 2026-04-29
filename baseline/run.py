@@ -14,7 +14,8 @@ import sys
 sys.path.append("../")
 import stream_dataset as sd
 from models import DynamicLSTM, DynamicGRU, DynamicTransformerDecoderOnly, \
-    DynamicTransformerEncoderDecoder, DynamicESN, DynamicDynamicalTransformer
+    DynamicTransformerEncoderDecoder, DynamicESN, DynamicDynamicalTransformer, \
+    DynamicMamba, DynamicxLSTM
 
 def set_seed(seed):
     np.random.seed(seed)
@@ -102,7 +103,7 @@ def find_best_threshold(preds_logits, targets, timesteps):
 def run_experiment():
     parser = argparse.ArgumentParser(description="Run Stream Dataset Evaluation")
     parser.add_argument('--model_types', nargs='+', default=['lstm'], 
-                        choices=['lstm', 'gru', 'transformer_decoder', 'transformer_encdec', 'esn', 'dynamical_transformer'], 
+                        choices=['lstm', 'gru', 'transformer_decoder', 'transformer_encdec', 'esn', 'dynamical_transformer', 'mamba', 'xlstm'], 
                         help='Type de modèle à entrainer')
     parser.add_argument('--tasks', nargs='+', default=['all'], help='Liste des tâches')
     parser.add_argument('--difficulties', nargs='+', default=['small'], choices=['small', 'medium', 'large'], help='Niveaux de difficulté')
@@ -222,7 +223,14 @@ def run_experiment():
                 model = DynamicTransformerEncoderDecoder(input_dim=input_dim, output_dim=output_dim, target_params=size).to(device, dtype=torch_dtype)
             elif model_type == 'dynamical_transformer':
                 model = DynamicDynamicalTransformer(input_dim=input_dim, output_dim=output_dim, target_params=size).to(device, dtype=torch_dtype)
-            
+            elif model_type == 'mamba':
+                model = DynamicMamba(input_dim=input_dim, output_dim=output_dim, target_params=size).to(device, dtype=torch_dtype)
+            elif model_type == 'xlstm':
+                model = DynamicxLSTM(input_dim=input_dim, output_dim=output_dim, target_params=size, context_length=task_data['X_train'].shape[1]).to(device, dtype=torch_dtype)
+            else:
+                print(f"Type de modèle inconnu: {model_type}. Skip.")
+                continue
+
             optimizer = torch.optim.Adam(model.parameters(), lr=lr)
             print(f"Modèle {model_type.upper()} initialisé avec ~{model.actual_params} paramètres (Cible: {size}).")
             
