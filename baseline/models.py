@@ -431,23 +431,27 @@ class DynamicxLSTM(nn.Module):
         if xLSTMBlockStack is None:
             raise ImportError("xlstm n'est pas installé. Lancez: pip install xlstm")
             
-        low, high = 2, 2048
-        best_d = 16
+        # On respecte strictement votre contrainte de couches
+        self.num_blocks = num_blocks
+        
+        low, high = 4, 2048  # On permet de descendre très bas (4)
+        best_d = 4
         best_diff = float('inf')
         
         while low <= high:
             mid = (low + high) // 2
-            # xLSTM nécessite des dimensions divisibles par le nombre de têtes (souvent 4 ou 8 en interne)
-            d_model = max(16, mid - (mid % 16)) 
+            # xLSTM requiert souvent un d_model multiple de 4 pour diviser ses têtes d'attention
+            d_model = max(4, mid - (mid % 4)) 
             
             try:
+                # Instanciation temporaire (avec les configs par défaut pour éviter le crash)
                 cfg = xLSTMBlockStackConfig(
-                    mlstm_block=None,
-                    slstm_block=None,
-                    context_length=-1, # Séquences de longueurs variables
-                    num_blocks=num_blocks,
+                    mlstm_block=mLSTMBlockConfig(),
+                    slstm_block=sLSTMBlockConfig(),
+                    context_length=context_length, 
+                    num_blocks=self.num_blocks,
                     embedding_dim=d_model,
-                    slstm_at=[num_blocks // 2]
+                    slstm_at=[self.num_blocks // 2]  # On place le sLSTM au milieu
                 )
                 temp_stack = xLSTMBlockStack(cfg)
                 temp_encoder = nn.Linear(input_dim, d_model)
@@ -468,18 +472,18 @@ class DynamicxLSTM(nn.Module):
                 else:
                     high = mid - 1
             except Exception:
-                # Si xLSTM refuse une certaine dimension pour des raisons mathématiques internes
+                # Si xLSTM refuse cette dimension exacte, on réduit la taille pour continuer à chercher
                 high = mid - 1
                 
-        # Instanciation finale
+        # Instanciation finale avec le meilleur d_model trouvé (le plus proche possible de la cible)
         self.encoder = nn.Linear(input_dim, best_d)
         cfg = xLSTMBlockStackConfig(
             mlstm_block=mLSTMBlockConfig(),
             slstm_block=sLSTMBlockConfig(),
-            context_length=context_length, # Séquences de longueurs variables
-            num_blocks=num_blocks,
+            context_length=context_length,
+            num_blocks=self.num_blocks,
             embedding_dim=best_d,
-            slstm_at=[num_blocks // 2]
+            slstm_at=[self.num_blocks // 2]
         )
         self.xlstm_stack = xLSTMBlockStack(cfg)
         self.norm = nn.LayerNorm(best_d)

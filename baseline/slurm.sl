@@ -31,9 +31,18 @@ pip install joblib
 cd /beegfs/ybendiou/bstream/baseline/
 
 # Run 
+if [ "$MODELS_GPU0" == "$MODELS_GPU1" ]; then
+    echo "Même modèle sur les deux GPU, on répartit les tâches."
+    TASKS_GPU0='first_half'
+    TASKS_GPU1='second_half'
+else
+    TASKS_GPU0='all'
+    TASKS_GPU1='all'
+fi
+
 echo "Lancement sur GPU 0 des modèles : $MODELS_GPU0"
 srun --ntasks=1 python run.py \
-    --tasks all \
+    --tasks $TASKS_GPU0 \
     --difficulties small medium \
     --sizes 1000 10000 100000 \
     --seeds 10 \
@@ -44,7 +53,7 @@ srun --ntasks=1 python run.py \
 
 echo "Lancement sur GPU 1 des modèles : $MODELS_GPU1"
 srun --ntasks=1 python run.py \
-    --tasks all \
+    --tasks $TASKS_GPU1 \
     --difficulties small medium \
     --sizes 1000 10000 100000 \
     --seeds 10 \

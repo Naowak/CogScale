@@ -121,6 +121,10 @@ def run_experiment():
 
     if args.tasks == ['all']:
         args.tasks = sd.tasks
+    elif args.tasks == ['first_half']:
+        args.tasks = sd.tasks[:len(sd.tasks)//2]
+    elif args.tasks == ['second_half']:
+        args.tasks = sd.tasks[len(sd.tasks)//2:]
         
     # Charger les configs ESN si nécessaire
     esn_configs = parse_report_configs('results/esn_hp_opti/report.md') if 'esn' in args.model_types else {}
@@ -145,13 +149,37 @@ def run_experiment():
 
         set_seed(seed)
         category = task_data['category']
-        
-        input_dim = task_data['X_train'].shape[-1]
-        output_dim = task_data['Y_train'].shape[-1]
-        
-        best_val_score = None
-        best_threshold = 0.5
-        preds_test_np = None
+
+        # -------------------
+
+        if model_type == 'xlstm':
+            print(f"  -> Note: Le modèle xLSTM est conçu pour gérer les séquences de longueurs variables sans padding. On padd.")
+            # 1. Trouver la longueur maximale (généralement X_test)
+            max_seq_len = max(task_data['X_train'].shape[1], task_data['X_valid'].shape[1], task_data['X_test'].shape[1])
+            
+            # 2. Fonction pour rajouter des zéros à la fin de la dimension temporelle (dim 1)
+            def pad_to_max(arr, max_len):
+                if arr.shape[1] < max_len:
+                    return np.pad(arr, ((0, 0), (0, max_len - arr.shape[1]), (0, 0)), mode='constant')
+                return arr
+
+            # 3. Application du padding
+            task_data['X_train'] = pad_to_max(task_data['X_train'], max_seq_len)
+            task_data['X_valid'] = pad_to_max(task_data['X_valid'], max_seq_len)
+            task_data['X_test'] = pad_to_max(task_data['X_test'], max_seq_len)
+            
+            task_data['Y_train'] = pad_to_max(task_data['Y_train'], max_seq_len)
+            task_data['Y_valid'] = pad_to_max(task_data['Y_valid'], max_seq_len)
+            task_data['Y_test'] = pad_to_max(task_data['Y_test'], max_seq_len)
+            
+            input_dim = task_data['X_train'].shape[-1]
+            output_dim = task_data['Y_train'].shape[-1]
+            
+            best_val_score = None
+            best_threshold = 0.5
+            preds_test_np = None
+
+        #--------------------
 
         # ----------------------------------------------------
         # BRANCHE 1 : ECHO STATE NETWORK (ReservoirPy)
@@ -250,7 +278,11 @@ def run_experiment():
 
                 model.eval()
                 with torch.no_grad():
-                    preds_val_np = model(X_valid).cpu().numpy()
+                    preds_val_list = []
+                    for i in range(0, len(X_valid), args.batch_size):
+                        batch_val = X_valid[i:i+args.batch_size]
+                        preds_val_list.append(model(batch_val).cpu().numpy())
+                    preds_val_np = np.concatenate(preds_val_list, axis=0)
                     
                 val_score = sd.compute_score(Y=Y_valid_np, Y_hat=preds_val_np, prediction_timesteps=T_valid_np, category=category)
                 
@@ -271,13 +303,21 @@ def run_experiment():
             if category == 'multi_classification':
                 model.eval()
                 with torch.no_grad():
-                    preds_val_np = model(X_valid).cpu().numpy()
+                    preds_val_list = []
+                    for i in range(0, len(X_valid), args.batch_size):
+                        batch_val = X_valid[i:i+args.batch_size]
+                        preds_val_list.append(model(batch_val).cpu().numpy())
+                    preds_val_np = np.concatenate(preds_val_list, axis=0)
                 best_threshold = find_best_threshold(preds_val_np, Y_valid_np, T_valid_np)
                 print(f"  -> Meilleur threshold trouvé sur la validation : {best_threshold:.2f}")
 
             model.eval()
             with torch.no_grad():
-                preds_test_np = model(X_test).cpu().numpy()
+                preds_test_list = []
+                for i in range(0, len(X_test), args.batch_size):
+                    batch_test = X_test[i:i+args.batch_size]
+                    preds_test_list.append(model(batch_test).cpu().numpy())
+                preds_test_np = np.concatenate(preds_test_list, axis=0)
 
         # ----------------------------------------------------
         # ÉVALUATION FINALE (Commun aux deux branches)
