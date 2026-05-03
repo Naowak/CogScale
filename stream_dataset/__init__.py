@@ -14,6 +14,8 @@ tasks = [
     'adding_problem',
     'sorting_problem',
     'cross_situation',
+    'associative_recall',
+    'induction_heads',
 ]
 
 def compute_score(Y, Y_hat, prediction_timesteps, category, threshold=0.5):

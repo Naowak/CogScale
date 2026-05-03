@@ -662,7 +662,7 @@ def generate_csl(n_train=1000, n_valid=200, n_test=200, objects=None, colors=Non
         idx = rng.integers(0, N_total)
         
         # Retrieval of the input sequence (encoded sentence)
-        input_seq = X_all[idx]  # Shape: (n_steps, vocab_size)
+        input_seq = X_all[idx]  # Shape: (n_steps, n_symbols)
         
         # Adaptation to STREAM format: the target must be of temporal dimension
         # We fill with zeros and place the true target only at the end
@@ -677,3 +677,93 @@ def generate_csl(n_train=1000, n_valid=200, n_test=200, objects=None, colors=Non
     # Generation of samples
     rng = np.random.default_rng(seed)
     return _generate_train_test_samples(n_train, n_valid, n_test, generate_one_sample, category='multi_classification')
+
+def generate_associative_recall(n_train=1000, n_valid=200, n_test=200, sequence_length=16, num_pairs=4, n_symbols=16, seed=None):
+    """
+    [Multi sequence]
+    Associative recall task. The model must memorize key-value pairs 
+    and recall the value associated with a specific query key.
+    """
+    rng = np.random.default_rng(seed)
+    
+    SEP = n_symbols - 1
+    PAD = n_symbols - 2
+    vocab_kv = n_symbols - 2
+    
+    min_len = 2 * num_pairs + 2
+    if sequence_length < min_len:
+        raise ValueError(f"sequence_length={sequence_length} trop court. Minimum requis : {min_len}.")
+    if vocab_kv < num_pairs:
+        raise ValueError(f"n_symbols={n_symbols} insuffisant. Requis : {num_pairs + 2}.")
+        
+    def generate_one_sample():
+        tokens = np.full(sequence_length, PAD, dtype=np.int64)
+        keys = rng.choice(vocab_kv, size=num_pairs, replace=False)
+        values = rng.integers(0, vocab_kv, size=num_pairs)
+        
+        # 1. Remplissage des paires
+        for i, (k, v) in enumerate(zip(keys, values)):
+            tokens[2 * i] = k
+            tokens[2 * i + 1] = v
+            
+        # 2. Distracteurs
+        n_distract = sequence_length - 2 * num_pairs - 2
+        if n_distract > 0:
+            tokens[2 * num_pairs : 2 * num_pairs + n_distract] = rng.integers(0, vocab_kv, size=n_distract)
+            
+        # 3. SEP + Requête
+        tokens[-2] = SEP
+        query_idx = rng.integers(0, num_pairs)
+        tokens[-1] = keys[query_idx]
+        
+        # 4. Encodage One-hot de l'entrée
+        input_seq = np.eye(n_symbols)[tokens]
+        
+        # 5. Création de la cible (uniquement valide à la fin)
+        target_seq = np.zeros((sequence_length, n_symbols))
+        target_value = values[query_idx]
+        target_seq[-1, target_value] = 1
+        
+        # 6. Définition du timestep à évaluer (le dernier token)
+        timesteps = np.array([sequence_length - 1])
+        
+        return input_seq, target_seq, timesteps
+
+    return _generate_train_test_samples(n_train, n_valid, n_test, generate_one_sample, category='classification')
+
+
+def generate_induction_heads(n_train=1000, n_valid=200, n_test=200, sequence_length=100, n_symbols=10, seed=None):
+    """
+    [Multi sequence]
+    Induction heads task. The second half of the sequence is an exact copy 
+    of the first half. The model must predict the next token in the second half.
+    """
+    rng = np.random.default_rng(seed)
+    
+    if sequence_length % 2 != 0:
+        raise ValueError("sequence_length doit être pair pour la tâche induction_heads.")
+        
+    half_len = sequence_length // 2
+    
+    def generate_one_sample():
+        # Generate the first half of the sequence with random tokens
+        first_half = rng.integers(0, n_symbols, size=half_len)
+        
+        # Duplicate the first half to create the full sequence
+        sequence = np.concatenate([first_half, first_half])
+        
+        # One-hot encoding of the input sequence
+        input_seq = np.eye(n_symbols)[sequence]
+        
+        # Create the target sequence: the model must predict the next token in the second half
+        target_seq = np.zeros((sequence_length, n_symbols))
+
+        # The model must predict the next token in the second half, which is the same as the first half        
+        for t in range(half_len, sequence_length - 1):
+            target_seq[t, sequence[t+1]] = 1
+            
+        timesteps = np.arange(half_len, sequence_length - 1)
+        
+        return input_seq, target_seq, timesteps
+
+    return _generate_train_test_samples(n_train, n_valid, n_test, generate_one_sample, category='classification')
