@@ -149,6 +149,8 @@ def run_experiment():
 
         set_seed(seed)
         category = task_data['category']
+        best_threshold = None
+        best_val_score = None
 
         # -------------------
 
@@ -175,8 +177,6 @@ def run_experiment():
             input_dim = task_data['X_train'].shape[-1]
             output_dim = task_data['Y_train'].shape[-1]
             
-            best_val_score = None
-            best_threshold = 0.5
             preds_test_np = None
 
         #--------------------
@@ -191,6 +191,8 @@ def run_experiment():
                 continue
                 
             hparams = esn_configs[config_key]
+            input_dim = task_data['X_train'].shape[-1]
+            output_dim = task_data['Y_train'].shape[-1]
             
             # Initialisation ESN (Plus de paramètre ridge ici)
             model = DynamicESN(
