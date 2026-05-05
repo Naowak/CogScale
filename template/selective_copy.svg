@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 500" width="100%" height="100%">
+  <defs>
+    <marker id="arrowhead-sel" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#212E53" />
+    </marker>
+    <style>
+      .box-sel { stroke-width: 4px; rx: 12px; }
+      .symbol-text-sel { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 28px; font-weight: bold; fill: #212E53; text-anchor: middle; }
+      .label-main-sel { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 28px; font-weight: bold; fill: #212E53; text-anchor: end; }
+      .label-sub-sel { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 22px; font-weight: normal; fill: #8CACD3; text-anchor: end; }
+      .time-text-sel { font-family: 'Courier New', Courier, monospace; font-size: 22px; font-weight: bold; fill: #8CACD3; text-anchor: middle; }
+      .connection-sel { fill: none; stroke: #212E53; stroke-width: 4px; stroke-dasharray: 6 4; marker-end: url(#arrowhead-sel); opacity: 0.6; }
+      .annotation-sel { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 22px; font-weight: bold; fill: #212E53; text-anchor: middle; }
+      .marker-flag { fill: #FF6B6B; stroke: #212E53; stroke-width: 2px; }
+    </style>
+  </defs>
+
+  <rect width="1050" height="500" fill="#FFFFFF" />
+
+  <text x="315" y="40" class="time-text-sel">t=1</text>
+  <text x="405" y="40" class="time-text-sel">t=2</text>
+  <text x="495" y="40" class="time-text-sel">t=3</text>
+  <text x="585" y="40" class="time-text-sel">t=4</text>
+  <text x="675" y="40" class="time-text-sel">t=5</text>
+  <text x="765" y="40" class="time-text-sel">t=6</text>
+  <text x="855" y="40" class="time-text-sel">t=7</text>
+  <text x="945" y="40" class="time-text-sel">t=8</text>
+
+  <text x="240" y="155" class="label-main-sel">Input Sequence</text>
+  <text x="240" y="190" class="label-sub-sel">X (Source + Markers)</text>
+  <text x="240" y="325" class="label-main-sel">Target Sequence</text>
+  <text x="240" y="360" class="label-sub-sel">Y (Selected Only)</text>
+
+  <path d="M 280 100 L 280 85 L 610 85 L 610 100" fill="none" stroke="#212E53" stroke-width="4" stroke-linejoin="round" />
+  <text x="445" y="75" class="annotation-sel">Selective Encoding</text>
+
+  <path d="M 730 100 L 730 85 L 800 85 L 800 100" fill="none" stroke="#212E53" stroke-width="4" stroke-linejoin="round" />
+  <text x="765" y="75" class="annotation-sel">Trigger</text>
+
+  <g transform="translate(0, 115)">
+    <rect x="280" y="0" width="70" height="70" fill="#8CACD3" stroke="#212E53" class="box-sel" stroke-width="5"/>
+    <text x="315" y="46" class="symbol-text-sel">A</text>
+    <circle cx="315" cy="-15" r="8" class="marker-flag" />
+    
+    <rect x="370" y="0" width="70" height="70" fill="#EBACA2" stroke="#D6978D" class="box-sel" />
+    <text x="405" y="46" class="symbol-text-sel">B</text>
+
+    <rect x="460" y="0" width="70" height="70" fill="#BED3C3" stroke="#212E53" class="box-sel" stroke-width="5"/>
+    <text x="495" y="46" class="symbol-text-sel">C</text>
+    <circle cx="495" cy="-15" r="8" class="marker-flag" />
+
+    <rect x="550" y="0" width="70" height="70" fill="#AFA4CE" stroke="#9C90BD" class="box-sel" />
+    <text x="585" y="46" class="symbol-text-sel">D</text>
+    
+    <rect x="640" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-sel" stroke-dasharray="8 4" />
+    <text x="675" y="46" class="symbol-text-sel" fill="#8CACD3">0</text>
+
+    <rect x="730" y="0" width="70" height="70" fill="#ecf29a" stroke="#c9cc88" class="box-sel" />
+    <text x="765" y="46" class="symbol-text-sel" fill="#FFFFFF">T</text>
+    
+    <rect x="820" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-sel" stroke-dasharray="8 4" />
+    <text x="855" y="46" class="symbol-text-sel" fill="#8CACD3">0</text>
+    
+    <rect x="910" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-sel" stroke-dasharray="8 4" />
+    <text x="945" y="46" class="symbol-text-sel" fill="#8CACD3">0</text>
+  </g>
+
+  <g transform="translate(0, 285)">
+    <g opacity="0.4">
+      <rect x="280" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-sel" stroke-dasharray="8 4"/>
+      <rect x="370" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-sel" stroke-dasharray="8 4"/>
+      <rect x="460" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-sel" stroke-dasharray="8 4"/>
+      <rect x="550" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-sel" stroke-dasharray="8 4"/>
+      <rect x="640" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-sel" stroke-dasharray="8 4"/>
+      <rect x="730" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-sel" stroke-dasharray="8 4"/>
+    </g>
+
+    <rect x="820" y="0" width="70" height="70" fill="#8CACD3" stroke="#7798C0" class="box-sel" />
+    <text x="855" y="46" class="symbol-text-sel">A</text>
+
+    <rect x="910" y="0" width="70" height="70" fill="#BED3C3" stroke="#A8C0AD" class="box-sel" />
+    <text x="945" y="46" class="symbol-text-sel">C</text>
+  </g>
+
+  <path d="M 315 195 C 315 285, 855 225, 855 270" class="connection-sel" />
+  <path d="M 495 195 C 495 255, 945 225, 945 270" class="connection-sel" />
+
+  <path d="M 820 375 L 820 390 L 980 390 L 980 375" fill="none" stroke="#212E53" stroke-width="4" stroke-linejoin="round" />
+  <text x="900" y="425" class="annotation-sel">Evaluation</text>
+
+</svg>

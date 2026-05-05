@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 500" width="100%" height="100%">
+  <defs>
+    <marker id="arrowhead3" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#212E53" />
+    </marker>
+    <style>
+      .box3 { stroke-width: 4px; rx: 12px; }
+      .symbol-text3 { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 28px; font-weight: bold; fill: #212E53; text-anchor: middle; }
+      .label-main3 { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 28px; font-weight: bold; fill: #212E53; text-anchor: end; }
+      .label-sub3 { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 22px; font-weight: normal; fill: #8CACD3; text-anchor: end; }
+      .time-text3 { font-family: 'Courier New', Courier, monospace; font-size: 22px; font-weight: bold; fill: #8CACD3; text-anchor: middle; }
+      .connection3 { fill: none; stroke: #212E53; stroke-width: 4px; stroke-dasharray: 6 4; marker-end: url(#arrowhead3); opacity: 0.6; }
+      .annotation3 { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 24px; font-weight: bold; fill: #212E53; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect width="1050" height="500" fill="#FFFFFF" />
+
+  <!-- TIME AXIS -->
+  <text x="315" y="40" class="time-text3">t=1</text>
+  <text x="405" y="40" class="time-text3">t=2</text>
+  <text x="495" y="40" class="time-text3">t=3</text>
+  <text x="585" y="40" class="time-text3">t=4</text>
+  <text x="675" y="40" class="time-text3">t=5</text>
+  <text x="765" y="40" class="time-text3">t=6</text>
+  <text x="855" y="40" class="time-text3">t=7</text>
+  <text x="945" y="40" class="time-text3">t=8</text>
+
+    <!-- LEFT LABELS -->
+    <text x="240" y="155" class="label-main3">Input Sequence</text>
+    <text x="240" y="190" class="label-sub3">X (Masked)</text>
+    <text x="240" y="325" class="label-main3">Target Sequence</text>
+    <text x="240" y="360" class="label-sub3">Y (Completed)</text>
+
+    <!-- TOP ANNOTATION: BASE PATTERN -->
+    <path d="M 280 100 L 280 85 L 530 85 L 530 100" fill="none" stroke="#212E53" stroke-width="4" stroke-linejoin="round" />
+    <text x="405" y="75" class="annotation3">Base Pattern</text>
+
+    <!-- INPUT SEQUENCE (X) -->
+    <g transform="translate(0, 115)">
+            <!-- A: Bleu -->
+            <rect x="280" y="0" width="70" height="70" fill="#8CACD3" stroke="#7798C0" class="box3" />
+            <text x="315" y="46" class="symbol-text3">A</text>
+            
+            <!-- MASK: Gris clair -->
+            <rect x="370" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box3" stroke-dasharray="8 4" />
+            <text x="405" y="46" class="symbol-text3" fill="#212E53">?</text>
+            
+            <!-- C: Sauge -->
+            <rect x="460" y="0" width="70" height="70" fill="#BED3C3" stroke="#A8C0AD" class="box3" />
+            <text x="495" y="46" class="symbol-text3">C</text>
+            
+            <!-- A: Bleu -->
+            <rect x="550" y="0" width="70" height="70" fill="#8CACD3" stroke="#7798C0" class="box3" />
+            <text x="585" y="46" class="symbol-text3">A</text>
+            
+            <!-- B: Saumon -->
+            <rect x="640" y="0" width="70" height="70" fill="#EBACA2" stroke="#D6978D" class="box3" />
+            <text x="675" y="46" class="symbol-text3">B</text>
+            
+            <!-- MASK: Gris clair -->
+            <rect x="730" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box3" stroke-dasharray="8 4" />
+            <text x="765" y="46" class="symbol-text3" fill="#212E53">?</text>
+            
+            <!-- A: Bleu -->
+            <rect x="820" y="0" width="70" height="70" fill="#8CACD3" stroke="#7798C0" class="box3" />
+            <text x="855" y="46" class="symbol-text3">A</text>
+            
+            <!-- B: Saumon -->
+            <rect x="910" y="0" width="70" height="70" fill="#EBACA2" stroke="#D6978D" class="box3" />
+            <text x="945" y="46" class="symbol-text3">B</text>
+    </g>
+
+    <!-- TARGET SEQUENCE (Y) -->
+    <g transform="translate(0, 285)">
+            <!-- A (Not evaluated) -->
+            <g opacity="0.4">
+                    <rect x="280" y="0" width="70" height="70" fill="#8CACD3" stroke="#7798C0" class="box3" stroke-dasharray="8 4"/>
+                    <text x="315" y="46" class="symbol-text3">A</text>
+            </g>
+
+            <!-- B: Saumon (EVALUATED) -->
+            <rect x="370" y="0" width="70" height="70" fill="#EBACA2" stroke="#D6978D" class="box3" />
+            <text x="405" y="46" class="symbol-text3">B</text>
+
+            <!-- C (Not evaluated) -->
+            <g opacity="0.4">
+                    <rect x="460" y="0" width="70" height="70" fill="#BED3C3" stroke="#A8C0AD" class="box3" stroke-dasharray="8 4"/>
+                    <text x="495" y="46" class="symbol-text3">C</text>
+            </g>
+
+            <!-- A (Not evaluated) -->
+            <g opacity="0.4">
+                    <rect x="550" y="0" width="70" height="70" fill="#8CACD3" stroke="#7798C0" class="box3" stroke-dasharray="8 4"/>
+                    <text x="585" y="46" class="symbol-text3">A</text>
+            </g>
+
+            <!-- B (Not evaluated) -->
+            <g opacity="0.4">
+                    <rect x="640" y="0" width="70" height="70" fill="#EBACA2" stroke="#D6978D" class="box3" stroke-dasharray="8 4"/>
+                    <text x="675" y="46" class="symbol-text3">B</text>
+            </g>
+
+            <!-- C: Sauge (EVALUATED) -->
+            <rect x="730" y="0" width="70" height="70" fill="#BED3C3" stroke="#A8C0AD" class="box3" />
+            <text x="765" y="46" class="symbol-text3">C</text>
+
+            <!-- A (Not evaluated) -->
+            <g opacity="0.4">
+                    <rect x="820" y="0" width="70" height="70" fill="#8CACD3" stroke="#7798C0" class="box3" stroke-dasharray="8 4"/>
+                    <text x="855" y="46" class="symbol-text3">A</text>
+            </g>
+
+            <!-- B (Not evaluated) -->
+            <g opacity="0.4">
+                    <rect x="910" y="0" width="70" height="70" fill="#EBACA2" stroke="#D6978D" class="box3" stroke-dasharray="8 4"/>
+                    <text x="945" y="46" class="symbol-text3">B</text>
+            </g>
+    </g>
+
+    <!-- CONNECTIONS (Only on masked/evaluated tokens) -->
+    <path d="M 405 195 L 405 270" class="connection3" />
+    <path d="M 765 195 L 765 270" class="connection3" />
+
+    <!-- ANNOTATIONS -->
+    <path d="M 370 375 L 370 390 L 440 390 L 440 375" fill="none" stroke="#212E53" stroke-width="4" stroke-linejoin="round" />
+    <text x="405" y="425" class="annotation3">Evaluation</text>
+    
+    <path d="M 730 375 L 730 390 L 800 390 L 800 375" fill="none" stroke="#212E53" stroke-width="4" stroke-linejoin="round" />
+    <text x="765" y="425" class="annotation3">Evaluation</text>
+</svg>
+

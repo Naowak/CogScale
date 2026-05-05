@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 500" width="100%" height="100%">
+  <defs>
+    <marker id="arrowhead-assoc" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#212E53" />
+    </marker>
+    <style>
+      .box-assoc { stroke-width: 4px; rx: 12px; }
+      .symbol-text-assoc { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 28px; font-weight: bold; fill: #212E53; text-anchor: middle; }
+      .label-main-assoc { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 28px; font-weight: bold; fill: #212E53; text-anchor: end; }
+      .label-sub-assoc { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 22px; font-weight: normal; fill: #8CACD3; text-anchor: end; }
+      .time-text-assoc { font-family: 'Courier New', Courier, monospace; font-size: 22px; font-weight: bold; fill: #8CACD3; text-anchor: middle; }
+      .connection-assoc { fill: none; stroke: #212E53; stroke-width: 4px; stroke-dasharray: 6 4; marker-end: url(#arrowhead-assoc); opacity: 0.6; }
+      .match-arc-assoc { fill: none; stroke: #8CACD3; stroke-width: 3px; stroke-dasharray: 4 4; opacity: 0.8; }
+      .annotation-assoc { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 20px; font-weight: bold; fill: #212E53; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect width="1050" height="500" fill="#FFFFFF" />
+
+  <!-- TIME AXIS -->
+  <text x="315" y="40" class="time-text-assoc">t=1</text>
+  <text x="405" y="40" class="time-text-assoc">t=2</text>
+  <text x="495" y="40" class="time-text-assoc">t=3</text>
+  <text x="585" y="40" class="time-text-assoc">t=4</text>
+  <text x="675" y="40" class="time-text-assoc">t=5</text>
+  <text x="765" y="40" class="time-text-assoc">t=6</text>
+  <text x="855" y="40" class="time-text-assoc">t=7</text>
+  <text x="945" y="40" class="time-text-assoc">t=8</text>
+
+  <!-- LEFT LABELS -->
+  <text x="240" y="155" class="label-main-assoc">Input Sequence</text>
+  <text x="240" y="190" class="label-sub-assoc">X (Keys, Values, Query)</text>
+  <text x="240" y="325" class="label-main-assoc">Target Sequence</text>
+  <text x="240" y="360" class="label-sub-assoc">Y (Recalled Value)</text>
+
+  <!-- TOP ANNOTATIONS -->
+  <path d="M 280 100 L 280 85 L 615 85 L 615 100" fill="none" stroke="#212E53" stroke-width="4" stroke-linejoin="round" />
+  <text x="432" y="75" class="annotation-assoc">Key-Value Pairs</text>
+  
+  <path d="M 820 100 L 820 85 L 890 85 L 890 100" fill="none" stroke="#212E53" stroke-width="4" stroke-linejoin="round" />
+  <text x="855" y="75" class="annotation-assoc">Trigger</text>
+  
+  <path d="M 910 100 L 910 85 L 980 85 L 980 100" fill="none" stroke="#212E53" stroke-width="4" stroke-linejoin="round" />
+  <text x="945" y="75" class="annotation-assoc">Query</text>
+
+  <!-- MATCHING ARC (Top) -->
+  <path d="M 495 215 Q 720 240 945 215" class="match-arc-assoc" />
+
+  <!-- INPUT SEQUENCE (X) -->
+  <g transform="translate(0, 130)">
+    <!-- Key 1: A -->
+    <rect x="280" y="0" width="70" height="70" fill="#8CACD3" stroke="#7798C0" class="box-assoc" />
+    <text x="315" y="46" class="symbol-text-assoc">A</text>
+    
+    <!-- Val 1: B -->
+    <rect x="370" y="0" width="70" height="70" fill="#EBACA2" stroke="#D6978D" class="box-assoc" />
+    <text x="405" y="46" class="symbol-text-assoc">B</text>
+
+    <!-- Key 2: C -->
+    <rect x="460" y="0" width="70" height="70" fill="#BED3C3" stroke="#A8C0AD" class="box-assoc" />
+    <text x="495" y="46" class="symbol-text-assoc">C</text>
+    
+    <!-- Val 2: D -->
+    <rect x="550" y="0" width="70" height="70" fill="#AFA4CE" stroke="#9C90BD" class="box-assoc" />
+    <text x="585" y="46" class="symbol-text-assoc">D</text>
+    
+    <!-- Padding 0 -->
+    <rect x="640" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-assoc" stroke-dasharray="8 4" />
+    <text x="675" y="46" class="symbol-text-assoc" fill="#8CACD3">0</text>
+    
+    <rect x="730" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-assoc" stroke-dasharray="8 4" />
+    <text x="765" y="46" class="symbol-text-assoc" fill="#8CACD3">0</text>
+
+    <!-- SEP -->
+    <rect x="820" y="0" width="70" height="70" fill="#ecf29a" stroke="#c9cc88" class="box-assoc" />
+    <text x="855" y="46" class="symbol-text-assoc" fill="#FFFFFF">T</text>
+    
+    <!-- Query Key: C -->
+    <rect x="910" y="0" width="70" height="70" fill="#BED3C3" stroke="#A8C0AD" class="box-assoc" stroke-width="5" />
+    <text x="945" y="46" class="symbol-text-assoc">C</text>
+  </g>
+
+  <!-- TARGET SEQUENCE (Y) -->
+  <g transform="translate(0, 300)">
+    <!-- 0 (Not evaluated) -->
+    <g opacity="0.4">
+      <rect x="280" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-assoc" stroke-dasharray="8 4"/>
+      <rect x="370" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-assoc" stroke-dasharray="8 4"/>
+      <rect x="460" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-assoc" stroke-dasharray="8 4"/>
+      <rect x="550" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-assoc" stroke-dasharray="8 4"/>
+      <rect x="640" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-assoc" stroke-dasharray="8 4"/>
+      <rect x="730" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-assoc" stroke-dasharray="8 4"/>
+      <rect x="820" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-assoc" stroke-dasharray="8 4"/>
+    </g>
+
+    <!-- Recalled Value: D (EVALUATED) -->
+    <rect x="910" y="0" width="70" height="70" fill="#AFA4CE" stroke="#9C90BD" class="box-assoc" stroke-width="5"/>
+    <text x="945" y="46" class="symbol-text-assoc">D</text>
+  </g>
+
+  <!-- CONNECTIONS (Recall mechanism) -->
+  <!-- Value 2 (D) routed to Output -->
+  <path d="M 585 210 C 585 285, 945 220, 945 285" class="connection-assoc" />
+
+  <!-- ANNOTATIONS -->
+  <path d="M 910 390 L 910 405 L 980 405 L 980 390" fill="none" stroke="#212E53" stroke-width="4" stroke-linejoin="round" />
+  <text x="945" y="435" class="annotation-assoc">Evaluation</text>
+
+</svg>

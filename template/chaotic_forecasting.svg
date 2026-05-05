@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 550" width="100%" height="100%">
+  <defs>
+    <marker id="arrowhead-chaos" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#212E53" />
+    </marker>
+    <style>
+      .box-mini { stroke-width: 3px; rx: 6px; }
+      .symbol-text-mini { font-family: 'Courier New', Courier, monospace; font-size: 14px; font-weight: bold; fill: #212E53; text-anchor: middle; }
+      .label-main-chaos { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 28px; font-weight: bold; fill: #212E53; text-anchor: end; }
+      .label-sub-chaos { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 22px; font-weight: normal; fill: #8CACD3; text-anchor: end; }
+      .time-text-chaos { font-family: 'Courier New', Courier, monospace; font-size: 22px; font-weight: bold; fill: #8CACD3; text-anchor: middle; }
+      .connection-chaos { fill: none; stroke: #212E53; stroke-width: 3px; stroke-dasharray: 6 4; marker-end: url(#arrowhead-chaos); opacity: 0.6; }
+      .annotation-chaos { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 20px; font-weight: bold; fill: #212E53; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect width="950" height="550" fill="#FFFFFF" />
+
+  <!-- TIME AXIS -->
+  <text x="315" y="40" class="time-text-chaos">t=1</text>
+  <text x="405" y="40" class="time-text-chaos">t=2</text>
+  <text x="495" y="40" class="time-text-chaos">t=3</text>
+  <text x="585" y="40" class="time-text-chaos">t=4</text>
+  <text x="675" y="40" class="time-text-chaos">t=5</text>
+  <text x="765" y="40" class="time-text-chaos">t=6</text>
+  <text x="855" y="40" class="time-text-chaos">t=7</text>
+
+  <!-- LEFT LABELS -->
+  <text x="240" y="155" class="label-main-chaos">Input Sequence</text>
+  <text x="240" y="190" class="label-sub-chaos">X (Lorenz 3D State)</text>
+  <text x="240" y="345" class="label-main-chaos">Target Sequence</text>
+  <text x="240" y="380" class="label-sub-chaos">Y (Forecast t+1)</text>
+
+  <!-- TOP ANNOTATION -->
+  <path d="M 280 100 L 280 85 L 890 85 L 890 100" fill="none" stroke="#212E53" stroke-width="4" stroke-linejoin="round" />
+  <text x="585" y="75" class="annotation-chaos">Chaotic Multi-dimensional Sequence</text>
+
+  <!-- INPUT SEQUENCE (X) -->
+  <g transform="translate(0, 115)">
+    <!-- t=1 -->
+    <g transform="translate(280, 0)">
+      <rect x="0" y="0" width="70" height="28" fill="#EBACA2" stroke="#D6978D" class="box-mini" />
+      <text x="35" y="18" class="symbol-text-mini"> 0.1</text>
+      <rect x="0" y="32" width="70" height="28" fill="#BED3C3" stroke="#A8C0AD" class="box-mini" />
+      <text x="35" y="50" class="symbol-text-mini"> 1.0</text>
+      <rect x="0" y="64" width="70" height="28" fill="#8CACD3" stroke="#7798C0" class="box-mini" />
+      <text x="35" y="82" class="symbol-text-mini"> 1.1</text>
+    </g>
+    <!-- t=2 -->
+    <g transform="translate(370, 0)">
+      <rect x="0" y="0" width="70" height="28" fill="#EBACA2" stroke="#D6978D" class="box-mini" />
+      <text x="35" y="18" class="symbol-text-mini"> 0.5</text>
+      <rect x="0" y="32" width="70" height="28" fill="#BED3C3" stroke="#A8C0AD" class="box-mini" />
+      <text x="35" y="50" class="symbol-text-mini"> 1.2</text>
+      <rect x="0" y="64" width="70" height="28" fill="#8CACD3" stroke="#7798C0" class="box-mini" />
+      <text x="35" y="82" class="symbol-text-mini"> 0.9</text>
+    </g>
+    <!-- t=3 -->
+    <g transform="translate(460, 0)">
+      <rect x="0" y="0" width="70" height="28" fill="#EBACA2" stroke="#D6978D" class="box-mini" />
+      <text x="35" y="18" class="symbol-text-mini"> 1.1</text>
+      <rect x="0" y="32" width="70" height="28" fill="#BED3C3" stroke="#A8C0AD" class="box-mini" />
+      <text x="35" y="50" class="symbol-text-mini"> 1.0</text>
+      <rect x="0" y="64" width="70" height="28" fill="#8CACD3" stroke="#7798C0" class="box-mini" />
+      <text x="35" y="82" class="symbol-text-mini"> 0.4</text>
+    </g>
+    <!-- t=4 -->
+    <g transform="translate(550, 0)">
+      <rect x="0" y="0" width="70" height="28" fill="#EBACA2" stroke="#D6978D" class="box-mini" />
+      <text x="35" y="18" class="symbol-text-mini"> 1.6</text>
+      <rect x="0" y="32" width="70" height="28" fill="#BED3C3" stroke="#A8C0AD" class="box-mini" />
+      <text x="35" y="50" class="symbol-text-mini"> 0.5</text>
+      <rect x="0" y="64" width="70" height="28" fill="#8CACD3" stroke="#7798C0" class="box-mini" />
+      <text x="35" y="82" class="symbol-text-mini">-0.2</text>
+    </g>
+    <!-- t=5 -->
+    <g transform="translate(640, 0)">
+      <rect x="0" y="0" width="70" height="28" fill="#EBACA2" stroke="#D6978D" class="box-mini" />
+      <text x="35" y="18" class="symbol-text-mini"> 1.8</text>
+      <rect x="0" y="32" width="70" height="28" fill="#BED3C3" stroke="#A8C0AD" class="box-mini" />
+      <text x="35" y="50" class="symbol-text-mini">-0.1</text>
+      <rect x="0" y="64" width="70" height="28" fill="#8CACD3" stroke="#7798C0" class="box-mini" />
+      <text x="35" y="82" class="symbol-text-mini">-0.8</text>
+    </g>
+    <!-- t=6 -->
+    <g transform="translate(730, 0)">
+      <rect x="0" y="0" width="70" height="28" fill="#EBACA2" stroke="#D6978D" class="box-mini" />
+      <text x="35" y="18" class="symbol-text-mini"> 1.5</text>
+      <rect x="0" y="32" width="70" height="28" fill="#BED3C3" stroke="#A8C0AD" class="box-mini" />
+      <text x="35" y="50" class="symbol-text-mini">-0.6</text>
+      <rect x="0" y="64" width="70" height="28" fill="#8CACD3" stroke="#7798C0" class="box-mini" />
+      <text x="35" y="82" class="symbol-text-mini">-1.2</text>
+    </g>
+    <!-- t=7 -->
+    <g transform="translate(820, 0)">
+      <rect x="0" y="0" width="70" height="28" fill="#EBACA2" stroke="#D6978D" class="box-mini" />
+      <text x="35" y="18" class="symbol-text-mini"> 0.9</text>
+      <rect x="0" y="32" width="70" height="28" fill="#BED3C3" stroke="#A8C0AD" class="box-mini" />
+      <text x="35" y="50" class="symbol-text-mini">-0.9</text>
+      <rect x="0" y="64" width="70" height="28" fill="#8CACD3" stroke="#7798C0" class="box-mini" />
+      <text x="35" y="82" class="symbol-text-mini">-1.4</text>
+    </g>
+  </g>
+
+  <!-- TARGET SEQUENCE (Y) -->
+  <g transform="translate(0, 310)">
+    <!-- Y = X shifted by 1 -->
+    <!-- target t=1 is X at t=2 -->
+    <g transform="translate(280, 0)">
+      <rect x="0" y="0" width="70" height="28" fill="#EBACA2" stroke="#D6978D" class="box-mini" />
+      <text x="35" y="18" class="symbol-text-mini"> 0.5</text>
+      <rect x="0" y="32" width="70" height="28" fill="#BED3C3" stroke="#A8C0AD" class="box-mini" />
+      <text x="35" y="50" class="symbol-text-mini"> 1.2</text>
+      <rect x="0" y="64" width="70" height="28" fill="#8CACD3" stroke="#7798C0" class="box-mini" />
+      <text x="35" y="82" class="symbol-text-mini"> 0.9</text>
+    </g>
+    <g transform="translate(370, 0)">
+      <rect x="0" y="0" width="70" height="28" fill="#EBACA2" stroke="#D6978D" class="box-mini" />
+      <text x="35" y="18" class="symbol-text-mini"> 1.1</text>
+      <rect x="0" y="32" width="70" height="28" fill="#BED3C3" stroke="#A8C0AD" class="box-mini" />
+      <text x="35" y="50" class="symbol-text-mini"> 1.0</text>
+      <rect x="0" y="64" width="70" height="28" fill="#8CACD3" stroke="#7798C0" class="box-mini" />
+      <text x="35" y="82" class="symbol-text-mini"> 0.4</text>
+    </g>
+    <g transform="translate(460, 0)">
+      <rect x="0" y="0" width="70" height="28" fill="#EBACA2" stroke="#D6978D" class="box-mini" />
+      <text x="35" y="18" class="symbol-text-mini"> 1.6</text>
+      <rect x="0" y="32" width="70" height="28" fill="#BED3C3" stroke="#A8C0AD" class="box-mini" />
+      <text x="35" y="50" class="symbol-text-mini"> 0.5</text>
+      <rect x="0" y="64" width="70" height="28" fill="#8CACD3" stroke="#7798C0" class="box-mini" />
+      <text x="35" y="82" class="symbol-text-mini">-0.2</text>
+    </g>
+    <g transform="translate(550, 0)">
+      <rect x="0" y="0" width="70" height="28" fill="#EBACA2" stroke="#D6978D" class="box-mini" />
+      <text x="35" y="18" class="symbol-text-mini"> 1.8</text>
+      <rect x="0" y="32" width="70" height="28" fill="#BED3C3" stroke="#A8C0AD" class="box-mini" />
+      <text x="35" y="50" class="symbol-text-mini">-0.1</text>
+      <rect x="0" y="64" width="70" height="28" fill="#8CACD3" stroke="#7798C0" class="box-mini" />
+      <text x="35" y="82" class="symbol-text-mini">-0.8</text>
+    </g>
+    <g transform="translate(640, 0)">
+      <rect x="0" y="0" width="70" height="28" fill="#EBACA2" stroke="#D6978D" class="box-mini" />
+      <text x="35" y="18" class="symbol-text-mini"> 1.5</text>
+      <rect x="0" y="32" width="70" height="28" fill="#BED3C3" stroke="#A8C0AD" class="box-mini" />
+      <text x="35" y="50" class="symbol-text-mini">-0.6</text>
+      <rect x="0" y="64" width="70" height="28" fill="#8CACD3" stroke="#7798C0" class="box-mini" />
+      <text x="35" y="82" class="symbol-text-mini">-1.2</text>
+    </g>
+    <g transform="translate(730, 0)">
+      <rect x="0" y="0" width="70" height="28" fill="#EBACA2" stroke="#D6978D" class="box-mini" />
+      <text x="35" y="18" class="symbol-text-mini"> 0.9</text>
+      <rect x="0" y="32" width="70" height="28" fill="#BED3C3" stroke="#A8C0AD" class="box-mini" />
+      <text x="35" y="50" class="symbol-text-mini">-0.9</text>
+      <rect x="0" y="64" width="70" height="28" fill="#8CACD3" stroke="#7798C0" class="box-mini" />
+      <text x="35" y="82" class="symbol-text-mini">-1.4</text>
+    </g>
+    <g transform="translate(820, 0)">
+      <rect x="0" y="0" width="70" height="28" fill="#EBACA2" stroke="#D6978D" class="box-mini" />
+      <text x="35" y="18" class="symbol-text-mini"> 0.2</text>
+      <rect x="0" y="32" width="70" height="28" fill="#BED3C3" stroke="#A8C0AD" class="box-mini" />
+      <text x="35" y="50" class="symbol-text-mini">-1.0</text>
+      <rect x="0" y="64" width="70" height="28" fill="#8CACD3" stroke="#7798C0" class="box-mini" />
+      <text x="35" y="82" class="symbol-text-mini">-1.3</text>
+    </g>
+  </g>
+
+  <!-- CONNECTIONS (Showing the 1-step forecast relationship) -->
+  <path d="M 405 210 L 315 305" class="connection-chaos" />
+  <path d="M 495 210 L 405 305" class="connection-chaos" />
+  <path d="M 585 210 L 495 305" class="connection-chaos" />
+  <path d="M 675 210 L 585 305" class="connection-chaos" />
+  <path d="M 765 210 L 675 305" class="connection-chaos" />
+  <path d="M 855 210 L 765 305" class="connection-chaos" />
+
+  <!-- ANNOTATIONS -->
+  <path d="M 280 420 L 280 435 L 890 435 L 890 420" fill="none" stroke="#212E53" stroke-width="4" stroke-linejoin="round" />
+  <text x="585" y="465" class="annotation-chaos">Evaluation at every timestep</text>
+
+</svg>
