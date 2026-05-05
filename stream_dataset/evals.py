@@ -70,7 +70,7 @@ stream_small = {
     'associative_recall': {
         'fct': generate_associative_recall,
         'category': 'classification',
-        'params': {"n_train": 100, "n_valid": 20, "n_test": 100, "sequence_length": 32, "num_pairs": 4, "n_symbols": 16},
+        'params': {"n_train": 100, "n_valid": 20, "n_test": 100, "sequence_length": 16, "num_pairs": 3, "n_symbols": 5},
     },
     'induction_heads': {
         'fct': generate_induction_heads,
@@ -148,7 +148,7 @@ stream_medium = {
     'associative_recall': {
         'fct': generate_associative_recall,
         'category': 'classification',
-        'params': {"n_train": 1000, "n_valid": 200, "n_test": 1000, "sequence_length": 64, "num_pairs": 8, "n_symbols": 16},
+        'params': {"n_train": 1000, "n_valid": 200, "n_test": 1000, "sequence_length": 32, "num_pairs": 7, "n_symbols": 16},
     },
     'induction_heads': {
         'fct': generate_induction_heads,
@@ -226,7 +226,7 @@ stream_large = {
     'associative_recall': {
         'fct': generate_associative_recall,
         'category': 'classification',
-        'params': {"n_train": 10000, "n_valid": 2000, "n_test": 10000, "sequence_length": 128, "num_pairs": 16, "n_symbols": 32},
+        'params': {"n_train": 10000, "n_valid": 2000, "n_test": 10000, "sequence_length": 64, "num_pairs": 15, "n_symbols": 32},
     },
     'induction_heads': {
         'fct': generate_induction_heads,
