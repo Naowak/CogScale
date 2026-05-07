@@ -1,0 +1,738 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2026
+
+% The authors should use one of these tracks.
+% Before accepting by the NeurIPS conference, select one of the options below.
+% 0. "default" for submission
+\usepackage{neurips_2026}
+\usepackage[pdftex]{graphicx}
+\usepackage{float}
+\raggedbottom
+% the "default" option is equal to the "main" option, which is used for the Main Track with double-blind reviewing.
+% 1. "main" option is used for the Main Track
+%  \usepackage[main]{neurips_2026}
+% 2. "position" option is used for the Position Paper Track
+%  \usepackage[position]{neurips_2026}
+% 3. "eandd" option is used for the Evaluations & Datasets Track
+ % \usepackage[eandd]{neurips_2026}
+% 4. "creativeai" option is used for the Creative AI Track
+%  \usepackage[creativeai]{neurips_2026}
+% 5. "sglblindworkshop" option is used for the Workshop with single-blind reviewing
+ % \usepackage[sglblindworkshop]{neurips_2026}
+% 6. "dblblindworkshop" option is used for the Workshop with double-blind reviewing
+%  \usepackage[dblblindworkshop]{neurips_2026}
+
+% After being accepted, the authors should add "final" behind the track to compile a camera-ready version.
+% 1. Main Track
+ % \usepackage[main, final]{neurips_2026}
+% 2. Position Paper Track
+%  \usepackage[position, final]{neurips_2026}
+% 3. Evaluations & Datasets Track
+ % \usepackage[eandd, final]{neurips_2026}
+% 4. Creative AI Track
+%  \usepackage[creativeai, final]{neurips_2026}
+% 5. Workshop with single-blind reviewing
+%  \usepackage[sglblindworkshop, final]{neurips_2026}
+% 6. Workshop with double-blind reviewing
+%  \usepackage[dblblindworkshop, final]{neurips_2026}
+% Note. For the workshop paper template, both \title{} and \workshoptitle{} are required, with the former indicating the paper title shown in the title and the latter indicating the workshop title displayed in the footnote.
+% For workshops (5., 6.), the authors should add the name of the workshop, "\workshoptitle" command is used to set the workshop title.
+% \workshoptitle{WORKSHOP TITLE}
+
+% "preprint" option is used for arXiv or other preprint submissions
+ % \usepackage[preprint]{neurips_2026}
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2026}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+
+% Note. For the workshop paper template, both \title{} and \workshoptitle{} are required, with the former indicating the paper title shown in the title and the latter indicating the workshop title displayed in the footnote. 
+\title{CogScale:\\Scalable Benchmark for Sequence Processing}
+
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+
+\author{%
+  David S.~Hippocampus\thanks{Use footnote for providing further information
+    about author (webpage, alternative address)---\emph{not} for acknowledging
+    funding agencies.} \\
+  Department of Computer Science\\
+  Cranberry-Lemon University\\
+  Pittsburgh, PA 15213 \\
+  \texttt{hippo@cs.cranberry-lemon.edu} \\
+  % examples of more authors
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \AND
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+}
+
+
+\begin{document}
+
+
+\newcounter{xaviercounter}
+\newcommand{\xav}[1]
+{\stepcounter{xaviercounter}
+ {\color{blue} #1 (XH\thexaviercounter)}
+ }
+
+
+\newcounter{yanniscounter}
+\newcommand{\yannis}[1]
+{\stepcounter{yanniscounter}
+ {\color{red} #1 (BOY\thexaviercounter)}
+ }
+
+
+
+\maketitle
+
+
+\begin{abstract}
+  The ability to maintain and manipulate information over time is a fundamental aspect of living beings and Artificial Intelligence.
+  While modern models have achieved remarkable success in tasks like natural language processing, evaluating the capacity of novel architectures to process sequential information remains computationally expensive and time consuming. Testing a new architecture often requires scaling up to massive datasets and models, leading to vast computational costs and slow iteration cycles. In this paper, we propose CogScale, a benchmark of 14 scalable synthetic tasks designed to isolate and evaluate specific cognitive and memory abilities at different parametrizable scales. By providing a standardized, lightweight framework, CogScale allows researchers to rapidly validate architectural innovations before committing to large-scale training. To establish a solid baseline,
+  we evaluate seven distinct architectures: Gated Recurrent Unit (GRU), Long Short-Term Memory (LSTM), xLSTM, Echo State Network (ESN), Mamba, Transformer Decoder, Transformer Encoder-Decoder. These evaluations are conducted under strict parameter budgets (1k, 10k, and 100k) and across different difficulty levels and scales. Our results highlight distinct pros and cons for each architecture, demonstrating the unique strengths of recurrent, attention-based, state space, and reservoir computing models across a variety of cognitive tasks.
+  \yannis{SMALL TALK RESULTS}
+\end{abstract}
+
+
+% ----------------------
+
+
+\section{Introduction}
+
+%\xav{autre papier potentiel à citer : What is the Role of Small Models in the LLM Era: A Survey https://arxiv.org/abs/2409.06857}
+
+The development of foundational models like Large Language Models (LLMs) requires architecture that can master a diverse array of cognitive skills, ranging from information retention to complex reasoning. Historically, the evaluation of these multifaceted capabilities has relied on massive Natural Language Processing (NLP) benchmarks, such as Lambada \cite{paperno2016lambada}, WinoGrande \cite{sakaguchi2021winogrande}, PiQA \cite{bisk2020piqa} or HellaSwag \cite{zellers2019hellaswag} and necessitate a training on massive datasets like OpenWebText (40GB) \cite{Gokaslan2019OpenWeb} or The Pile (880GB) \cite{gao2020pile}. While these evaluations are needed to assess the overall performance of large language models, they only demonstrate meaningful performance distinctions when evaluated on models with massive parameter counts. 
+This demand an exorbitant amount of computational resources and time, making  such approaches highly prohibitive for early architectural exploration.
+This excludes the analysis of small models and strongly penalizes studies 
+proposing novel architectures, as the training requirements render architectural iteration cycles slow and costly.
+Beyond the economic burden, the massive energy consumption required by current scaling laws poses a significant environmental challenge \cite{strubell2019energy, patterson2021carbon}, highlighting the urgent need for more sustainable research methodologies \cite{schwartz2020green}.
+Recent critiques of the ``bigger-is-better''~\cite{varoquaux2025hype} paradigm further highlight how this scaling-centered view of AI can reinforce unequal access to research by tying scientific progress to increasingly expensive computational infrastructure.
+It also leave out researchers with no or limited high-performance computing resources and create a consequent gap between academia (even more in third-world countries) and large technology companies.
+Futhermore, existing datasets often lack scalability; for instance, the TSL benchmark is constrained to 69 tasks with fixed sizes and difficulties. 
+
+To resolve this issue, we introduce CogScale, a lightweight synthetic benchmark designed to serve as a cognitive "sanity check" before initiating any massive language model training. We argue that if a new architecture is fundamentally incapable of resolving basic cognitive and sequential tasks, or fails to approach the baseline performance of a standard Transformer, it is both futile and environmentally costly to attempt to scale it on massive dataset of text. CogScale provides a minimal evaluation framework, allowing researchers to rapidly validate their architecture for a fraction of the traditional cost. A major feature of CogScale is the scalability of its tasks. Unlike static benchmarks, CogScale allows researchers to dynamically adjust the difficulty and complexity of each evaluation, enabling the assessment of various levels of expertise for the same cognitive skill. This scalability is crucial for verifying that a model's performance improves effectively as its parameter count increases. Since more complex versions of a task demand greater representational capacity from the model and often require handling larger input and output dimensions, CogScale provides a precise diagnostic tool to ensure that scaling a model's size genuinely translates to better cognitive capabilities.
+
+In this paper, our contributions are twofold. First, we introduce the CogScale framework, which includes 14 scalable synthetic tasks designed to evaluate specific cognitive abilities. Second, we provide a baseline evaluation of seven distinct architectures, including classical Recurrent Neural Networks (LSTM \cite{hochreiter1997long}, GRU \cite{cho2014learning}), attention models (Transformer Encoder-Decoder \cite{vaswani2017attention} and Decoder-only \cite{radford2018improving}), modern State Space Models (Mamba) \cite{gu2023mamba}, advanced recurrent network (xLSTM) \cite{beck2024xlstm} and an atypical yet competitive dynamical system via Echo State Networks (ESN) \cite{lukovsevivcius2009reservoir}. This experiment is conducted under a rigorous evaluation protocol under strict parameter budgets (1k, 10k, and 100k parameters). It allows us to highlight the strenghts and weakness of each tested architecture and provides a methodology for ensuring fair comparisons in future architectural research.
+
+
+% ---------------------------------------------
+
+\section{Related Work}
+
+Evaluating the cognitive and reasoning capabilities of modern models is predominantly conducted using established language benchmarks such as HellaSwag, Lambada, PIQA, WinoGrande, etc. While these benchmarks are indispensable for validating the generalization capabilities of large-scale models in real-world contexts, they demand a trining on a massive text dataset, and thus they are not appropriated for fast architectural iteration. To evaluate specific reasoning and memory capabilities without the immense computational cost of language modeling, several sequential and synthetic benchmarks have been introduced. Prominent examples include the Long Range Arena (LRA) \cite{tay2020long}, bAbI \cite{weston2015towards}, and the Time Series Library \cite{wang2024tssurvey}. However, these existing datasets suffers from structural rigidity, consisting of fixed sequence sizes, static difficulty levels, and thus, a lack of scalability. CogScale distinguishes itself through its modularity. By offering dynamically configurable sequence lengths, vocabulary sizes, and difficulty levels, CogScale provides an  adaptable evaluation framework that overcomes the rigidity of its predecessors, allowing architecture to be evaluated on different difficulty and scale.
+
+In order to establish a comparative baseline, a diverse set of sequential architectures have been evaluated. We include classical Recurrent Neural Networks (RNNs), specifically Long Short-Term Memory (LSTM) and Gated Recurrent Units (GRU). The field's current standard, the Transformer, is also tested, allowing us to contrast the original Encoder-Decoder with the Decoder-only architecture. Furthermore, we evaluate recent innovations in sequence processing, notably State Space Models with Mamba and advanced recurrent architectures such as xLSTM, which offer promising alternatives to standard attention mechanisms.
+Finally, we include Echo State Network (ESN) from the Reservoir Computing paradigm into our evaluation. While ESNs represent an atypical baseline in contemporary deep learning due to their reliance on a fixed, randomly initialized recurrent reservoir rather than end-to-end backpropagation, they are strong contenders when number of parameters are limited. Including them provides a reference point, allowing us to assess whether the complex modern architectures genuinely yield superior temporal representations or if simple dynamic reservoirs suffice for certain cognitive tasks, at a certain difficulty.
+
+\section{The CogScale Dataset}
+
+\subsection{Synthetic Generation and Unified Evaluation}
+Because all tasks in CogScale are synthetic, data samples can be generated dynamically during the training process by setting a specific seed to ensure full reproducibility. This methodological choice presents several major advantages for architectural exploration: it requires zero disk storage, bypassing the bottleneck associated with loading massive datasets, and provides a theoretically infinite data distribution. By perpetually generating novel sequences, the framework effectively prevents models from simply memorizing, forcing them to learn the underlying generative rules of the tasks. Furthermore, CogScale uses a unified evaluation metric system. Depending on the task's category, the benchmark evaluates the model on designated prediction timesteps using Mean Squared Error (MSE) for regression, error rate (1-Accuracy) for classification, and label-based error rate (1-Label Accuracy) for multi-label classification.
+
+\subsection{Signal Processing and Forecasting}
+\subsection{Sinus Forecasting}
+\vspace{-25pt}
+\noindent
+\begin{figure}[htbp] % L'environnement figure englobe tout
+    \centering
+    \begin{minipage}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.00\textwidth]{images/sinus_forecasting.pdf}
+        \caption{Illustration of Sinus Forecasting.}
+        \label{fig:sinus}
+    \end{minipage}
+    \begin{minipage}[c]{0.48\textwidth}
+        In this task, the model is required to predict the future evolution of a sinusoidal signal. The difficulty is scaled by simultaneously extending the input observation window (e.g., sequence length increasing from 200 to 2000) and the target forecast horizon (e.g., forecasting steps increasing from 5 to 15).
+    \end{minipage}
+\end{figure}
+\vspace{-15pt}
+
+\subsubsection{Chaotic Forecasting}
+\vspace{-25pt}
+\noindent
+\begin{figure}[htbp] % L'environnement figure englobe tout
+    \centering
+    \begin{minipage}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.00\linewidth]{images/chaotic_forecasting.pdf}
+        \caption{Illustration of Chaotic Forecasting.}
+        \label{fig:chaotic}
+    \end{minipage}
+    \begin{minipage}[c]{0.48\textwidth}
+        This task evaluates the model's ability to model chaotic dynamics by predicting the future state of a three-dimensional chaotic system based on the Lorenz equations \cite{lorenz2017deterministic}. Similar to the sinusoidal task, the cognitive load is scaled by increasing both the sequence length provided to the model and the forecast horizon.
+    \end{minipage}
+\end{figure}
+\vspace{-15pt}
+
+\subsection{Memory and Retention}
+
+\subsubsection{Discrete and Continuous Postcasting}
+\vspace{-25pt}
+\noindent
+\begin{figure}[htbp] % L'environnement figure englobe tout
+    \centering
+    \begin{minipage}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.00\linewidth]{images/discrete_postcasting.pdf}
+        \caption{Illustration of Discrete Postcasting.}
+        \label{fig:discrete_postcasting}
+    \end{minipage}
+    \begin{minipage}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.00\linewidth]{images/continuous_postcasting.pdf}
+        \caption{Illustration of Continuous Postcasting.}
+        \label{fig:constinuous_postcasting}
+    \end{minipage}
+\end{figure}
+\vspace{-15pt}
+
+Inspired by the Memory Capacity defined by Jaeger \cite{jaeger2001echo}, postcasting acts as a pure temporal delay task. The model receives an input sequence and must reproduce it identically after a specified time shift. The scaling mechanism increases the sequence length and the retention delay (e.g., from 5 to 15 timesteps), while the discrete variant also scales the size of the symbol vocabulary (e.g., from 3 to 8 possible symbols).
+\yannis{Source jeager}
+
+
+\subsubsection{Simple Copy}
+\vspace{-25pt}
+\noindent
+\begin{figure}[htbp] % L'environnement figure englobe tout
+    \centering
+    \begin{minipage}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.00\linewidth]{images/simple_copy.pdf}
+        \caption{Illustration of Simple Copy.}
+        \label{fig:simple_copy}
+    \end{minipage}
+    \begin{minipage}[c]{0.48\textwidth}
+        Inpired from \cite{graves2014neural}, the simple copy task requires the model to read an entire sequence, hold it in memory during a silent delay period, and subsequently reproduce the sequence in its entirety after a specific trigger token. Task difficulty is scaled up by increasing the sequence length, extending the waiting delay before the trigger appears, and expanding the number of possible symbol.
+    \end{minipage}
+\end{figure}
+\vspace{-15pt}
+
+
+\subsubsection{Selective Copy}
+\vspace{-25pt}
+\noindent
+\begin{figure}[htbp] % L'environnement figure englobe tout
+    \centering
+    \begin{minipage}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.00\linewidth]{images/selective_copy.pdf}
+        \caption{Illustration of Selective Copy.}
+        \label{fig:selective_copy}
+    \end{minipage}
+    \begin{minipage}[c]{0.48\textwidth}
+        Building upon the simple copy paradigm, this task introduces a distraction element. The model must memorize only a specific subset of marked tokens within a larger sequence and output only those targeted elements at the end. In addition to scaling the delay and vocabulary, the difficulty ramps up by increasing the number of target elements to retain (e.g., scaling from 5 to 10 markers).
+    \end{minipage}
+\end{figure}
+\vspace{-15pt}
+
+
+\subsubsection{Associative Recall}
+\vspace{-25pt}
+\noindent
+\begin{figure}[htbp] % L'environnement figure englobe tout
+    \centering
+    \begin{minipage}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.00\linewidth]{images/associative_recall.pdf}
+        \caption{Illustration of Associative Recall.}
+        \label{fig:associative_recall}
+    \end{minipage}
+    \begin{minipage}[c]{0.48\textwidth}
+        This task tests associative memory by presenting the model with a sequence of key-value pairs. At the conclusion of the sequence, a query key is provided, and the model must retrieve and predict the corresponding associated value. The scaling dimensionality adjusts the dictionary size, the total number of pairs to memorize, and the overall sequence length.
+    \end{minipage}
+\end{figure}
+\vspace{-15pt}
+
+
+\subsection{Pattern Recognition and Completion}
+
+\subsubsection{Discrete and Continuous Pattern Completion}
+% \vspace{-10pt}
+\noindent
+\begin{figure}[H] % L'environnement figure englobe tout
+    \centering
+    \begin{minipage}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.00\linewidth]{images/discrete_pattern_completion.pdf}
+        \caption{Illustration of D. Pattern Completion.}
+        \label{fig:discrete_pattern_completion}
+    \end{minipage}
+    \begin{minipage}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.00\linewidth]{CogScale/images/continuous_pattern_completion.pdf}
+        \caption{Illustration of C. Pattern Completion.}
+        \label{fig:continuous_pattern_completion}
+    \end{minipage}
+\end{figure}
+
+The model is exposed to a sequence with a periodic motif, but certain values within the pattern are masked. The objective is to identify the underlying structural logic of the motif to successfully infer the missing components. The complexity scales by increasing the base length of the repeating motif (e.g., from 4 to 10), the total sequence length, and the vocabulary size for the discrete version.
+\vspace{15pt}
+
+% \newpage
+
+\subsubsection{Induction Heads}
+%\vspace{-25pt}
+\noindent
+\begin{figure}[htbp] % L'environnement figure englobe tout
+    \centering
+    \begin{minipage}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.00\linewidth]{images/induction_heads.pdf}
+        \caption{Illustration of Induction Heads.}
+        \label{fig:induction_heads}
+    \end{minipage}
+    \begin{minipage}[c]{0.48\textwidth}
+        Inspired by the in-context learning mechanisms observed in Transformer architectures \cite{olsson2022context}, this task presents a sequence where the second half is an exact duplicate of the first half. The model must recognize this overarching structure to predict the next token in the copied sequence. The difficulty is heightened by expanding the total sequence length (e.g., from 40 to 100) and increasing the variety of symbols used (e.g., from 3 to 8).
+    \end{minipage}
+\end{figure}
+\vspace{-15pt}
+
+
+\subsection{Reasoning and Algorithmic Manipulation}
+\subsubsection{Adding Problem}
+\vspace{-10pt}
+\noindent
+\begin{figure}[htbp] % L'environnement figure englobe tout
+    \centering
+    \begin{minipage}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.00\linewidth]{images/adding_problem.pdf}
+        \caption{Illustration of Adding Problem.}
+        \label{fig:adding_problem}
+    \end{minipage}
+    \begin{minipage}[c]{0.48\textwidth}
+        Inspired from \cite{arjovsky2016unitary}, the model receives a sequence of random numbers as symbols along with positional markers. Once a trigger signal is received, it must compute and output the sum of only the marked numbers. Scaling increases the sequence length, making the localization of markers more challenging, and raises the maximum possible value of the numbers to be added (e.g., from 3 to 8).
+    \end{minipage}
+\end{figure}
+% \vspace{-15pt}
+
+
+
+\subsubsection{Sorting Problem}
+\vspace{-10pt}
+\noindent
+\begin{figure}[htbp] % L'environnement figure englobe tout
+    \centering
+    \begin{minipage}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.00\linewidth]{images/sorting_problem.pdf}
+        \caption{Illustration of Sorting Problem.}
+        \label{fig:sorting_problem}
+    \end{minipage}
+    \begin{minipage}[c]{0.48\textwidth}
+        The model is provided with a random sequence of symbols, each paired with a randomized target position. Upon receiving a trigger signal, the model must output the entire sequence sorted into the correct positional order. Scaling this task involves increasing both the sequence length and the vocabulary size, which exponentially inflates the number of possible positional permutations.
+    \end{minipage}
+\end{figure}
+% \vspace{-15pt}
+
+
+
+\subsubsection{Bracket Matching}
+\vspace{-10pt}
+\noindent
+\begin{figure}[H] % L'environnement figure englobe tout
+    \centering
+    \begin{minipage}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.00\linewidth]{images/bracket_matching.pdf}
+        \caption{Illustration of Bracket Matching.}
+        \label{fig:bracket_matching}
+    \end{minipage}
+    \begin{minipage}[c]{0.48\textwidth}
+        This task assesses hierarchical context maintenance. The sequence consists of opening and closing parentheses with random mutations, and the model must determine at the final timestep whether the entire string represents a mathematically valid hierarchy. The scaling mechanism increases both the total sequence length and the maximum allowable depth of the bracket tree (e.g., from 5 to 10).
+    \end{minipage}
+\end{figure}
+% \vspace{-15pt}
+
+
+
+\subsubsection{Cross Situation}
+% \vspace{-25pt}
+\noindent
+\begin{figure}[htbp] % L'environnement figure englobe tout
+    \centering
+    \begin{minipage}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.00\linewidth]{images/cross_situation.pdf}
+        \caption{Illustration of Cross Situation.}
+        \label{fig:cross_situation}
+    \end{minipage}
+    \begin{minipage}[c]{0.48\textwidth}
+        Defined in \cite{juven2020cross}, this tasks acts as a simplified natural language reasoning problem encoded in one-hot vectors, Cross Situation requires the model to read a sentence describing two crossed situations involving objects, colors, and positions. It must then infer the correct logical roles and attributes at the end of the sequence. The task features linguistic complexities such as synonyms (e.g., "center" and "middle" representing the same spatial label) and homonyms (e.g., "orange" representing both a color and a fruit object). The difficulty scales by expanding the entities available, shifting from a restricted vocabulary (e.g., 2 objects, 2 colors) to a much broader one (e.g., 4 objects, 4 colors, 3 positions).
+    \end{minipage}
+\end{figure}
+\vspace{-15pt}
+
+
+\section{Experimental Setup}
+
+To guarantee a fair comparison across fundamentally diverse architectures, we employ a strict parameter-matching protocol. Rather than relying on arbitrary default hyperparameter configurations that might inadvertently favor one model over another, we utilize a binary search algorithm to dynamically adjust the hidden dimensions. This algorithm forces every architecture to adhere to predefined parameter budgets of 1k, 10k, and 100k trainable parameters. Furthermore, to ensure statistical robustness and mitigate the high variance often introduced by random weight initialization in small models, every experimental configuration is evaluated across 10 distinct random seeds, on two pre-configured difficulty levels : \texttt{small (SM)} and \texttt{medium (MD)}. \yannis{Mettre description annexe}
+For all differentiable models (e.g. GRU, LSTM, xLSTM, Transformers Decoder-Only (DO) and Transformer Encoder-Decoder (ED)), training is conducted using PyTorch \cite{paszke2019pytorch} with the Adam optimizer \cite{kingma2014adam}, utilizing a fixed batch size of 10. We also manage sequence packing and padding, which is particularly crucial for architectures like xLSTM that typically operate on unpadded streams. Given the extreme sensitivity of deep learning models to optimization hyperparameters at smaller scales, we perform an exhaustive grid search over five distinct learning rates ($10^{-2}, 3 \times 10^{-3}, 10^{-3}, 3 \times 10^{-4}, 10^{-4}$). Each learning rate is tested across the 10 seeds, resulting in 50 independent training runs per task, difficulty level, and parameter size combination. A model's ultimate performance is determined by selecting the learning rate that yields the best average validation score across its 10 seeds, and we report the final mean and standard deviation of the test scores for this optimal configuration. We also provide the best score of those 50 training in the Annexe \yannis{add annexe \& score}. \yannis{revoir avec radars charts}
+The Echo State Network (ESN) baseline provides a radically different computational paradigm, as it relies on a fixed, randomized dynamical reservoir and does not utilize backpropagation for its internal states. Consequently, standard gradient-based training protocols are inapplicable. Instead, we implement a massive, parallelized hyperparameter search pipeline to optimize the reservoir's intrinsic dynamics. This extensive search explores thousands of configurations across three critical dimensions: the leaking rate, the spectral radius, and the input scaling. For each generated reservoir configuration, the optimal Ridge regularization parameter for the linear readout layer is automatically selected and validated via cross-validation.
+
+\yannis{Il faut mentionner le early stopping pour éviter l'overfitting, ainsi que le max d'epoch à 200 pour limiter les calculs et essayer d'être le plus fair possible entre tous les modèles}
+
+\section{Results}
+
+
+\subsection{Peak Cognitive Capabilities (The Cognitive Radar)}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{./images/radar_charts.pdf}
+    \caption{Cognitive Radar visualizing peak performance (Accuracy) for the seven baseline architectures across six selected tasks. Plots contrast architectural capabilities on \texttt{small} difficulty (left) and \texttt{medium} difficulty (right), based on the "best overall" scores (refer to Appendix \ref{app:detailed_results} for full score description). Larger colored areas signify superior cognitive abilities, illustrating how Transformers and modern State Space Models maintain better performance under increased difficulty compared to classical recurrent and reservoir computing models.}
+    \label{fig:radar_charts}
+\end{figure}
+
+
+To evaluate the strengths of each architecture, we first analyze their peak cognitive capabilities using the "best overall" metric on the \texttt{small (SM)} and \texttt{medium (MD)} difficulty levels. By aggregating these optimal performances we construct a "Cognitive Radar" (Figure \ref{fig:radar_charts}) that provides an immediate visual profile of each model. 
+We can notably observe that attention architectures (Transformer models) demonstrate a superiority in algorithmic reasoning and sequence manipulation, achieving perfect scores (0.00 error) on tasks such as simple copy, adding problem, and induction heads. 
+The modern State Space Model, Mamba, is highly competitive with Transformer (DO and EC) across these six discriminative tasks, yet it generally remains slightly behind. This difference in performance is more noticeable for \texttt{medium} tasks. For instance, while Transformers maintain perfect or near-perfect accuracy on \texttt{simple copy} and \texttt{induction heads}, Mamba experiences a noticeable degradation in performance. In contract, the Echo State Network (ESN) shows a distinct duality. While the ESN performs remarkably well on the \texttt{small} difficulty level tasks that requires memory retention, like on \texttt{simple copy} or \texttt{induction heads}, it struggles  when confronted with tasks requiring reasoning, selection, and manipulation, such as the \texttt{sorting problem} and \texttt{selective copy}.
+
+\subsection{Impact of Task Difficulty (Small vs. Medium)}
+
+Transitioning from the \texttt{small} to the \texttt{medium} difficulty level involves extending sequence lengths, increasing delays, and expanding vocabulary sizes, which is ideal to tests the scalability of architectures. This increase in complexity causes a performance drop for several baseline models. For example, on \texttt{simple copy}, the ESN's error spikes drastically from 0.00  to 0.70, while the standard LSTM degrades from 0.57 to 0.84. A similar collapse is observed for the ESN on the \texttt{adding problem}, where its error jumps from 0.00 to 0.69. In stark contrast, modern architectures resist this difficulty scaling remarkably well. Transformers (both variants) and the xLSTM maintain near perfect error rates on the medium difficulty of the \texttt{sorting problem} and \texttt{bracket matching} tasks, demonstrating that their memory mechanisms are far more robust to increased cognitive loads than classical recurrent networks.
+
+\subsection{Scaling Behavior and Parameter Efficiency (1k to 100k)}
+
+Since we tested different model sizes (1k, 10k, and 100k parameters), we can observe the scaling behavior of each architecture on 10 training seeds. Generally, scaling from 1k to 10k parameters brings significant and consistent performance gains across the majority of deep learning models. However, scaling to 100k parameters does not always guarantee better results on these synthetic tasks. We observe that standard and advanced recurrent architectures (LSTM, GRU, and xLSTM) often have an optimal parameter threshold beyond which performance degrades. For example, the GRU's performance on the small \texttt{adding problem} task falls from a 0.36 average error at 10k parameters to 0.55 at 100k parameters. On the other hand, attention architectures (Transformers) and State Space Models (Mamba) appear more resilient, stabilizing or continuing to improve their performance at the 100k scale without suffering from parameter inefficiency. Finally, it is important to note that the Echo State Network (ESN) was only evaluated for 1k and 10k parameter. Even so, we observe incredible error reductions when expanding the parameter size from 1k to 10k: the error rate drops from 0.47 to 0.02 on the small \texttt{adding problem}, from 0.57 to 0.10 on the medium \texttt{discrete pattern completion}, and from 0.63 to a perfect 0.00 on the medium \texttt{discrete postcasting}. Unfortunately, while backpropagation models naturally benefit from massive scaling, optimizing a 100k parameter ESN remains computationally expensive due to the hyperparameter search it requires, which prevents it from scaling efficiently in our benchmarking framework.
+
+
+\section{Discussion}
+
+
+CogScale is designed to serve as a "sanity check" for new architecture elaboration. Our results shows that the basic cognitive building blocks, like information retrieval, pattern induction, and algorithmic manipulation are non-trivial prerequisite for any architecture aspiring to the status of a foundation model. Before spending thousands of GPU hours to train on massive datasets like The Pile or OpenWebText, an architecture must first prove its cognitive abilities at a small scale. We argue that a foundation model must, by definition, be "generalist". If an architecture, such as LSTM or ESN, fails to solve specific cognitive tasks like \texttt{sorting problem} or \texttt{selective copy}, or fails to scale its performance across difficulty levels, it is highly unlikely that it will demonstrate emergent reasoning or robust generalization when scaled to millions or billions of parameters. Among our evaluated baseline, only Transformers, Mamba, and to a significant extent xLSTM, emerge as legitimate candidates for massive NLP training, as they are the only models that maintain good performance across the full spectrum of CogScale tasks, at different scales.
+On the other hand, our results shows us very interesting performance for the ESN at a small scale. While the ESN fails to perform across complex tasks, its randomly initialized and non-trained reservoir actually outperforms deep learning models mostly on forecasting, continuous and memory task. However, as soon as a task requires reasoning, manipulation, or precise information selection, its performance are less competitive. This shows that the absence of backpropagation prevents the model from developing the complex internal representations necessary for symbolic and logic, ultimately confining it to the role of a specialist rather than a generalist.
+
+The ability to identify such architectural limitations early in the development cycle is particularly important given the current race for better architecture. The reliance on large training \cite{kaplan2020scaling, hoffmann2022training} has led to a research paradigm that is both ecologically damaging \cite{bender2021dangers} and economically expensive for the majority of academic laboratories. CogScale proposes a more sustainable alternative by demonstrating that architecture can be effectively discriminated at a much smaller scale, specifically between 1k and 100k parameters. By providing a test protocol for new architectures, CogScale prevents the training of deficient models on massive supercomputers. Filtering out these architectures represents a massive potential saving in energy and computational cost, democratizing architectural research so that smaller teams can contribute without requiring the vast resources of industrial AI labs. 
+Beyond the research and development phase, this focus on lower parameter budgets has immediate practical implications for real-world problems where massive foundation models are not adapted. In industrial edge computing and healthcare devices, models are often constrained by memory and power limitations. Not every application requires a trillion parameter LLM; many require only the ability to perform specific reasoning and memory tasks with minimal overhead \cite{chen2024role}. Our scaling analysis reveals that architectures like Transformers and Mamba achieve excellent performance even at the 10k parameter scale, and that simpler models like ESNs can outperforms them at 1k parameter scale. Consequently, CogScale provides a clear roadmap for engineers in these sectors, allowing them to select the most efficient architecture based on strict hardware constraints.
+
+\section{Conclusion}
+
+CogScale offers a lightweight alternative to the current race for massive models, which has made evaluating new architectures too slow and expensive. This framework of 14 tasks serves as an essential "sanity check" to validate the basic cognitive abilities required for broad generalization. Our evaluation demonstrates that while models like the ESN provide impressive performance at the 1k parameter scale, only Transformers, Mamba, and xLSTM stand out as true "generalists" capable of scaling on complex reasoning. Although this synthetic benchmark must be followed by testing on massive datasets like OWT or The Pile, it successfully filters out deficient models at the earliest stages. By encouraging an ecological and democratic research paradigm, CogScale provides a valuable benchmark for deploying efficient models in critical sectors such as healthcare and edge computing.
+
+\newpage
+\bibliographystyle{unsrt} % Définit le style visuel de la bibliographie (plain, unsrt, alpha...)
+\bibliography{ref} % Appelle votre fichier references.bib (sans l'extension .bib)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\appendix
+
+\section{Detailed Experimental Results}
+\label{app:detailed_results}
+
+\subsection{Best Overall}
+\label{app:results_best}
+
+\begin{table}[H]
+\caption{Best overall experimental results for small (SM) and medium (MD) tasks. Values represent the single best performance achieved by each model across all evaluated parameter counts (1k, 10k, 100k) and learning rates (best over 150 runs). Bold text indicates the top performance for a given task difficulty.}
+\label{tab:result_best}
+\makebox[\textwidth][c]{
+    \begin{tabular}{lccccccc}
+    \toprule
+    Tâches & ESN & GRU & LSTM & MAMBA & TRANS (DO) & TRANS (ED) & XLSTM \\
+    \midrule
+    adding problem-SM                 & \textbf{0.00}  & \textbf{0.00}  & 0.02      & 0.01      & \textbf{0.00}               & \textbf{0.00}              & \textbf{0.00}  \\
+    adding problem-MD                 & 0.69      & \textbf{0.00}  & \textbf{0.00}  & \textbf{0.00}  & \textbf{0.00}               & \textbf{0.00}              & \textbf{0.00}  \\
+    associative  rec.-SM             & 0.44      & \textbf{0.35}  & 0.57      & 0.59      & 0.36                   & 0.39                  & 0.40      \\
+    associative  rec.-MD             & 0.76      & 0.88      & 0.91      & 0.91      & \textbf{0.67}               & 0.78                  & 0.85      \\
+    bracket matching-SM               & 0.13      & 0.18      & 0.21      & 0.29      & 0.19                   & 0.27                  & \textbf{0.06}  \\
+    bracket matching-MD               & 0.13      & 0.01      & \textbf{0.00}  & 0.02      & 0.04                   & 0.01                  & \textbf{0.00}  \\
+    chaotic forecast-SM            & \textbf{0.00}  & \textbf{0.00}  & 0.01      & \textbf{0.00}  & 0.04                   & 0.04                  & 0.01      \\
+    chaotic forecast-MD            & \textbf{0.00}  & \textbf{0.00}  & \textbf{0.00}  & \textbf{0.00}  & 0.08                   & 0.07                  & \textbf{0.00}  \\
+    c. pattern completion-SM  & 0.02      & \textbf{0.01}  & \textbf{0.01}  & \textbf{0.01}  & 0.03                   & 0.06                  & \textbf{0.01}  \\
+    c. pattern completion-MD  & 0.06      & 0.01      & 0.01      & 0.02      & 0.01                   & \textbf{0.00}              & 0.01      \\
+    c. postcasting-SM         & \textbf{0.00}  & \textbf{0.00}  & \textbf{0.00}  & \textbf{0.00}  & \textbf{0.00}               & \textbf{0.00}              & \textbf{0.00}  \\
+    c. postcasting-MD         & \textbf{0.00}  & \textbf{0.00}  & \textbf{0.00}  & 0.02      & \textbf{0.00}               & \textbf{0.00}              & \textbf{0.00}  \\
+    cross situation-SM                & \textbf{0.00}  & 0.03      & 0.05      & 0.05      & 0.03                   & 0.04                  & 0.03      \\
+    cross situation-MD                & \textbf{0.00}  & \textbf{0.00}  & \textbf{0.00}  & \textbf{0.00}  & \textbf{0.00}               & \textbf{0.00}              & \textbf{0.00}  \\
+    d. pattern completion-SM    & 0.06      & 0.06      & \textbf{0.05}  & 0.06      & 0.07                   & 0.36                  & 0.06      \\
+    d. pattern completion-MD    & 0.09      & 0.18      & 0.11      & 0.14      & 0.07                   & \textbf{0.00}              & 0.18      \\
+    d. postcasting-SM           & \textbf{0.00}  & \textbf{0.00}  & \textbf{0.00}  & \textbf{0.00}  & \textbf{0.00}               & \textbf{0.00}              & \textbf{0.00}  \\
+    d. postcasting-MD           & \textbf{0.00}  & \textbf{0.00}  & \textbf{0.00}  & 0.08      & \textbf{0.00}               & \textbf{0.00}              & \textbf{0.00}  \\
+    induction heads-SM                & 0.01      & 0.35      & 0.37      & 0.48      & \textbf{0.00}               & \textbf{0.00}              & 0.39      \\
+    induction heads-MD                & 0.64      & 0.47      & 0.77      & 0.12      & \textbf{0.00}               & \textbf{0.00}              & 0.25      \\
+    selective copy-SM                 & 0.41      & 0.22      & 0.52      & 0.21      & \textbf{0.05}               & 0.17                  & 0.34      \\
+    selective copy-MD                 & 0.70      & 0.23      & 0.86      & \textbf{0.00}  & \textbf{0.00}               & 0.01                  & 0.23      \\
+    simple copy-SM                    & \textbf{0.00}  & 0.49      & 0.57      & 0.42      & \textbf{0.00}               & \textbf{0.00}              & 0.42      \\
+    simple copy-MD                    & 0.70      & 0.64      & 0.84      & 0.13      & \textbf{0.00}               & \textbf{0.00}              & 0.51      \\
+    sinus forecast-SM              & \textbf{0.00}  & 0.01      & 0.01      & 0.01      & 0.02                   & 0.02                  & 0.01      \\
+    sinus forecast-MD              & \textbf{0.00}  & 0.01      & \textbf{0.00}  & \textbf{0.00}  & 0.07                   & 0.07                  & 0.01      \\
+    sorting problem-SM                & 0.43      & 0.42      & 0.49      & 0.51      & \textbf{0.00}               & \textbf{0.00}              & 0.05      \\
+    sorting problem-MD                & 0.71      & 0.17      & 0.56      & \textbf{0.00}  & \textbf{0.00}               & \textbf{0.00}              & 0.06      \\
+    \bottomrule
+    \end{tabular}
+}
+\end{table}
+
+\newpage
+\subsection{Mean and Standard Deviation}
+\label{app:results_mean}
+
+\begin{table}[H]
+\caption{Mean and Standard Deviation results (first half) for small (SM) and medium (MD) tasks. Performance is evaluated across varying parameter count (1k, 10k, 100k). Values represent the mean and standard deviation (mean ± std) of the best Learning Rate among 5, on 10 seeds (each value represents 50 runs). Bold text indicates the best performance achieved for a given task configuration. N/D indicate the lack of results.}
+\label{tab:results_mean_1}
+\makebox[\textwidth][c]{
+    \begin{tabular}{lccccccc}
+    \toprule
+    Tâches & ESN & GRU & LSTM & MAMBA & TRANS. (DO) & TRANS. (ED) & XLSTM \\
+    \midrule
+    adding problem-SM-1k                   & 0.47±0.09      & \textbf{0.08±0.05}  & 0.50±0.31      & 0.63±0.21      & 0.56±0.24            & 0.69±0.06           & 0.32±0.37      \\
+    adding problem-SM-10k                  & \textbf{0.02±0.03}  & 0.13±0.13      & 0.36±0.33      & 0.63±0.20      & 0.15±0.22            & 0.42±0.27           & 0.07±0.06      \\
+    adding problem-SM-100k                 & N/D              & 0.16±0.10      & 0.55±0.29      & 0.61±0.23      & \textbf{0.04±0.03}        & 0.22±0.32           & 0.06±0.07      \\
+    adding problem-MD-1k                   & 0.85±0.02      & \textbf{0.01±0.01}  & 0.02±0.01      & 0.88±0.01      & 0.70±0.29            & 0.88±0.01           & 0.44±0.45      \\
+    adding problem-MD-10k                  & 0.71±0.02      & 0.01±0.00      & 0.01±0.01      & 0.23±0.37      & 0.01±0.01            & 0.54±0.44           & \textbf{0.00±0.00}  \\
+    adding problem-MD-100k                 & N/D              & 0.01±0.00      & 0.02±0.01      & 0.23±0.38      & 0.01±0.01            & 0.20±0.36           & \textbf{0.00±0.00}  \\
+    associative rec.-SM-1k               & \textbf{0.57±0.07}  & 0.66±0.03      & 0.66±0.04      & 0.65±0.04      & 0.64±0.04            & 0.65±0.05           & 0.64±0.05      \\
+    associative rec.-SM-10k              & \textbf{0.52±0.04}  & 0.58±0.11      & 0.65±0.04      & 0.66±0.04      & 0.59±0.12            & 0.61±0.07           & 0.56±0.05      \\
+    associative rec.-SM-100k             & N/D              & 0.57±0.11      & 0.65±0.07      & 0.66±0.04      & 0.55±0.09            & 0.56±0.10           & \textbf{0.52±0.07}  \\
+    associative rec.-MD-1k               & \textbf{0.85±0.01}  & 0.93±0.01      & 0.93±0.01      & 0.93±0.01      & 0.92±0.01            & 0.93±0.01           & 0.92±0.01      \\
+    associative rec.-MD-10k              & \textbf{0.78±0.01}  & 0.93±0.01      & 0.93±0.00      & 0.93±0.01      & 0.86±0.03            & 0.90±0.03           & 0.91±0.01      \\
+    associative rec.-MD-100k             & N/D              & 0.90±0.01      & 0.93±0.01      & 0.93±0.01      & \textbf{0.84±0.07}        & 0.90±0.06           & 0.88±0.01      \\
+    bracket matching-SM-1k                 & \textbf{0.25±0.11}  & 0.30±0.09      & 0.33±0.06      & 0.39±0.05      & 0.45±0.08            & 0.48±0.06           & 0.38±0.06      \\
+    bracket matching-SM-10k                & \textbf{0.20±0.06}  & 0.35±0.03      & 0.36±0.06      & 0.38±0.04      & 0.46±0.05            & 0.46±0.06           & 0.28±0.10      \\
+    bracket matching-SM-100k               & N/D              & 0.39±0.11      & 0.38±0.05      & 0.38±0.04      & 0.45±0.11            & 0.43±0.07           & \textbf{0.32±0.10}  \\
+    bracket matching-MD-1k                 & 0.20±0.02      & \textbf{0.06±0.09}  & 0.08±0.11      & 0.27±0.11      & 0.42±0.10            & 0.47±0.05           & 0.17±0.13      \\
+    bracket matching-MD-10k                & 0.16±0.02      & 0.14±0.13      & 0.07±0.11      & 0.19±0.11      & 0.23±0.14            & 0.37±0.14           & \textbf{0.03±0.01}  \\
+    bracket matching-MD-100k               & N/D              & 0.11±0.11      & 0.20±0.16      & 0.19±0.13      & 0.11±0.07            & 0.14±0.14           & \textbf{0.02±0.01}  \\
+    chaotic forecast-SM-1k              & \textbf{0.00±0.00}  & 0.04±0.02      & 0.04±0.01      & 0.04±0.02      & 0.11±0.04            & 0.08±0.01           & 0.06±0.02      \\
+    chaotic forecast-SM-10k             & \textbf{0.00±0.00}  & 0.02±0.01      & 0.02±0.01      & 0.01±0.01      & 0.07±0.01            & 0.07±0.01           & 0.05±0.02      \\
+    chaotic forecast-SM-100k            & N/D              & 0.02±0.02      & 0.03±0.01      & \textbf{0.01±0.01}  & 0.06±0.02            & 0.05±0.01           & 0.02±0.01      \\
+    chaotic forecast-MD-1k              & \textbf{0.00±0.00}  & 0.02±0.03      & 0.01±0.02      & \textbf{0.00±0.00}  & 0.11±0.02            & 0.10±0.00           & 0.03±0.02      \\
+    chaotic forecast-MD-10k             & \textbf{0.00±0.00}  & 0.01±0.02      & 0.02±0.01      & \textbf{0.00±0.00}  & 0.16±0.04            & 0.11±0.02           & 0.01±0.01      \\
+    chaotic forecast-MD-100k            & N/D              & \textbf{0.00±0.01}  & 0.02±0.01      & \textbf{0.00±0.00}  & 0.10±0.02            & 0.09±0.01           & \textbf{0.00±0.00}  \\
+    c. pattern comp.-SM-1k    & 0.03±0.00      & \textbf{0.01±0.00}  & 0.02±0.01      & 0.04±0.03      & 0.07±0.02            & 0.08±0.01           & 0.03±0.01      \\
+    c. pattern comp.-SM-10k   & 0.04±0.01      & \textbf{0.01±0.00}  & \textbf{0.01±0.00}  & 0.02±0.00      & 0.07±0.01            & 0.07±0.01           & 0.02±0.00      \\
+    c. pattern comp.-SM-100k  & N/D              & \textbf{0.01±0.00}  & \textbf{0.01±0.00}  & 0.02±0.00      & 0.07±0.01            & 0.07±0.01           & 0.02±0.01      \\
+    c. pattern comp.-MD-1k    & 0.08±0.00      & \textbf{0.01±0.00}  & 0.02±0.00      & 0.04±0.02      & 0.07±0.02            & 0.08±0.00           & 0.05±0.00      \\
+    c. pattern comp.-MD-10k   & 0.06±0.00      & \textbf{0.01±0.00}  & \textbf{0.01±0.00}  & 0.02±0.00      & \textbf{0.01±0.00}        & 0.07±0.02           & 0.03±0.01      \\
+    c. pattern comp.-MD-100k  & N/D              & \textbf{0.01±0.00}  & \textbf{0.01±0.00}  & 0.02±0.00      & \textbf{0.01±0.00}        & 0.03±0.04           & 0.02±0.00      \\
+    c. postcasting-SM-1k           & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & 0.04±0.09            & 0.15±0.08           & 0.06±0.01      \\
+    c. postcasting-SM-10k          & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}        & \textbf{0.00±0.00}       & \textbf{0.00±0.00}  \\
+    c. postcasting-SM-100k         & N/D              & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}        & \textbf{0.00±0.00}       & \textbf{0.00±0.00}  \\
+    c. postcasting-MD-1k           & 0.07±0.02      & \textbf{0.00±0.01}  & 0.01±0.01      & 0.15±0.04      & \textbf{0.00±0.00}        & 0.10±0.08           & 0.20±0.00      \\
+    c. postcasting-MD-10k          & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & 0.06±0.03      & \textbf{0.00±0.00}        & \textbf{0.00±0.00}       & 0.07±0.03      \\
+    c. postcasting-MD-100k         & N/D              & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & 0.09±0.04      & \textbf{0.00±0.00}        & \textbf{0.00±0.00}       & \textbf{0.00±0.00}  \\
+    cross situation-SM-1k                  & \textbf{0.01±0.01}  & 0.23±0.22      & 0.29±0.22      & 0.55±0.21      & 0.61±0.17            & 0.70±0.00           & 0.50±0.22      \\
+    cross situation-SM-10k                 & \textbf{0.01±0.01}  & 0.07±0.02      & 0.08±0.03      & 0.16±0.06      & 0.09±0.03            & 0.22±0.25           & 0.12±0.04      \\
+    cross situation-SM-100k                & N/D              & \textbf{0.04±0.01}  & 0.08±0.01      & 0.14±0.04      & 0.06±0.01            & 0.13±0.20           & 0.05±0.01      \\
+    cross situation-MD-1k                  & 0.13±0.01      & \textbf{0.07±0.01}  & 0.10±0.01      & 0.56±0.18      & 0.52±0.27            & 0.80±0.00           & 0.57±0.20      \\
+    cross situation-MD-10k                 & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & 0.01±0.00            & 0.04±0.01           & \textbf{0.00±0.00}  \\
+    cross situation-MD-100k                & N/D              & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}        & \textbf{0.00±0.00}       & \textbf{0.00±0.00}  \\
+    \bottomrule
+    \end{tabular}
+}
+\end{table}
+
+
+\begin{table}[H]
+\caption{Complete experimental results (second half) for small (SM) and medium (MD) tasks. Performance is evaluated across varying parameter count (1k, 10k, 100k). Values represent the mean and standard deviation (mean ± std) of the best Learning Rate among 5, on 10 seeds (each value represents 50 runs). Bold text indicates the best performance achieved for a given task configuration. N/D indicate the lack of results.}
+\label{tab:results_mean_2}
+\makebox[\textwidth][c]{
+\begin{tabular}{lccccccc}
+\toprule
+Tâches & ESN & GRU & LSTM & MAMBA & TRANS. (DO) & TRANS. (ED) & XLSTM \\
+\midrule
+d. pattern comp.-SM-1k      & \textbf{0.07±0.01}  & 0.17±0.04      & 0.24±0.15      & 0.17±0.12      & 0.41±0.09            & 0.46±0.09           & 0.13±0.02      \\
+d. pattern comp.-SM-10k     & \textbf{0.07±0.01}  & 0.11±0.02      & 0.15±0.15      & 0.10±0.02      & 0.38±0.14            & 0.41±0.02           & 0.10±0.02      \\
+d. pattern comp.-SM-100k    & N/D              & \textbf{0.07±0.03}  & 0.11±0.02      & 0.09±0.01      & 0.22±0.18            & 0.41±0.02           & 0.09±0.02      \\
+d. pattern comp.-MD-1k      & 0.57±0.06      & 0.59±0.03      & 0.69±0.11      & 0.63±0.16      & 0.63±0.21            & 0.80±0.02           & \textbf{0.41±0.05}  \\
+d. pattern comp.-MD-10k     & 0.10±0.00      & 0.27±0.03      & 0.25±0.10      & 0.20±0.03      & \textbf{0.08±0.00}        & 0.56±0.26           & 0.20±0.01      \\
+d. pattern comp.-MD-100k    & N/D              & 0.29±0.02      & 0.30±0.03      & 0.19±0.03      & 0.08±0.01            & \textbf{0.00±0.00}       & 0.18±0.01      \\
+d. postcasting-SM-1k             & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & 0.03±0.10            & 0.38±0.28           & 0.22±0.11      \\
+d. postcasting-SM-10k            & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}        & \textbf{0.00±0.00}       & \textbf{0.00±0.00}  \\
+d. postcasting-SM-100k           & N/D              & \textbf{0.00±0.01}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.00}        & \textbf{0.00±0.00}       & \textbf{0.00±0.00}  \\
+d. postcasting-MD-1k             & 0.63±0.01      & 0.64±0.04      & 0.65±0.09      & 0.74±0.07      & \textbf{0.00±0.00}        & 0.67±0.20           & 0.83±0.01      \\
+d. postcasting-MD-10k            & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & \textbf{0.00±0.01}  & 0.30±0.06      & \textbf{0.00±0.00}        & \textbf{0.00±0.00}       & 0.54±0.03      \\
+d. postcasting-MD-100k           & N/D              & \textbf{0.00±0.00}  & \textbf{0.00±0.00}  & 0.12±0.03      & \textbf{0.00±0.00}        & \textbf{0.00±0.00}       & 0.01±0.01      \\
+induction heads-SM-1k                  & \textbf{0.36±0.02}  & 0.60±0.09      & 0.62±0.08      & 0.65±0.04      & 0.40±0.34            & 0.64±0.04           & 0.53±0.09      \\
+induction heads-SM-10k                 & 0.02±0.00      & 0.53±0.12      & 0.59±0.09      & 0.60±0.07      & \textbf{0.00±0.00}        & 0.18±0.29           & 0.46±0.07      \\
+induction heads-SM-100k                & N/D              & 0.49±0.13      & 0.48±0.08      & 0.58±0.04      & \textbf{0.00±0.00}        & \textbf{0.00±0.00}       & 0.44±0.03      \\
+induction heads-MD-1k                  & 0.73±0.00      & 0.81±0.06      & 0.87±0.00      & 0.84±0.06      & \textbf{0.35±0.31}        & 0.77±0.05           & 0.74±0.02      \\
+induction heads-MD-10k                 & 0.64±0.00      & 0.58±0.11      & 0.87±0.00      & 0.31±0.06      & \textbf{0.00±0.00}        & \textbf{0.00±0.00}       & 0.39±0.07      \\
+induction heads-MD-100k                & N/D              & 0.60±0.13      & 0.85±0.04      & 0.21±0.05      & \textbf{0.00±0.00}        & \textbf{0.00±0.00}       & 0.29±0.01 \\
+selective copy-SM-1k                   & \textbf{0.48±0.04}  & 0.63±0.08      & 0.66±0.02      & 0.63±0.05      & 0.59±0.11            & 0.66±0.02           & 0.51±0.08      \\
+selective copy-SM-10k                  & 0.44±0.02      & 0.54±0.16      & 0.65±0.02      & 0.55±0.13      & \textbf{0.37±0.27}        & 0.63±0.06           & 0.44±0.04      \\
+selective copy-SM-100k                 & N/D              & 0.61±0.11      & 0.65±0.01      & 0.52±0.14      & \textbf{0.10±0.05}        & 0.43±0.21           & 0.42±0.04      \\
+selective copy-MD-1k                   & 0.75±0.01      & 0.65±0.13      & 0.87±0.00      & 0.78±0.14      & \textbf{0.58±0.18}        & 0.87±0.00           & 0.76±0.02      \\
+selective copy-MD-10k                  & 0.70±0.00      & 0.54±0.25      & 0.87±0.00      & 0.32±0.35      & \textbf{0.04±0.07}        & 0.20±0.28           & 0.45±0.08      \\
+selective copy-MD-100k                 & N/D              & 0.54±0.24      & 0.88±0.00      & 0.11±0.16      & \textbf{0.01±0.00}        & 0.02±0.03           & 0.29±0.06      \\
+simple copy-SM-1k                      & 0.47±0.01      & 0.64±0.06      & 0.67±0.01      & 0.65±0.04      & \textbf{0.26±0.33}        & 0.65±0.03           & 0.53±0.05      \\
+simple copy-SM-10k                     & \textbf{0.00±0.00}  & 0.62±0.06      & 0.66±0.02      & 0.61±0.05      & \textbf{0.00±0.00}        & 0.12±0.26           & 0.49±0.03      \\
+simple copy-SM-100k                    & N/D              & 0.63±0.05      & 0.65±0.03      & 0.50±0.05      & \textbf{0.00±0.00}        & \textbf{0.00±0.00}       & 0.46±0.02      \\
+simple copy-MD-1k                      & 0.76±0.00      & 0.82±0.05      & 0.87±0.00      & 0.81±0.02      & \textbf{0.04±0.09}        & 0.83±0.05           & 0.78±0.00      \\
+simple copy-MD-10k                     & 0.70±0.00      & 0.72±0.03      & 0.87±0.00      & 0.50±0.08      & \textbf{0.00±0.00}        & \textbf{0.00±0.00}       & 0.69±0.03      \\
+simple copy-MD-100k                    & N/D              & 0.74±0.08      & 0.87±0.00      & 0.25±0.05      & \textbf{0.00±0.00}        & \textbf{0.00±0.00}       & 0.55±0.03      \\
+sinus forecast-SM-1k                & \textbf{0.00±0.00}  & 0.01±0.00      & 0.02±0.00      & 0.02±0.01      & 0.16±0.12            & 0.31±0.21           & 0.01±0.00      \\
+sinus forecast-SM-10k               & \textbf{0.00±0.00}  & 0.01±0.00      & 0.03±0.01      & 0.01±0.00      & 0.07±0.02            & 0.12±0.05           & 0.01±0.00      \\
+sinus forecast-SM-100k              & N/D              & 0.02±0.00      & 0.05±0.01      & \textbf{0.01±0.01}  & 0.05±0.05            & 0.06±0.03           & \textbf{0.01±0.01}  \\
+sinus forecast-MD-1k                & \textbf{0.00±0.00}  & 0.05±0.01      & 0.03±0.01      & 0.04±0.02      & 0.35±0.27            & 0.18±0.12           & 0.05±0.01      \\
+sinus forecast-MD-10k               & \textbf{0.00±0.00}  & 0.03±0.01      & 0.03±0.02      & 0.03±0.02      & 0.10±0.01            & 0.20±0.09           & 0.04±0.02      \\
+sinus forecast-MD-100k              & N/D              & 0.03±0.02      & 0.04±0.02      & \textbf{0.02±0.02}  & 0.08±0.01            & 0.10±0.02           & 0.04±0.02      \\
+sorting problem-SM-1k                  & 0.51±0.01      & 0.49±0.03      & 0.51±0.01      & 0.61±0.05      & \textbf{0.08±0.21}        & 0.67±0.02           & 0.54±0.05      \\
+sorting problem-SM-10k                 & 0.46±0.01      & 0.50±0.02      & 0.52±0.03      & 0.55±0.03      & \textbf{0.00±0.00}        & 0.06±0.16           & 0.31±0.02      \\
+sorting problem-SM-100k                & N/D              & 0.51±0.01      & 0.52±0.05      & 0.53±0.01      & \textbf{0.00±0.00}        & 0.05±0.16           & 0.22±0.08      \\
+sorting problem-MD-1k                  & 0.75±0.00      & 0.75±0.01      & 0.77±0.01      & 0.70±0.07      & \textbf{0.00±0.00}        & 0.87±0.00           & 0.70±0.04      \\
+sorting problem-MD-10k                 & 0.72±0.00      & 0.33±0.04      & 0.61±0.03      & 0.20±0.13      & \textbf{0.00±0.00}        & \textbf{0.00±0.00}       & 0.28±0.08      \\
+sorting problem-MD-100k                & N/D              & 0.24±0.05      & 0.70±0.01      & 0.02±0.02      & \textbf{0.00±0.00}        & \textbf{0.00±0.00}       & 0.11±0.04      \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\newpage
+\newpage
+
+\section{Task Configuration: Small \& Medium}
+\label{app:task_config}
+
+This section details the specific parameters used to generate the datasets for both the \texttt{small (SM)} and \texttt{medium (MD)} difficulty across all tasks. 
+
+\begin{itemize}
+
+    \item \textbf{Sinus Forecasting}
+    \begin{itemize}
+        \item \textbf{Small:}\\\texttt{sequence\_length=200, forecast\_length=5, training\_ratio=0.45, validation\_ratio=0.1, testing\_ratio=0.45}
+        \item \textbf{Medium:}\\ \texttt{sequence\_length=2000, forecast\_length=15, training\_ratio=0.45, validation\_ratio=0.1, testing\_ratio=0.45}
+    \end{itemize}
+
+    \item \textbf{Chaotic Forecasting}
+    \begin{itemize}
+        \item \textbf{Small:}\\ \texttt{sequence\_length=200, forecast\_length=5, training\_ratio=0.45, validation\_ratio=0.1, testing\_ratio=0.45}
+        \item \textbf{Medium:}\\ \texttt{sequence\_length=2000, forecast\_length=15, training\_ratio=0.45, validation\_ratio=0.1, testing\_ratio=0.45}
+    \end{itemize}
+
+    \item \textbf{Discrete Postcasting}
+    \begin{itemize}
+        \item \textbf{Small:}\\ \texttt{n\_train=100, n\_valid=20, n\_test=100, sequence\_length=50, delay=5, n\_symbols=3}
+        \item \textbf{Medium:}\\ \texttt{n\_train=1000, n\_valid=200, n\_test=1000, sequence\_length=100, delay=15, n\_symbols=8}
+    \end{itemize}
+
+    \item \textbf{Continuous Postcasting}
+    \begin{itemize}
+        \item \textbf{Small:}\\ \texttt{n\_train=100, n\_valid=20, n\_test=100, sequence\_length=50, delay=5}
+        \item \textbf{Medium:}\\ \texttt{n\_train=1000, n\_valid=200, n\_test=1000, sequence\_length=100, delay=15}
+    \end{itemize}
+
+    \item \textbf{Discrete Pattern Completion}
+    \begin{itemize}
+        \item \textbf{Small:}\\ \texttt{n\_train=100, n\_valid=20, n\_test=100, sequence\_length=60, n\_symbols=3, base\_length=4, mask\_ratio=0.2}
+        \item \textbf{Medium:}\\ \texttt{n\_train=1000, n\_valid=200, n\_test=1000, sequence\_length=150, n\_symbols=8, base\_length=10, mask\_ratio=0.2}
+    \end{itemize}
+
+    \item \textbf{Continuous Pattern Completion}
+    \begin{itemize}
+        \item \textbf{Small:}\\ \texttt{n\_train=100, n\_valid=20, n\_test=100, sequence\_length=60, base\_length=4, mask\_ratio=0.2}
+        \item \textbf{Medium:}\\ \texttt{n\_train=1000, n\_valid=200, n\_test=1000, sequence\_length=150, base\_length=10, mask\_ratio=0.2}
+    \end{itemize}
+
+    \item \textbf{Bracket Matching}
+    \begin{itemize}
+        \item \textbf{Small:}\\ \texttt{n\_train=100, n\_valid=20, n\_test=100, sequence\_length=50, max\_depth=5}
+        \item \textbf{Medium:}\\ \texttt{n\_train=1000, n\_valid=200, n\_test=1000, sequence\_length=100, max\_depth=10}
+    \end{itemize}
+
+    \item \textbf{Simple Copy}
+    \begin{itemize}
+        \item \textbf{Small:}\\ \texttt{n\_train=100, n\_valid=20, n\_test=100, sequence\_length=22, delay=5, n\_symbols=3}
+        \item \textbf{Medium:}\\ \texttt{n\_train=1000, n\_valid=200, n\_test=1000, sequence\_length=50, delay=10, n\_symbols=8}
+    \end{itemize}
+
+    \item \textbf{Selective Copy}
+    \begin{itemize}
+        \item \textbf{Small:}\\ \texttt{n\_train=100, n\_valid=20, n\_test=100, sequence\_length=40, delay=5, n\_markers=5, n\_symbols=3}
+        \item \textbf{Medium:}\\ \texttt{n\_train=1000, n\_valid=200, n\_test=1000, sequence\_length=80, delay=10, n\_markers=10, n\_symbols=8}
+    \end{itemize}
+
+    \item \textbf{Adding Problem}
+    \begin{itemize}
+        \item \textbf{Small:}\\ \texttt{n\_train=100, n\_valid=20, n\_test=100, sequence\_length=10, max\_number=3}
+        \item \textbf{Medium:}\\ \texttt{n\_train=1000, n\_valid=200, n\_test=1000, sequence\_length=20, max\_number=8}
+    \end{itemize}
+
+    \item \textbf{Sorting Problem}
+    \begin{itemize}
+        \item \textbf{Small:}\\ \texttt{n\_train=100, n\_valid=20, n\_test=100, sequence\_length=10, n\_symbols=3}
+        \item \textbf{Medium:}\\ \texttt{n\_train=1000, n\_valid=200, n\_test=1000, sequence\_length=20, n\_symbols=8}
+    \end{itemize}
+
+    \item \textbf{Cross Situation}
+    \begin{itemize}
+        \item \textbf{Small:}\\ \texttt{n\_train=100, n\_valid=20, n\_test=100, objects=['glass', 'orange'], colors=['blue', 'orange'], positions=['left', 'right']}
+        \item \textbf{Medium:}\\ \texttt{n\_train=1000, n\_valid=200, n\_test=1000, objects=['glass', 'orange', 'cup', 'bowl'], colors=['blue', 'orange', 'green', 'red'], positions=['left', 'right', ('center', 'middle')]}
+    \end{itemize}
+
+    \item \textbf{Associative Recall}
+    \begin{itemize}
+        \item \textbf{Small:}\\ \texttt{n\_train=100, n\_valid=20, n\_test=100, sequence\_length=16, num\_pairs=3, n\_symbols=5}
+        \item \textbf{Medium:}\\ \texttt{n\_train=1000, n\_valid=200, n\_test=1000, sequence\_length=32, num\_pairs=7, n\_symbols=16}
+    \end{itemize}
+
+    \item \textbf{Induction Heads}
+    \begin{itemize}
+        \item \textbf{Small:}\\ \texttt{n\_train=100, n\_valid=20, n\_test=100, sequence\_length=40, n\_symbols=3}
+        \item \textbf{Medium:}\\ \texttt{n\_train=1000, n\_valid=200, n\_test=1000, sequence\_length=100, n\_symbols=8}
+    \end{itemize}
+
+\end{itemize}
+
+
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=1\linewidth]{CogScale/images/heatmap_performance_best.pdf}
+% \end{figure}
+
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=\linewidth]{CogScale/images/heatmap_performance_mean.pdf}
+% \end{figure}
+
+
+
+
+
+
+
+
+
+\end{document}

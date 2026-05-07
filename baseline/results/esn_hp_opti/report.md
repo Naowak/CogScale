@@ -151,6 +151,9 @@
 **associative_recall.medium.N100**
    random.explore_top: ```{'N': 100, 'lr': 0.02104452576350578, 'sr': 4.25908903310634e-05, 'input_scaling': 2.3396455565371066, 'score': 0.9215}```
 
+**associative_recall.medium.N1000**
+   random.explore_top: ```{'N': 1000, 'lr': 0.012043408378610405, 'sr': 0.0020920822899571103, 'input_scaling': 12.390206096328532, 'score': 0.8764}```
+
 **induction_heads.small.N100**
    random.explore_top: ```{'N': 100, 'lr': 0.3004096374122849, 'sr': 0.455746407467713, 'input_scaling': 0.5109110191359094, 'score': 0.49568421052631584}```
 
@@ -159,3 +162,6 @@
 
 **induction_heads.medium.N100**
    random.explore_top: ```{'N': 100, 'lr': 0.09255467956151021, 'sr': 0.22028169670690909, 'input_scaling': 0.45645932499971437, 'score': 0.7798040816326531}```
+
+**induction_heads.medium.N1000**
+   random.explore_top: ```{'N': 1000, 'lr': 0.1485414563145905, 'sr': 0.4292795255094516, 'input_scaling': 0.5501079513518112, 'score': 0.7389551020408163}```

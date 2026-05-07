@@ -1,0 +1,97 @@
+#### **1. Introduction**
+*   **Motivation & Contexte :** Le développement de modèles généralistes nécessite d'évaluer une grande variété de compétences cognitives. Historiquement, cela se fait via de vastes benchmarks de langage (ex: Lambada, OpenWebText, The Pile), qui exigent un pré-entraînement massif, coûteux et long.
+*   **Limites des approches actuelles :** 
+    *   Les datasets existants sont souvent soit trop lourds, soit non scalables dès le départ (ex: TSL avec ses 69 tâches à taille et difficulté fixe).
+    *   Les benchmarks de langage ne sont "scalables" qu'à partir d'un seuil de paramètres très élevé, excluant l'analyse des petits modèles et rendant l'itération architecturale très lente et couteuse.
+*   **La solution CogScale (Le "Sanity Check" pré-NLP) :** Présenter CogScale comme un benchmark minimal. Si un modèle ne peut pas résoudre ces tâches cognitives basiques (et s'approcher des performances d'un Transformer), il est inutile et coûteux d'essayer de le "scaler" sur des datasets massifs de texte.
+*   **Génération On-the-Fly :** Mettre en avant la légèreté du framework : pas de téléchargement de données massif, tout est généré synthétiquement à la volée pour une itération architecturale ultra-rapide.
+*   **Résumé des contributions :** Les 14 tâches, l'évaluation sous contrainte stricte de paramètres (1k, 10k, 100k), et l'inclusion de baselines variées (ESN, Mamba, xLSTM, Transformers, etc.)[cite: 5].
+
+#### **2. Related Work**
+*   **Benchmarks Séquentiels :** Comparaison de CogScale avec LRA, sRNN, BABI, et TSL. Souligner la modularité (tailles/difficultés configurables) de CogScale par rapport à la rigidité des autres[cite: 5].
+*   **Benchmarks de Langage :** Expliquer que les benchmarks de langage (Hellaswag, Lambada, PiQA, WinoGrande, etc.) sont essentiels pour évaluer les modèles à grande échelle, mais ne sont pas adaptés pour l'itération rapide et l'analyse fine des compétences cognitives à petite échelle car il nécessite un pré-entrainement sur un dataset massif (ex OWT: 40GB, The Pile: 880GB)[cite: 5].
+*   **Architectures Séquentielles :** RNNs classiques (LSTM, GRU), Transformers (Encoder-Decoder vs Decoder-only), et les nouvelles architectures State Space / dynamiques (Mamba, xLSTM)[cite: 5].
+*   **Reservoir Computing (ESN) :** Justification de cette baseline atypique mais redoutable pour les dynamiques temporelles pures[cite: 5].
+
+
+
+
+
+### 3 : The CogScale Dataset
+
+#### **3.1. Synthetic Generation and Unified Evaluation**
+*   **Génération *On-the-Fly*** : Explication du framework procédural. Les échantillons peuvent être générés à la volée pendant l'entraînement en fixant une *seed* (pour la reproductibilité). Avantage : aucun stockage requis, pas de goulot d'étranglement lié au chargement des données, et une distribution théoriquement infinie évitant le sur-apprentissage mémoriel par cœur des datasets figés.
+*   **Métriques unifiées** : Définition de la fonction de perte et du score. Selon la catégorie (`regression`, `classification`, `multi_classification`), le benchmark calcule automatiquement l'Erreur Quadratique Moyenne (MSE) ou le taux d'erreur sur des *timesteps* de prédiction spécifiques[cite: 2].
+
+#### **3.2. Signal Processing and Forecasting**
+*(Pour chaque tâche de cette sous-section : prévoir un graphique temporel montrant le signal d'entrée et la fenêtre de prédiction cible).*
+*   **Sinus Forecasting :**
+    *   *Description :* Prédire l'évolution d'un signal sinusoïdal modulé en fréquence[cite: 2].
+    *   *Scaling :* La difficulté augmente en allongeant la séquence d'entrée (`sequence_length`, ex: de 200 à 2000) et la fenêtre de prévision cible (`forecast_length`, ex: de 5 à 15 pas de temps)[cite: 1].
+*   **Chaotic Forecasting (Lorenz System) :**
+    *   *Description :* Prédire l'état futur d'un système chaotique tridimensionnel (équations de Lorenz)[cite: 2].
+    *   *Scaling :* Comme pour le sinus, on accroît la longueur de la séquence observée et l'horizon de prédiction (`sequence_length` et `forecast_length`)[cite: 1].
+
+#### **3.3. Memory and Retention**
+*(Pour chaque tâche : prévoir un schéma de type "blocs de couleurs" représentant les tokens, avec le délai de mémorisation visuellement séparé par du padding).*
+*   **Discrete & Continuous Postcasting :**
+    *   *Description :* Une tâche de délai pur. Le modèle reçoit une séquence et doit la restituer à l'identique avec un décalage temporel[cite: 2].
+    *   *Scaling :* La difficulté augmente avec la taille de la séquence (`sequence_length`), le temps de rétention (`delay`, ex: 5 à 15), et pour le cas discret, la taille du vocabulaire de symboles (`n_symbols`, ex: 3 à 8)[cite: 1].
+*   **Simple Copy :**
+    *   *Description :* Le modèle doit lire une séquence entière, la mémoriser dans le silence pendant un certain temps, puis la restituer intégralement dès l'apparition d'un token "déclencheur" (trigger)[cite: 2].
+    *   *Scaling :* Augmentation de la longueur (`sequence_length`), du temps d'attente avant le déclencheur (`delay`), et du nombre de symboles (`n_symbols`)[cite: 1].
+*   **Selective Copy :**
+    *   *Description :* Similaire à *Simple Copy*, mais seule une poignée de tokens marqués par un signal spécifique doivent être mémorisés et recrachés à la fin[cite: 2].
+    *   *Scaling :* En plus du délai et des symboles, on augmente le nombre d'éléments cibles à retenir parmi le bruit (`n_markers`, ex: 5 à 10)[cite: 1].
+*   **Associative Recall :**
+    *   *Description :* Mémorisation de paires clé-valeur. À la fin de la séquence, une clé de requête est présentée, et le modèle doit prédire la valeur associée[cite: 2].
+    *   *Scaling :* La difficulté s'ajuste via la taille du dictionnaire (`n_symbols`), le nombre de paires à retenir (`num_pairs`) et la longueur totale avec les distracteurs (`sequence_length`)[cite: 1, 2].
+
+#### **3.4. Pattern Recognition and Completion**
+*(Illustration : une séquence avec des motifs répétitifs et des trous '?' que le modèle doit remplir).*
+*   **Discrete & Continuous Pattern Completion :**
+    *   *Description :* Le modèle observe une séquence contenant un motif périodique avec certaines valeurs masquées. Il doit identifier la structure du motif pour inférer les parties manquantes[cite: 2].
+    *   *Scaling :* La difficulté grimpe en allongeant la longueur du motif de base (`base_length`, ex: de 4 à 10), la séquence totale, et le vocabulaire discret (`n_symbols`)[cite: 1].
+*   **Induction Heads :**
+    *   *Description :* Basée sur le mécanisme cognitif des Transformers. La seconde moitié de la séquence est une copie exacte de la première. Le modèle doit utiliser cette information pour deviner le token suivant[cite: 2].
+    *   *Scaling :* Augmentation de la taille de la séquence (`sequence_length`, ex: 40 à 100) et de la variété des symboles (`n_symbols`, ex: 3 à 8)[cite: 1, 2].
+
+#### **3.5. Reasoning and Algorithmic Manipulation**
+*(Illustration : schémas logiques, calculs mathématiques simples ou arbres de parenthèses).*
+*   **Adding Problem :**
+    *   *Description :* Le modèle reçoit une séquence de nombres et des marqueurs. À l'apparition du déclencheur, il doit effectuer la somme des nombres marqués[cite: 2].
+    *   *Scaling :* La taille de la séquence augmente, rendant la localisation des marqueurs plus difficile, et la valeur maximale des nombres à additionner augmente (`max_number`, ex: 3 à 8)[cite: 1].
+*   **Sorting Problem :**
+    *   *Description :* Fourniture d'une séquence de symboles associés à une position cible aléatoire. Au déclencheur, le modèle doit restituer la séquence triée dans le bon ordre[cite: 2].
+    *   *Scaling :* La séquence (`sequence_length`) et le vocabulaire (`n_symbols`) augmentent, ce qui fait exploser les permutations possibles[cite: 1].
+*   **Bracket Matching :**
+    *   *Description :* Une suite de parenthèses (ouvertes/fermées) avec des mutations. Le modèle doit déterminer à la fin si la hiérarchie est mathématiquement valide (contexte hiérarchique)[cite: 2].
+    *   *Scaling :* La profondeur de l'arbre syntaxique (`max_depth`, ex: 5 à 10) et la longueur de la séquence augmentent[cite: 1].
+*   **Cross Situational Learning (CSL) :**
+    *   *Description :* Tâche de langage naturel simplifiée (one-hot). Le modèle lit une description croisée de deux situations impliquant des objets, couleurs et positions, et doit inférer les rôles logiques à la fin de la phrase[cite: 2]. Certaines couleurs, positions et objets peuvent avoir deux différents mot pour un même label (exemple: la position "in the center" et "in the middle"), ou peuvent à l'inverse un même mot peut représenter deux labels avoir le (exemple : la couleur orange et l'orange le fruit).
+    *   *Scaling :* Le nombre d'entités combinatoires disponibles croît considérablement, passant d'un vocabulaire restreint (ex: 2 objets, 2 couleurs) à un vocabulaire plus vaste (ex: 4 objets, 4 couleurs, 3 positions)[cite: 1].
+
+
+
+
+
+
+#### **4. Experimental Setup**
+*   **Alignement des Paramètres (Parameter Matching) :** Explication de l'algorithme forçant les modèles à respecter des budgets de 1k, 10k, et 100k paramètres pour garantir une comparaison équitable[cite: 5]. Mentionner les 10 seeds pour la robustesse statistique.
+*   **Entraînement PyTorch :** Choix des optimiseurs, batch size, régularisation (weight_decay), et gestion des séquences[cite: 5]. Test de différents taux d'apprentissage pour chaque modèle (lr=1e-2, 3e-3, 1e-3, 3e-4, 1e-4) -> les 10 seeds pour chaque -> récupération du meileur lr sur 10 seeds. Moyenne et écart-type sur les 10 seeds pour le meilleur lr. Meilleur score obtenu sur les 50 runs (5 lr x 10 seeds) pour chaque tâche/difficulté/size.
+*   **Optimisation de l'ESN :** Souligner que l'ESN n'utilise pas la rétropropagation. Expliquer le pipeline de recherche massive d'hyperparamètres (Leaking rate, Spectral radius, Input scaling) et la sélection automatique de la régularisation Ridge via validation croisée[cite: 7, 8, 9]. 
+
+#### **5. Results and Discussion**
+*   **Visualisation rapide des compétences (Radar cognitif) :** L'avantage de CogScale pour identifier immédiatement les points forts et faibles d'une architecture[cite: 5].
+*   **Le "Test de Passage" vers le Texte :** Analyse comparative. Les modèles qui rivalisent ou battent les Transformers sur ces tâches synthétiques sont des candidats légitimes pour des entraînements massifs sur des bases comme OWT.
+*   **Applications spécifiques (Industrie & Santé) :** Mise en évidence via nos résultats (`small difficulty`, 1k-10k paramètres) des architectures les plus adaptées pour les environnements sous contrainte (edge computing, données médicales rares).
+*   **Le paradoxe de l'ESN et analyse d'échelle :** 
+    *   L'efficacité surprenante de l'ESN sur le signal[cite: 5].
+    *   L'impact de l'augmentation des paramètres (quand est-ce que ça aide, quand est-ce qu'on sur-apprend)[cite: 5].
+    *   La limite de l'entrainement massif : recherche d'hyperparamètre très couteux pour 100k et plus -> raison pour laquelle on se limite à 10k pour les ESN[cite: 5].
+    *   La chute de performance observée sur le niveau `medium` (notamment sur `simple_copy` et `adding_problem`)[cite: 5].
+
+#### **6. Conclusion and Broader Impacts**
+*   **Résumé :** Bilan des forces architecturales et validation du framework comme outil d'itération rapide.
+*   **Limites :** Nature synthétique, qui bien qu'étant une force pour le prototypage, ne capture pas toute la distribution de la réalité.
+*   **Broader Impacts :** Comment l'utilisation de CogScale peut réduire l'empreinte carbone de la recherche en IA en évitant d'entraîner "à l'aveugle" des modèles défaillants sur des supercalculateurs.

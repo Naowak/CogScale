@@ -1,0 +1,125 @@
+<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='794px' height='820px'>
+  <svg xmlns="http://www.w3.org/2000/svg" style="position: fixed; left: 1000vw;" x="7929.5" y="0">
+    <text />
+  </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 773px; height: 775px;" x="0" y="36.5">
+    <g id="wrapper-g">
+      <g id="axes">
+        <g class="fl-facets">
+          <g class="fl-facet" transform="translate(0, 0)" opacity="1">
+            <rect class="fl-facet-rect" width="773" height="775" fill="none" />
+            <rect class="fl-facet-primary-rect" width="773" height="775" y="0" fill="none" />
+            <g class="fl-facet-title">
+              <rect class="fl-facet-title-bg" height="0" width="0" fill="rgb(238, 238, 238)" x="386.5" opacity="0" />
+              <text class="fl-facet-title-text" font-size="14" font-weight="600" transform="translate(386.5, 14.700000000000001)" opacity="0" text-anchor="middle">
+                <tspan x="0" y="0" dx="0" text-anchor="middle" />
+              </text>
+            </g>
+            <g class="fl-facet-primary" transform="translate(0, 0)">
+              <g class="fl-radial" transform="translate(386.5, 387.5)" opacity="1">
+                <g class="group-labels" />
+                <g class="y-lines">
+                  <circle class="fl-radial-x-line" fill="none" stroke="#cccccc" stroke-width="3.0920000000000005" stroke-dasharray="6.184000000000001 6.184000000000001" r="0" />
+                  <circle class="fl-radial-x-line" fill="none" stroke="#cccccc" stroke-width="3.0920000000000005" stroke-dasharray="6.184000000000001 6.184000000000001" r="56.160845380919845" />
+                  <circle class="fl-radial-x-line" fill="none" stroke="#cccccc" stroke-width="3.0920000000000005" stroke-dasharray="6.184000000000001 6.184000000000001" r="112.32169076183969" />
+                  <circle class="fl-radial-x-line" fill="none" stroke="#cccccc" stroke-width="3.0920000000000005" stroke-dasharray="6.184000000000001 6.184000000000001" r="168.48253614275953" />
+                  <circle class="fl-radial-x-line" fill="none" stroke="#cccccc" stroke-width="3.0920000000000005" stroke-dasharray="6.184000000000001 6.184000000000001" r="224.64338152367938" />
+                  <circle class="fl-radial-x-line" fill="none" stroke="#cccccc" stroke-width="3.0920000000000005" stroke-dasharray="6.184000000000001 6.184000000000001" r="280.8042269045992" />
+                </g>
+                <g class="x-lines">
+                  <line class="fl-radial-y-line" x1="0" y1="0" x2="0" y2="-311.7242269045992" stroke="#cccccc" stroke-width="3.0920000000000005" />
+                  <line class="fl-radial-y-line" x1="0" y1="0" x2="269.9610994744475" y2="-155.86211345229964" stroke="#cccccc" stroke-width="3.0920000000000005" />
+                  <line class="fl-radial-y-line" x1="0" y1="0" x2="269.9610994744475" y2="155.86211345229955" stroke="#cccccc" stroke-width="3.0920000000000005" />
+                  <line class="fl-radial-y-line" x1="0" y1="0" x2="3.817520766954007e-14" y2="311.7242269045992" stroke="#cccccc" stroke-width="3.0920000000000005" />
+                  <line class="fl-radial-y-line" x1="0" y1="0" x2="-269.96109947444745" y2="155.86211345229975" stroke="#cccccc" stroke-width="3.0920000000000005" />
+                  <line class="fl-radial-y-line" x1="0" y1="0" x2="-269.9610994744475" y2="-155.86211345229964" stroke="#cccccc" stroke-width="3.0920000000000005" />
+                </g>
+                <g class="y-labels">
+                  <g class="fl-radial-y-label" opacity="1" text-anchor="middle" font-weight="400" font-size="24.736000000000004" transform="">
+                    <text class="bg" stroke="#ffffff" stroke-width="9.276" dy="0.33em">0</text>
+                    <text class="fg" dy="0.33em" fill="#aaaaaa">0</text>
+                  </g>
+                  <g class="fl-radial-y-label" opacity="1" text-anchor="middle" font-weight="400" font-size="24.736000000000004" transform="translate(0, -56.16084671020508)">
+                    <text class="bg" stroke="#ffffff" stroke-width="9.276" dy="0.33em">0.2</text>
+                    <text class="fg" dy="0.33em" fill="#aaaaaa">0.2</text>
+                  </g>
+                  <g class="fl-radial-y-label" opacity="1" text-anchor="middle" font-weight="400" font-size="24.736000000000004" transform="translate(0, -112.32169342041016)">
+                    <text class="bg" stroke="#ffffff" stroke-width="9.276" dy="0.33em">0.4</text>
+                    <text class="fg" dy="0.33em" fill="#aaaaaa">0.4</text>
+                  </g>
+                  <g class="fl-radial-y-label" opacity="1" text-anchor="middle" font-weight="400" font-size="24.736000000000004" transform="translate(0, -168.48252868652344)">
+                    <text class="bg" stroke="#ffffff" stroke-width="9.276" dy="0.33em">0.6</text>
+                    <text class="fg" dy="0.33em" fill="#aaaaaa">0.6</text>
+                  </g>
+                  <g class="fl-radial-y-label" opacity="1" text-anchor="middle" font-weight="400" font-size="24.736000000000004" transform="translate(0, -224.6433868408203)">
+                    <text class="bg" stroke="#ffffff" stroke-width="9.276" dy="0.33em">0.8</text>
+                    <text class="fg" dy="0.33em" fill="#aaaaaa">0.8</text>
+                  </g>
+                  <g class="fl-radial-y-label" opacity="1" text-anchor="middle" font-weight="400" font-size="24.736000000000004" transform="translate(0, -280.8042297363281)">
+                    <text class="bg" stroke="#ffffff" stroke-width="9.276" dy="0.33em">1</text>
+                    <text class="fg" dy="0.33em" fill="#aaaaaa">1</text>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+      <g id="comparison-lines" />
+      <g id="lines">
+        <path class="line-main" d="M-6.983319125922785e-14,-157.25036706657556L228.59257835006665,-131.9779866451617L240.75175804953835,138.99809231777655L2.0289273862280107e-14,165.67449387371354L-243.1835939894327,140.4021134522995L-138.61464857397655,-80.02920466781093Z" id="line-0" stroke="#3873e0" fill="#3873e0" fill-opacity="0.1" stroke-opacity="1" stroke-width="6.184000000000001" transform="translate(386.5, 387.5)" stroke-dashoffset="0" tabindex="0" role="img" aria-roledescription="data point" aria-label="ESN, Associative Recall: 0.56, Pattern Completion: 0.94, Induction Heads: 0.99, Selective Copy: 0.5900000000000001, Simple Copy: 1, Sorting Problem: 0.5700000000000001" />
+        <path class="line-main" d="M-8.105638271160375e-14,-182.52274748798948L228.59257835006665,-131.9779866451617L158.06933609313123,91.26137374399471L2.682310781792963e-14,219.02729698558738L-124.02363293461067,71.60507786067274L-141.04648451387087,-81.43322580233392Z" id="line-1" stroke="#69b9ff" fill="#69b9ff" fill-opacity="0.1" stroke-opacity="1" stroke-width="6.184000000000001" transform="translate(386.5, 387.5)" stroke-dashoffset="0" tabindex="0" role="img" aria-roledescription="data point" aria-label="GRU, Associative Recall: 0.65, Pattern Completion: 0.94, Induction Heads: 0.65, Selective Copy: 0.78, Simple Copy: 0.51, Sorting Problem: 0.5800000000000001" />
+        <path class="line-main" d="M-5.36219147169071e-14,-120.74581756897767L231.02441428996096,-133.3820077796847L153.2056642133426,88.45333147494873L1.6506527887956695e-14,134.7860289142076L-104.56894541545607,60.372908784488786L-124.02363293461057,-71.60507786067292Z" id="line-2" stroke="#b568d9" fill="#b568d9" fill-opacity="0.1" stroke-opacity="1" stroke-width="6.184000000000001" transform="translate(386.5, 387.5)" stroke-dashoffset="0" tabindex="0" role="img" aria-roledescription="data point" aria-label="LSTM, Associative Recall: 0.43000000000000005, Pattern Completion: 0.95, Induction Heads: 0.63, Selective Copy: 0.48, Simple Copy: 0.43000000000000005, Sorting Problem: 0.51" />
+        <path class="line-main" d="M-5.112787217193468e-14,-115.12973303088569L228.59257835006665,-131.9779866451617L126.455468874505,73.00909899519577L2.7166993815595396e-14,221.83533925463337L-141.04648451387098,81.43322580233372L-119.15996105482193,-68.79703559162694Z" id="line-3" stroke="#ff7895" fill="#ff7895" fill-opacity="0.1" stroke-opacity="1" stroke-width="6.184000000000001" transform="translate(386.5, 387.5)" stroke-dashoffset="0" tabindex="0" role="img" aria-roledescription="data point" aria-label="MAMBA, Associative Recall: 0.41000000000000003, Pattern Completion: 0.94, Induction Heads: 0.52, Selective Copy: 0.79, Simple Copy: 0.5800000000000001, Sorting Problem: 0.49" />
+        <path class="line-main" d="M-7.980936143911754e-14,-179.7147052189435L226.16074241017233,-130.57396551063871L243.18359398943267,140.40211345229955L3.2669169778247627e-14,266.7640155593692L-243.1835939894327,140.4021134522995L-243.18359398943252,-140.40211345229986Z" id="line-4" stroke="#fa9a5a" fill="#fa9a5a" fill-opacity="0.1" stroke-opacity="1" stroke-width="6.184000000000001" transform="translate(386.5, 387.5)" stroke-dashoffset="0" tabindex="0" role="img" aria-roledescription="data point" aria-label="TRANSFORMER (DO), Associative Recall: 0.64, Pattern Completion: 0.9299999999999999, Induction Heads: 1, Selective Copy: 0.95, Simple Copy: 1, Sorting Problem: 1" />
+        <path class="line-main" d="M-7.60682976216589e-14,-171.2905784118055L155.63750015323689,-89.8573526094718L243.18359398943267,140.40211345229955L2.854253780625845e-14,233.06750833081733L-243.1835939894327,140.4021134522995L-243.18359398943252,-140.40211345229986Z" id="line-5" stroke="#f2c43a" fill="#f2c43a" fill-opacity="0.1" stroke-opacity="1" stroke-width="6.184000000000001" transform="translate(386.5, 387.5)" stroke-dashoffset="0" tabindex="0" role="img" aria-roledescription="data point" aria-label="TRANSFORMER (ED), Associative Recall: 0.61, Pattern Completion: 0.64, Induction Heads: 1, Selective Copy: 0.83, Simple Copy: 1, Sorting Problem: 1" />
+        <path class="line-main" d="M-7.48212763491727e-14,-168.48253614275953L228.59257835006665,-131.9779866451617L148.34199233355392,85.64528920590273L2.2696475845940455e-14,185.33078975703546L-141.04648451387098,81.43322580233372L-231.02441428996087,-133.38200777968484Z" id="line-6" stroke="#3e9ea8" fill="#3e9ea8" fill-opacity="0.1" stroke-opacity="1" stroke-width="6.184000000000001" transform="translate(386.5, 387.5)" stroke-dashoffset="0" tabindex="0" role="img" aria-roledescription="data point" aria-label="XLSTM, Associative Recall: 0.6, Pattern Completion: 0.94, Induction Heads: 0.61, Selective Copy: 0.6599999999999999, Simple Copy: 0.5800000000000001, Sorting Problem: 0.95" />
+      </g>
+      <g id="axes">
+        <g class="fl-facets">
+          <g class="fl-facet" transform="translate(0, 0)" opacity="1">
+            <rect class="fl-facet-rect" width="773" height="775" fill="none" />
+            <rect class="fl-facet-primary-rect" width="773" height="775" y="0" fill="none" />
+            <g class="fl-facet-title">
+              <rect class="fl-facet-title-bg" height="0" width="0" fill="rgb(238, 238, 238)" x="386.5" opacity="0" />
+              <text class="fl-facet-title-text" font-size="14" font-weight="600" transform="translate(386.5, 14.700000000000001)" opacity="0" text-anchor="middle">
+                <tspan x="0" y="0" dx="0" text-anchor="middle" />
+              </text>
+            </g>
+            <g class="fl-facet-primary" transform="translate(0, 0)">
+              <g class="fl-radial" transform="translate(386.5, 387.5)" opacity="1">
+  
+                <g class="x-labels">
+                  <g class="fl-radial-x-label" opacity="1" text-anchor="middle" font-size="21.643999999999995" font-weight="400" fill="#606060" transform="translate(0, -311.7242126464844)">
+                    <text class="bg" stroke="#ffffff" stroke-width="0" dy="0.33em">Associative Recall</text>
+                    <text class="fg" dy="0.33em">Associative Recall</text>
+                  </g>
+                  <g class="fl-radial-x-label" opacity="1" text-anchor="middle" font-size="21.643999999999995" font-weight="400" fill="#606060" transform="translate(269.9610900878906, -155.8621063232422)">
+                    <text class="bg" stroke="#ffffff" stroke-width="0" dy="0.33em">Pattern Completion</text>
+                    <text class="fg" dy="0.33em">Pattern Completion</text>
+                  </g>
+                  <g class="fl-radial-x-label" opacity="1" text-anchor="middle" font-size="21.643999999999995" font-weight="400" fill="#606060" transform="translate(269.9610900878906, 155.8621063232422)">
+                    <text class="bg" stroke="#ffffff" stroke-width="0" dy="0.33em">Induction Heads</text>
+                    <text class="fg" dy="0.33em">Induction Heads</text>
+                  </g>
+                  <g class="fl-radial-x-label" opacity="1" text-anchor="middle" font-size="21.643999999999995" font-weight="400" fill="#606060" transform="translate(3.817520911474255e-14, 311.7242126464844)">
+                    <text class="bg" stroke="#ffffff" stroke-width="0" dy="0.33em">Selective Copy</text>
+                    <text class="fg" dy="0.33em">Selective Copy</text>
+                  </g>
+                  <g class="fl-radial-x-label" opacity="1" text-anchor="middle" font-size="21.643999999999995" font-weight="400" fill="#606060" transform="translate(-269.9610900878906, 155.8621063232422)">
+                    <text class="bg" stroke="#ffffff" stroke-width="0" dy="0.33em">Simple Copy</text>
+                    <text class="fg" dy="0.33em">Simple Copy</text>
+                  </g>
+                  <g class="fl-radial-x-label" opacity="1" text-anchor="middle" font-size="21.643999999999995" font-weight="400" fill="#606060" transform="translate(-269.9610900878906, -155.8621063232422)">
+                    <text class="bg" stroke="#ffffff" stroke-width="0" dy="0.33em">Sorting Problem</text>
+                    <text class="fg" dy="0.33em">Sorting Problem</text>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </svg>
+</svg>
