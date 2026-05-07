@@ -8,8 +8,6 @@ Il reste à:
 
 
 
-- Finaliser le repo GitHub (pas trop long)
-- Ajouter lien dataset anonyme
 
 - Neurips Addons
 - Neurips spec (mail + website)
@@ -25,6 +23,8 @@ Voici donc le lien plmlatex :
 https://plmlatex.math.cnrs.fr/5956453775shkjyrknhdfg
 
 DONE
+- Finaliser le repo GitHub (pas trop long)
+- Ajouter lien dataset anonyme
 - Ajout ref section / fig
 - Ajouter les citations (model, dataset, etc)
 - Prendre en compte tes commentaires :)
