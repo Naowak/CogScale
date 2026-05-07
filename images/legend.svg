@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="40" viewBox="0 0 900 40" font-family="sans-serif">
+  
+  <!-- ESN -->
+  <g transform="translate(100, 12)">
+    <rect x="0" y="0" width="16" height="16" rx="4" fill="#3873e0" />
+    <text x="22" y="13" font-size="14" fill="#606060">ESN</text>
+  </g>
+
+  <!-- GRU -->
+  <g transform="translate(170, 12)">
+    <rect x="0" y="0" width="16" height="16" rx="4" fill="#69b9ff" />
+    <text x="22" y="13" font-size="14" fill="#606060">GRU</text>
+  </g>
+
+  <!-- LSTM -->
+  <g transform="translate(240, 12)">
+    <rect x="0" y="0" width="16" height="16" rx="4" fill="#b568d9" />
+    <text x="22" y="13" font-size="14" fill="#606060">LSTM</text>
+  </g>
+
+  <!-- MAMBA -->
+  <g transform="translate(320, 12)">
+    <rect x="0" y="0" width="16" height="16" rx="4" fill="#ff7895" />
+    <text x="22" y="13" font-size="14" fill="#606060">MAMBA</text>
+  </g>
+
+  <!-- TRANSFORMER (DO) -->
+  <g transform="translate(410, 12)">
+    <rect x="0" y="0" width="16" height="16" rx="4" fill="#fa9a5a" />
+    <text x="22" y="13" font-size="14" fill="#606060">TRANSFORMER (DO)</text>
+  </g>
+
+  <!-- TRANSFORMER (ED) -->
+  <g transform="translate(580, 12)">
+    <rect x="0" y="0" width="16" height="16" rx="4" fill="#f2c43a" />
+    <text x="22" y="13" font-size="14" fill="#606060">TRANSFORMER (ED)</text>
+  </g>
+
+  <!-- XLSTM -->
+  <g transform="translate(750, 12)">
+    <rect x="0" y="0" width="16" height="16" rx="4" fill="#3e9ea8" />
+    <text x="22" y="13" font-size="14" fill="#606060">XLSTM</text>
+  </g>
+  
+</svg>

@@ -1,5 +1,5 @@
 import numpy as np
-from stream_dataset.libs.CSL import TwoSituationCSLDataset
+from cogscale.libs.CSL import TwoSituationCSLDataset
 
 
 # ------------ USEFUL FUNCTIONS ------------ #

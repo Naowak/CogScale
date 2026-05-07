@@ -1,38 +1,46 @@
-# Stream Dataset
+# CogScale: Scalable Benchmark for Sequence Processing
 
-A comprehensive dataset suite for evaluating sequence modeling capabilities of neural networks, particularly focusing on memory, long-term dependencies, and temporal reasoning tasks.
+A lightweight, fully synthetic benchmark designed as a cognitive "sanity check" for evaluating the sequence modeling capabilities of neural networks. CogScale isolates specific cognitive and memory abilities to let you rapidly validate architectural innovations before committing to massive, environmentally costly large-scale training.
 
 ## 🚀 Features
 
-- **12 Diverse Tasks**: From simple memory tests to complex pattern recognition
-- **Multiple Difficulty Levels**: Small, medium and large configurations. Advice : if you're building an architecture, you should begin with small.
-- **Unified Interface**: Consistent API across all tasks with standardized evaluation metrics
-- **Ready-to-Use**: Pre-configured datasets with train/validation/test splits
-- **Flexible**: Support for both classification/multi-classification and regression tasks
+- **14 Diverse Tasks**: Signal Forecasting, Memory & Retention, Pattern Recognition, and Manipulation & Reasoning.
+- **Parametrizable Scalability**: Test architectures across different difficulty levels (Small, Medium, Large) by scaling sequence lengths, delays, and vocabulary sizes.
+- **Unified Interface**: Consistent API across all tasks with standardized evaluation metrics (MSE, Error Rate).
+- **Zero Disk Storage**: Data is generated dynamically during training, bypassing loading bottlenecks and preventing simple memorization.
+- **Strict Baseline Evaluation**: Evaluate how your model compares against established architectures (Transformers, Mamba, xLSTM, LSTM, GRU, ESN) under strict parameter budgets.
+
+## 📊 Baseline Performances: The Cognitive Radar
+
+We provide a solid baseline by evaluating 7 distinct architectures under strict parameter budgets (1k, 10k, and 100k). The **Cognitive Radar** visualizes their peak performances (accuracy) across a selective subset of tasks and scales, demonstrating how attention models (Transfomers) and state space models (Mamba) maintain robust reasoning under increased cognitive loads, while simple reservoir models (ESN) offer striking efficiency for basic retention tasks at an ultra-low parameter scale.
+<center>
+    <img src="./images/radar_charts.png" alt="Cognitive Radar" width="800"/>   
+</center >
+
+*(See the paper for detailed insights on scalability and parameter efficiency).*
 
 ## 📦 Installation
-
 ```bash
-pip install stream-dataset
+pip install cogscale
 ```
 
 Or install from source:
 
 ```bash
-git clone https://github.com/Naowak/stream-dataset.git
-cd stream-dataset
+git clone [https://github.com/Naowak/cogscale.git](https://github.com/Naowak/cogscale.git)
+cd cogscale
 pip install -e .
 ```
 
 ## 🎯 Quick Start
 
 ```python
-import stream_dataset as sd
+import cogscale as cog
 
 # Build a task
-task_data = sd.build_task('simple_copy', difficulty='small', seed=0)
+task_data = cog.build_task('simple_copy', difficulty='small', seed=42)
 
-# Access the data
+# Access the dynamically generated data
 X_train = task_data['X_train']  # Training inputs
 Y_train = task_data['Y_train']  # Training targets
 T_train = task_data['T_train']  # Prediction timesteps
@@ -40,8 +48,8 @@ T_train = task_data['T_train']  # Prediction timesteps
 # Train your model (example with dummy predictions)
 Y_pred = your_model.predict(X_train)
 
-# Evaluate performance
-score = sd.compute_score(
+# Evaluate performance using the unified metric
+score = cog.compute_score(
     Y=Y_train, 
     Y_hat=Y_pred, 
     prediction_timesteps=T_train,
@@ -50,99 +58,122 @@ score = sd.compute_score(
 print(f"Score: {score}")
 ```
 
+
 ## 📚 Available Tasks
 
-### Memory Tests
-### Postcasting Tasks
-- **`discrete_postcasting`**: Copy discrete sequences after a delay  
+### 1. Signal Processing and Forecasting
 
-    ![discrete_postcasting](https://raw.githubusercontent.com/Naowak/stream-dataset/main/images/discrete_postcasting.png)
+#### `sinus_forecasting`:
+Predict the future evolution of a sinusoidal signal.
 
-- **`continuous_postcasting`**: Copy continuous sequences after a delay  
+<img src="./images/sinus_forecasting.svg" alt="Sinus Forecasting" width="600"/>
 
-    ![continuous_postcasting](https://raw.githubusercontent.com/Naowak/stream-dataset/main/images/continuous_postcasting.png)
+#### `chaotic_forecasting`:
+Forecast the future state of a three-dimensional chaotic Lorenz system.
 
-### Signal Processing
-- **`sinus_forecasting`**: Predict frequency-modulated sinusoidal signals 
+<img src="./images/chaotic_forecasting.svg" alt="Chaotic Forecasting" width="600"/>
 
-    ![sinus_forecasting](https://raw.githubusercontent.com/Naowak/stream-dataset/main/images/sinus_forecasting.png)
+---
 
-- **`chaotic_forecasting`**: Forecast Lorenz system dynamics 
+### 2. Memory and Retention
 
-    ![chaotic_forecasting](https://raw.githubusercontent.com/Naowak/stream-dataset/main/images/chaotic_forecasting.png)
+#### `discrete_postcasting`:
+Reproduce a discrete sequence identically after a specified time shift.
 
+<img src="./images/discrete_postcasting.svg" alt="Discrete Postcasting" width="600"/>
 
-### Long-term Dependencies
-- **`discrete_pattern_completion`**: Complete masked repetitive patterns (discrete)  
+#### `continuous_postcasting`:
+Reproduce a continuous sequence identically after a specified time shift.
 
-    ![discrete_pattern_completion](https://raw.githubusercontent.com/Naowak/stream-dataset/main/images/discrete_pattern_completion.png)
+<img src="./images/continuous_postcasting.svg" alt="Continuous Postcasting" width="600"/>
 
-- **`continuous_pattern_completion`**: Complete masked repetitive patterns (continuous) 
+#### `simple_copy`:
+Read a sequence, hold it in memory during a silent delay, and reproduce it after a trigger token.
 
-    ![continuous_pattern_completion](https://raw.githubusercontent.com/Naowak/stream-dataset/main/images/continuous_pattern_completion.png)
+<img src="./images/simple_copy.svg" alt="Simple Copy" width="600"/>
 
-- **`simple_copy`**: Memorize and reproduce sequences after delay + trigger  
+#### `selective_copy`:
+Memorize only a specific subset of marked tokens amidst distractions and output them at the end.
 
-    ![simple_copy](https://raw.githubusercontent.com/Naowak/stream-dataset/main/images/simple_copy.png)
+<img src="./images/selective_copy.svg" alt="Selective Copy" width="600"/>
 
-- **`selective_copy`**: Memorize only marked elements and reproduce them  
+#### `associative_recall`:
+Memorize a sequence of key-value pairs and retrieve the correct value when queried with a seen key.
 
-    ![selective_copy](https://raw.githubusercontent.com/Naowak/stream-dataset/main/images/selective_copy.png)
+<img src="./images/associative_recall.svg" alt="Associative Recall" width="600"/>
 
+---
 
-### Information Manipulation
-- **`adding_problem`**: Add numbers at marked positions  
+### 3. Pattern Recognition and Completion
 
-    ![adding_problem](https://raw.githubusercontent.com/Naowak/stream-dataset/main/images/adding_problem.png)
+#### `discrete_pattern_completion`:
+Identify and infer missing components within a masked discrete periodic motif.
 
-- **`sorting_problem`**: Sort sequences according to given positions 
+<img src="./images/discrete_pattern_completion.svg" alt="Discrete Pattern Completion" width="600"/>
 
-    ![sorting_problem](https://raw.githubusercontent.com/Naowak/stream-dataset/main/images/sorting_problem.png)
+#### `continuous_pattern_completion`:
+Identify and infer missing components within a masked continuous periodic motif.
 
-- **`bracket_matching`**: Validate parentheses sequences
+<img src="./images/continuous_pattern_completion.svg" alt="Continuous Pattern Completion" width="600"/>
 
-    ![bracket_matching](https://raw.githubusercontent.com/Naowak/stream-dataset/main/images/bracket_matching.png)
+#### `induction_heads`:
+Recognize in-context duplicated sequence structures to predict the next token.
 
-- **`cross_situation`**: Classify objects based on multiple attributes (color, shape, position)
+<img src="./images/induction_heads.svg" alt="Induction Heads" width="600"/>
 
-    ![cross_situation](https://raw.githubusercontent.com/Naowak/stream-dataset/main/images/cross_situation.png)
+---
 
+### 4. Reasoning and Algorithmic Manipulation
+
+#### `adding_problem`:
+Compute and output the sum of only the marked numbers within a random sequence.
+
+<img src="./images/adding_problem.svg" alt="Adding Problem" width="600"/>
+
+#### `sorting_problem`:
+Output a randomized sequence sorted into the correct positional order after a trigger.
+
+<img src="./images/sorting_problem.svg" alt="Sorting Problem" width="600"/>
+
+#### `bracket_matching`:
+Determine if a mutated string of parentheses represents a valid hierarchy.
+
+<img src="./images/bracket_matching.svg" alt="Bracket Matching" width="600"/>
+
+#### `cross_situation`:
+Infer logical roles and attributes (objects, colors, positions) from a simplified natural language reasoning problem encoded in one-hot vectors.
+
+<img src="./images/cross_situation.svg" alt="Cross Situation" width="600"/>
+
+***
 
 ## 🔧 Task Configuration
 
-Each task supports three difficulty levels (the following numbers may vary in function of the task):
+Each task supports three modular difficulty levels, designed to verify if scaling a model's parameters genuinely translates to better cognitive capabilities:
 
-### Small 
-- Reduced sequence lengths and sample counts
-- Suitable for quick experiments and debugging
-- Example: 100 training samples, sequences of ~50-100 timesteps
+### Small (`SM`)
+- Reduced sequence lengths, delays, and vocabulary sizes.
+- Ideal for quick experiments, debugging, and testing models at the **1k-10k parameter** scale.
 
-### Medium 
-- Realistic problem sizes
-- Suitable for thorough model evaluation
-- Example: 1,000 training samples, sequences of ~100-200 timesteps
+### Medium (`MD`)
+- Realistic problem sizes with increased cognitive load.
+- Suitable for thorough model evaluation and scalability testing at the **10k-100k parameter** scale.
 
-### Large 
-- Big Data configurations
-- Suitable for high-performance models
-- Example: 10,000 training samples, sequences of ~200-500 timesteps
-
-For the tasks that allow it, the difficulty is also adjusted by the dimensions of input & output.
+### Large (`LG`)
+- Highly complex configurations.
+- Designed to push high-performance and large-scale architectures to their representational limits.
 
 ```python
-# Small configuration (fast)
-task_small = sd.build_task('bracket_matching', difficulty='small', seed=0)
+# Small configuration (fast & lightweight)
+task_small = cog.build_task('bracket_matching', difficulty='small')
 
-# Medium configuration (thorough)
-task_medium = sd.build_task('bracket_matching', difficulty='medium', seed=0)
-
-# Large configuration (comprehensive)
-task_large = sd.build_task('bracket_matching', difficulty='large', seed=0)
+# Medium configuration (thorough scalability test)
+task_medium = cog.build_task('bracket_matching', difficulty='medium')
 ```
 
 ## 📊 Data Format
 
-All tasks return a standardized dictionary:
+All tasks return a standardized dictionary containing NumPy arrays:
 
 ```python
 {
@@ -155,47 +186,43 @@ All tasks return a standardized dictionary:
     'X_test': np.ndarray,       # Test inputs
     'Y_test': np.ndarray,       # Test targets
     'T_test': np.ndarray,       # Test prediction timesteps
-    'category': str      # 'classification', 'multi_classification', or 'regression'
+    'category': str             # 'classification', 'multi_classification', or 'regression'
 }
 ```
 
 ## 🎨 Example: Complete Evaluation Pipeline
 
 ```python
-import stream_dataset as sd
-import numpy as np
+import cogscale as cog
 from MyModel import MyModel
 
 def evaluate_model_on_all_tasks(model, difficulty='small'):
-    """Evaluate a model on all available tasks."""
+    """Evaluate an architecture across the full CogScale cognitive spectrum."""
     
     results = {}
     task_names = [
-        'simple_copy', 'selective_copy', 'adding_problem',
-        'discrete_postcasting', 'continuous_postcasting',
-        'discrete_pattern_completion', 'continuous_pattern_completion',
-        'bracket_matching', 'sorting_problem', 'cross_situation',
-        'sinus_forecasting', 'chaotic_forecasting'
+        'sinus_forecasting', 'chaotic_forecasting',
+        'discrete_postcasting', 'continuous_postcasting', 
+        'simple_copy', 'selective_copy', 'associative_recall',
+        'discrete_pattern_completion', 'continuous_pattern_completion', 'induction_heads',
+        'adding_problem', 'sorting_problem', 'bracket_matching', 'cross_situation'
     ]
     
     for task_name in task_names:
         print(f"Evaluating on {task_name}...")
         
-        # Load task
-        task_data = sd.build_task(task_name, difficulty=difficulty)
+        # Load dynamically generated task
+        task_data = cog.build_task(task_name, difficulty=difficulty)
         
-        # Train model (simplified)
+        # Train model
         model = MyModel(...)
         model.train(task_data['X_train'], task_data['Y_train'], task_data['T_train'])
-        # If you want your model to learn all timesteps, including the ones that are not evaluated :
-        # Comment the previous line and uncomment the following one
-        # model.train(task_data['X_train'], task_data['Y_train'])
 
         # Predict on test set
         Y_pred = model.predict(task_data['X_test'])
         
-        # Compute score
-        score = sd.compute_score(
+        # Compute unified score
+        score = cog.compute_score(
             Y=task_data['Y_test'],
             Y_hat=Y_pred,
             prediction_timesteps=task_data['T_test'],
@@ -206,18 +233,16 @@ def evaluate_model_on_all_tasks(model, difficulty='small'):
         print(f"  Score: {score:.4f}")
     
     return results
-
-# Usage
-# results = evaluate_model_on_all_tasks(your_model, difficulty='medium')
 ```
 
 ## 📈 Evaluation Metrics
 
-- **Classification tasks**: Error rate (1 - accuracy)
+The evaluation metrics automatically adapt based on the task category:
 - **Regression tasks**: Mean Squared Error (MSE)
-- **Multi-class classification tasks**: Exact match accuracy (1 - exact match accuracy)
+- **Classification tasks**: Error rate (1 - accuracy)
+- **Multi-class classification tasks**: Label-based error rate (1 - exact match accuracy)
 
-Lower scores indicate better performance for both metrics.
+*Lower scores indicate better performance across all tasks.*
 
 ## 📄 License
 
@@ -225,29 +250,23 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📚 Citation
 
-If you use Stream Dataset in your research, please cite:
-
-(paper in progress...)
+If you use CogScale in your research or find it helpful as a sanity check for your architectures, please cite:
 
 ```bibtex
-@software{stream_dataset,
-  title={Stream Dataset: Sequential Task Review to Evaluate Artificial Memory},
-  author={Yannis Bendi-Ouis, Xavier Hinaut},
-  year={2025},
-  url={https://github.com/Naowak/stream-dataset}
+@inproceedings{cogscale2026,
+  title={CogScale: Scalable Benchmark for Sequence Processing},
+  author={Bendi-Ouis Yannis, De Coudenhove Romain and Hinaut Xavier},
+  year={2026},
+  url={https://github.com/Naowak/cogscale}
 }
 ```
 
-## 🙏 Acknowledgments
-
-- Inspired by classic sequence modeling datasets
-- Built with NumPy and Hugging Face Datasets
 
 ## 📞 Support
 
-- 🐛 Issues: [GitHub Issues](https://github.com/Naowak/stream-dataset/issues)
-- 💬 Discussions: [GitHub Discussions](https://github.com/Naowak/stream-dataset/discussions)
+- 🐛 Issues: [GitHub Issues](https://github.com/Naowak/cogscale/issues)
+- 💬 Discussions: [GitHub Discussions](https://github.com/Naowak/cogscale/discussions)
 
 ---
 
-*Stream Dataset - Advancing sequence modeling evaluation, one task at a time.*
+*CogScale - Democratizing architectural research by ensuring foundational cognitive abilities before massive scaling.*

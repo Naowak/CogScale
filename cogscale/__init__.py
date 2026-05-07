@@ -1,4 +1,4 @@
-import stream_dataset.evals as evals
+import cogscale.evals as evals
 import numpy as np
 
 tasks = [
@@ -87,22 +87,22 @@ def build_task(task_name, difficulty='small', seed=None, **kwargs):
     - Task: Task object
     """
     # Check if the task name is valid 
-    if task_name not in evals.stream_small:
-        raise ValueError(f"Task {task_name} not found. Available tasks are: {list(evals.stream_small.keys())}")
+    if task_name not in evals.cogscale_small:
+        raise ValueError(f"Task {task_name} not found. Available tasks are: {list(evals.cogscale_small.keys())}")
     # Check if the difficulty level is valid
     if difficulty not in ['small', 'medium', 'large']:
         raise ValueError("Difficulty level must be 'small', 'medium' or 'large'.")
 
-    # Get the corresponding stream configuration
-    stream = {
-        'small': evals.stream_small,
-        'medium': evals.stream_medium,
-        'large': evals.stream_large,
+    # Get the corresponding cogscale configuration
+    cogscale = {
+        'small': evals.cogscale_small,
+        'medium': evals.cogscale_medium,
+        'large': evals.cogscale_large,
     }[difficulty]
 
-    # Get the function and parameters from the stream config
-    fct = stream[task_name]['fct']
-    params = stream[task_name]['params']
+    # Get the function and parameters from the cogscale config
+    fct = cogscale[task_name]['fct']
+    params = cogscale[task_name]['params']
     params['seed'] = seed
 
     # Update params with optional arguments

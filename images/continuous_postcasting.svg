@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 420" width="100%" height="100%">
+  <defs>
+    <marker id="arrowhead3" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#212E53" />
+    </marker>
+    <style>
+      .box-cpost { stroke-width: 4px; rx: 12px; }
+      .symbol-text-cpost { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 22px; font-weight: bold; fill: #212E53; text-anchor: middle; }
+      .label-main-cpost { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 28px; font-weight: bold; fill: #212E53; text-anchor: end; }
+      .label-sub-cpost { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 22px; font-weight: normal; fill: #8CACD3; text-anchor: end; }
+      .time-text-cpost { font-family: 'Courier New', Courier, monospace; font-size: 22px; font-weight: bold; fill: #8CACD3; text-anchor: middle; }
+      .connection-cpost { fill: none; stroke: #212E53; stroke-width: 3px; stroke-dasharray: 6 4; marker-end: url(#arrowhead-cpost); opacity: 0.6; }
+      .annotation-cpost { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 20px; font-weight: bold; fill: #212E53; text-anchor: middle; }
+      .annotation3 { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 24px; font-weight: bold; fill: #212E53; text-anchor: middle; }
+      .connection3 { fill: none; stroke: #212E53; stroke-width: 4px; stroke-dasharray: 6 4; marker-end: url(#arrowhead3); opacity: 0.6; }
+    </style>
+  </defs>
+
+  <rect width="1050" height="450" fill="#FFFFFF" />
+
+  <!-- TIME AXIS -->
+  <text x="315" y="40" class="time-text-cpost">t=1</text>
+  <text x="405" y="40" class="time-text-cpost">t=2</text>
+  <text x="495" y="40" class="time-text-cpost">t=3</text>
+  <text x="585" y="40" class="time-text-cpost">t=4</text>
+  <text x="675" y="40" class="time-text-cpost">t=5</text>
+  <text x="765" y="40" class="time-text-cpost">t=6</text>
+  <text x="855" y="40" class="time-text-cpost">t=7</text>
+  <text x="945" y="40" class="time-text-cpost">t=8</text>
+
+  <!-- LEFT LABELS -->
+  <text x="240" y="100" class="label-main-cpost">Input Sequence</text>
+  <text x="240" y="135" class="label-sub-cpost">X (Continuous Signal)</text>
+  <text x="240" y="270" class="label-main-cpost">Target Sequence</text>
+  <text x="240" y="305" class="label-sub-cpost">Y (Shifted Signal)</text>
+
+  <!-- TOP ANNOTATIONS -->
+  <!-- <path d="M 280 100 L 280 85 L 440 85 L 440 100" fill="none" stroke="#212E53" stroke-width="4" stroke-linejoin="round" />
+  <text x="360" y="75" class="annotation-cpost">Delay Region</text> -->
+
+  <!-- INPUT SEQUENCE (X) -->
+  <g transform="translate(0, 60)">
+    <rect x="280" y="0" width="70" height="70" fill="#8CACD3" stroke="#7798C0" class="box-cpost" />
+    <text x="315" y="44" class="symbol-text-cpost">0.5</text>
+    
+    <rect x="370" y="0" width="70" height="70" fill="#EBACA2" stroke="#D6978D" class="box-cpost" />
+    <text x="405" y="44" class="symbol-text-cpost">-0.2</text>
+
+    <rect x="460" y="0" width="70" height="70" fill="#BED3C3" stroke="#A8C0AD" class="box-cpost" />
+    <text x="495" y="44" class="symbol-text-cpost">0.8</text>
+    
+    <rect x="550" y="0" width="70" height="70" fill="#AFA4CE" stroke="#9C90BD" class="box-cpost" />
+    <text x="585" y="44" class="symbol-text-cpost">-0.4</text>
+    
+    <rect x="640" y="0" width="70" height="70" fill="#8CACD3" stroke="#7798C0" class="box-cpost" />
+    <text x="675" y="44" class="symbol-text-cpost">0.1</text>
+    
+    <rect x="730" y="0" width="70" height="70" fill="#EBACA2" stroke="#D6978D" class="box-cpost" />
+    <text x="765" y="44" class="symbol-text-cpost">0.9</text>
+
+    <rect x="820" y="0" width="70" height="70" fill="#BED3C3" stroke="#A8C0AD" class="box-cpost" />
+    <text x="855" y="44" class="symbol-text-cpost">-0.7</text>
+
+    <rect x="910" y="0" width="70" height="70" fill="#AFA4CE" stroke="#9C90BD" class="box-cpost" />
+    <text x="945" y="44" class="symbol-text-cpost">0.3</text>
+  </g>
+
+  <!-- TARGET SEQUENCE (Y) -->
+  <g transform="translate(0, 260)">
+    <!-- Pending / Delay -->
+    <g opacity="0.4">
+      <rect x="280" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-cpost" stroke-dasharray="8 4"/>
+      <text x="315" y="44" class="symbol-text-cpost">0.0</text>
+      
+      <rect x="370" y="0" width="70" height="70" fill="#F4F6F6" stroke="#BDC3C7" class="box-cpost" stroke-dasharray="8 4"/>
+      <text x="405" y="44" class="symbol-text-cpost">0.0</text>
+    </g>
+
+    <!-- Restituted Signal (Delay = 2) -->
+    <rect x="460" y="0" width="70" height="70" fill="#8CACD3" stroke="#7798C0" class="box-cpost" stroke-width="4"/>
+    <text x="495" y="44" class="symbol-text-cpost">0.5</text>
+    
+    <rect x="550" y="0" width="70" height="70" fill="#EBACA2" stroke="#D6978D" class="box-cpost" stroke-width="4"/>
+    <text x="585" y="44" class="symbol-text-cpost">-0.2</text>
+    
+    <rect x="640" y="0" width="70" height="70" fill="#BED3C3" stroke="#A8C0AD" class="box-cpost" stroke-width="4"/>
+    <text x="675" y="44" class="symbol-text-cpost">0.8</text>
+    
+    <rect x="730" y="0" width="70" height="70" fill="#AFA4CE" stroke="#9C90BD" class="box-cpost" stroke-width="4"/>
+    <text x="765" y="44" class="symbol-text-cpost">-0.4</text>
+
+    <rect x="820" y="0" width="70" height="70" fill="#8CACD3" stroke="#7798C0" class="box-cpost" stroke-width="4"/>
+    <text x="855" y="44" class="symbol-text-cpost">0.1</text>
+
+    <rect x="910" y="0" width="70" height="70" fill="#EBACA2" stroke="#D6978D" class="box-cpost" stroke-width="4"/>
+    <text x="945" y="44" class="symbol-text-cpost">0.9</text>
+  </g>
+
+  <!-- CONNECTIONS (Crossing the delay) -->
+  <path d="M 315 140 C 315 215, 495 185, 495 250" class="connection3" />
+  <path d="M 405 140 C 405 215, 585 185, 585 250" class="connection3" />
+  <path d="M 495 140 C 495 215, 675 185, 675 250" class="connection3" />
+  <path d="M 585 140 C 585 215, 765 185, 765 250" class="connection3" />
+  <path d="M 675 140 C 675 215, 855 185, 855 250" class="connection3" />
+  <path d="M 765 140 C 765 215, 945 185, 945 250" class="connection3" />
+
+  <!-- ANNOTATIONS -->
+  <!-- <path d="M 460 360 L 460 375 L 980 375 L 980 360" fill="none" stroke="#212E53" stroke-width="4" stroke-linejoin="round" />
+  <text x="720" y="405" class="annotation-cpost">Evaluation</text> -->
+
+  <!-- ANNOTATIONS -->
+  <path d="M 280 350 L 280 365 L 530 365 L 530 350" fill="none" stroke="#212E53" stroke-width="4" stroke-linejoin="round" />
+  <text x="405" y="405" class="annotation3">Delay</text>
+  <path d="M 550 350 L 550 365 L 980 365 L 980 350" fill="none" stroke="#212E53" stroke-width="4" stroke-linejoin="round" />
+  <text x="765" y="405" class="annotation3">Evaluation</text>
+
+</svg>

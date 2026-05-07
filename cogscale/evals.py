@@ -1,7 +1,7 @@
-from stream_dataset.tasks import *
+from cogscale.tasks import *
 
 # ----- Define the set configs -----
-stream_small = {
+cogscale_small = {
     'sinus_forecasting': {
         'fct': generate_sinus_forecasting,
         'params': {"sequence_length": 200, "forecast_length": 5, "training_ratio": 0.45, "validation_ratio": 0.1, "testing_ratio": 0.45},
@@ -79,7 +79,7 @@ stream_small = {
     },
 }
 
-stream_medium = {
+cogscale_medium = {
     'sinus_forecasting': {
         'fct': generate_sinus_forecasting,
         'params': {"sequence_length": 2000, "forecast_length": 15, "training_ratio": 0.45, "validation_ratio": 0.1, "testing_ratio": 0.45},
@@ -157,7 +157,7 @@ stream_medium = {
     },
 }
 
-stream_large = {
+cogscale_large = {
     'sinus_forecasting': {
         'fct': generate_sinus_forecasting,
         'params': {"sequence_length": 20000, "forecast_length": 50, "training_ratio": 0.45, "validation_ratio": 0.1, "testing_ratio": 0.45},
