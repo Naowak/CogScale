@@ -664,7 +664,6 @@ def generate_csl(n_train=1000, n_valid=200, n_test=200, objects=None, colors=Non
         # Retrieval of the input sequence (encoded sentence)
         input_seq = X_all[idx]  # Shape: (n_steps, n_symbols)
         
-        # Adaptation to STREAM format: the target must be of temporal dimension
         # We fill with zeros and place the true target only at the end
         target_seq = np.zeros((n_steps, n_labels))
         target_seq[-1, :] = Y_all[idx]

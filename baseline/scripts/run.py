@@ -101,7 +101,7 @@ def find_best_threshold(preds_logits, targets, timesteps):
     return best_thresh
 
 def run_experiment():
-    parser = argparse.ArgumentParser(description="Run Stream Dataset Evaluation")
+    parser = argparse.ArgumentParser(description="Run CogScale Dataset Evaluation")
     parser.add_argument('--model_types', nargs='+', default=['lstm'], 
                         choices=['lstm', 'gru', 'transformer_decoder', 'transformer_encdec', 'esn', 'dynamical_transformer', 'mamba', 'xlstm'], 
                         help='Type de modèle à entrainer')
