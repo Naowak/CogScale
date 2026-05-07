@@ -127,7 +127,7 @@ def run_experiment():
         args.tasks = cog.tasks[len(cog.tasks)//2:]
         
     # Charger les configs ESN si nécessaire
-    esn_configs = parse_report_configs('results/esn_hp_opti/report.md') if 'esn' in args.model_types else {}
+    esn_configs = parse_report_configs('results/esn_hp_report.md') if 'esn' in args.model_types else {}
     
     torch_dtype = getattr(torch, args.dtype)
     device = torch.device(args.device)
