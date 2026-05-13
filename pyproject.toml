@@ -1,6 +1,6 @@
 [project]
 name = "cogscale"
-version = "0.1.0"
+version = "0.1.1"
 description = "CogScale: Scalable Benchmark for Sequence Processing is a dataset of 14 diverse sequential tasks to assess neural networks’ memory. Scalable in complexity and sequence length, it covers pattern completion, copy tasks, forecasting, bracket matching, and sorting—ideal for comparing architectures on memory retention and sequential reasoning."
 authors = [
     { name="Yannis Bendi-Ouis", email="yannis.bendiouis@gmail.com" }

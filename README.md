@@ -14,7 +14,7 @@ A lightweight, fully synthetic benchmark designed as a cognitive "sanity check" 
 
 We provide a solid baseline by evaluating 7 distinct architectures under strict parameter budgets (1k, 10k, and 100k). The **Cognitive Radar** visualizes their peak performances (accuracy) across a selective subset of tasks and scales, demonstrating how attention models (Transfomers) and state space models (Mamba) maintain robust reasoning under increased cognitive loads, while simple reservoir models (ESN) offer striking efficiency for basic retention tasks at an ultra-low parameter scale.
 <center>
-    <img src="./images/radar_charts.png" alt="Cognitive Radar" width="800"/>   
+    <img src="https://raw.githubusercontent.com/Naowak/cogscale/main/images/radar_charts.png" alt="Cognitive Radar" width="800"/>   
 </center >
 
 *(See the paper for detailed insights on scalability and parameter efficiency).*
@@ -66,12 +66,12 @@ print(f"Score: {score}")
 #### `sinus_forecasting`:
 Predict the future evolution of a sinusoidal signal.
 
-<img src="./images/sinus_forecasting.svg" alt="Sinus Forecasting" width="600"/>
+<img src="https://raw.githubusercontent.com/Naowak/cogscale/main/images/sinus_forecasting.svg" alt="Sinus Forecasting" width="600"/>
 
 #### `chaotic_forecasting`:
 Forecast the future state of a three-dimensional chaotic Lorenz system.
 
-<img src="./images/chaotic_forecasting.svg" alt="Chaotic Forecasting" width="600"/>
+<img src="https://raw.githubusercontent.com/Naowak/cogscale/main/images/chaotic_forecasting.svg" alt="Chaotic Forecasting" width="600"/>
 
 ---
 
@@ -80,27 +80,27 @@ Forecast the future state of a three-dimensional chaotic Lorenz system.
 #### `discrete_postcasting`:
 Reproduce a discrete sequence identically after a specified time shift.
 
-<img src="./images/discrete_postcasting.svg" alt="Discrete Postcasting" width="600"/>
+<img src="https://raw.githubusercontent.com/Naowak/cogscale/main/images/discrete_postcasting.svg" alt="Discrete Postcasting" width="600"/>
 
 #### `continuous_postcasting`:
 Reproduce a continuous sequence identically after a specified time shift.
 
-<img src="./images/continuous_postcasting.svg" alt="Continuous Postcasting" width="600"/>
+<img src="https://raw.githubusercontent.com/Naowak/cogscale/main/images/continuous_postcasting.svg" alt="Continuous Postcasting" width="600"/>
 
 #### `simple_copy`:
 Read a sequence, hold it in memory during a silent delay, and reproduce it after a trigger token.
 
-<img src="./images/simple_copy.svg" alt="Simple Copy" width="600"/>
+<img src="https://raw.githubusercontent.com/Naowak/cogscale/main/images/simple_copy.svg" alt="Simple Copy" width="600"/>
 
 #### `selective_copy`:
 Memorize only a specific subset of marked tokens amidst distractions and output them at the end.
 
-<img src="./images/selective_copy.svg" alt="Selective Copy" width="600"/>
+<img src="https://raw.githubusercontent.com/Naowak/cogscale/main/images/selective_copy.svg" alt="Selective Copy" width="600"/>
 
 #### `associative_recall`:
 Memorize a sequence of key-value pairs and retrieve the correct value when queried with a seen key.
 
-<img src="./images/associative_recall.svg" alt="Associative Recall" width="600"/>
+<img src="https://raw.githubusercontent.com/Naowak/cogscale/main/images/associative_recall.svg" alt="Associative Recall" width="600"/>
 
 ---
 
@@ -109,17 +109,17 @@ Memorize a sequence of key-value pairs and retrieve the correct value when queri
 #### `discrete_pattern_completion`:
 Identify and infer missing components within a masked discrete periodic motif.
 
-<img src="./images/discrete_pattern_completion.svg" alt="Discrete Pattern Completion" width="600"/>
+<img src="https://raw.githubusercontent.com/Naowak/cogscale/main/images/discrete_pattern_completion.svg" alt="Discrete Pattern Completion" width="600"/>
 
 #### `continuous_pattern_completion`:
 Identify and infer missing components within a masked continuous periodic motif.
 
-<img src="./images/continuous_pattern_completion.svg" alt="Continuous Pattern Completion" width="600"/>
+<img src="https://raw.githubusercontent.com/Naowak/cogscale/main/images/continuous_pattern_completion.svg" alt="Continuous Pattern Completion" width="600"/>
 
 #### `induction_heads`:
 Recognize in-context duplicated sequence structures to predict the next token.
 
-<img src="./images/induction_heads.svg" alt="Induction Heads" width="600"/>
+<img src="https://raw.githubusercontent.com/Naowak/cogscale/main/images/induction_heads.svg" alt="Induction Heads" width="600"/>
 
 ---
 
@@ -128,22 +128,22 @@ Recognize in-context duplicated sequence structures to predict the next token.
 #### `adding_problem`:
 Compute and output the sum of only the marked numbers within a random sequence.
 
-<img src="./images/adding_problem.svg" alt="Adding Problem" width="600"/>
+<img src="https://raw.githubusercontent.com/Naowak/cogscale/main/images/adding_problem.svg" alt="Adding Problem" width="600"/>
 
 #### `sorting_problem`:
 Output a randomized sequence sorted into the correct positional order after a trigger.
 
-<img src="./images/sorting_problem.svg" alt="Sorting Problem" width="600"/>
+<img src="https://raw.githubusercontent.com/Naowak/cogscale/main/images/sorting_problem.svg" alt="Sorting Problem" width="600"/>
 
 #### `bracket_matching`:
 Determine if a mutated string of parentheses represents a valid hierarchy.
 
-<img src="./images/bracket_matching.svg" alt="Bracket Matching" width="600"/>
+<img src="https://raw.githubusercontent.com/Naowak/cogscale/main/images/bracket_matching.svg" alt="Bracket Matching" width="600"/>
 
 #### `cross_situation`:
 Infer logical roles and attributes (objects, colors, positions) from a simplified natural language reasoning problem encoded in one-hot vectors.
 
-<img src="./images/cross_situation.svg" alt="Cross Situation" width="600"/>
+<img src="https://raw.githubusercontent.com/Naowak/cogscale/main/images/cross_situation.svg" alt="Cross Situation" width="600"/>
 
 ***
 
