@@ -240,7 +240,7 @@ def evaluate_model_on_all_tasks(model, difficulty='small'):
 The evaluation metrics automatically adapt based on the task category:
 - **Regression tasks**: Mean Squared Error (MSE)
 - **Classification tasks**: Error rate (1 - accuracy)
-- **Multi-class classification tasks**: Label-based error rate (1 - exact match accuracy)
+- **Multi-class classification tasks**: Label-based error rate (1 - label-based accuracy)
 
 *Lower scores indicate better performance across all tasks.*
 
