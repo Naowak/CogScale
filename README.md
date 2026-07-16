@@ -43,7 +43,6 @@ task_data = cog.build_task('simple_copy', difficulty='small', seed=42)
 # Access the dynamically generated data
 X_train = task_data['X_train']  # Training inputs
 Y_train = task_data['Y_train']  # Training targets
-T_train = task_data['T_train']  # Prediction timesteps
 
 # Train your model (example with dummy predictions)
 Y_pred = your_model.predict(X_train)
@@ -52,7 +51,6 @@ Y_pred = your_model.predict(X_train)
 score = cog.compute_score(
     Y=Y_train, 
     Y_hat=Y_pred, 
-    prediction_timesteps=T_train,
     category=task_data['category']
 )
 print(f"Score: {score}")
@@ -179,13 +177,10 @@ All tasks return a standardized dictionary containing NumPy arrays:
 {
     'X_train': np.ndarray,      # Training inputs [batch, time, features]
     'Y_train': np.ndarray,      # Training targets [batch, time, outputs]
-    'T_train': np.ndarray,      # Training prediction timesteps [batch, n_predictions]
     'X_valid': np.ndarray,      # Validation inputs
     'Y_valid': np.ndarray,      # Validation targets  
-    'T_valid': np.ndarray,      # Validation prediction timesteps
     'X_test': np.ndarray,       # Test inputs
     'Y_test': np.ndarray,       # Test targets
-    'T_test': np.ndarray,       # Test prediction timesteps
     'category': str             # 'classification', 'multi_classification', or 'regression'
 }
 ```
@@ -216,7 +211,7 @@ def evaluate_model_on_all_tasks(model, difficulty='small'):
         
         # Train model
         model = MyModel(...)
-        model.train(task_data['X_train'], task_data['Y_train'], task_data['T_train'])
+        model.train(task_data['X_train'], task_data['Y_train'])
 
         # Predict on test set
         Y_pred = model.predict(task_data['X_test'])
@@ -225,7 +220,6 @@ def evaluate_model_on_all_tasks(model, difficulty='small'):
         score = cog.compute_score(
             Y=task_data['Y_test'],
             Y_hat=Y_pred,
-            prediction_timesteps=task_data['T_test'],
             category=task_data['category']
         )
         

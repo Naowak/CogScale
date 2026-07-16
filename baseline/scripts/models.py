@@ -214,7 +214,7 @@ class DynamicESN:
         # Pour le logging (Readout linéaire uniquement)
         self.actual_params = (output_dim * N)
 
-    def fit(self, X_train, Y_train, T_train, X_valid, Y_valid, T_valid, category):
+    def fit(self, X_train, Y_train, X_valid, Y_valid, category):
         """
         Entraîne plusieurs readouts avec différents ridges et garde le meilleur sur le set de validation.
         """
@@ -224,9 +224,12 @@ class DynamicESN:
         
         for i in range(len(X_train)):
             s = self.reservoir.run(X_train[i], reset=True) 
-            t_idx = T_train[i]
-            states_train.append(s[t_idx])
-            targets_train.append(Y_train[i][t_idx])
+            
+            # Création du masque: on ne sélectionne que les états où la vérité terrain n'est pas masquée
+            mask = np.any(Y_train[i] != -100.0, axis=-1)
+            
+            states_train.append(s[mask])
+            targets_train.append(Y_train[i][mask])
             
         S_train_flat = np.vstack(states_train)
         Y_train_flat = np.vstack(targets_train)
@@ -253,8 +256,8 @@ class DynamicESN:
             preds_val = [temp_readout.run(s) for s in S_valid_full]
             preds_val_np = np.stack(preds_val, axis=0)
             
-            # Évaluation avec la fonction native du package
-            score = cog.compute_score(Y=Y_valid, Y_hat=preds_val_np, prediction_timesteps=T_valid, category=category)
+            # Évaluation avec la fonction native du package (qui intègre le masque -100)
+            score = cog.compute_score(Y=Y_valid, Y_hat=preds_val_np, category=category)
             
             if score < best_score:
                 best_score = score
@@ -403,4 +406,3 @@ class DynamicxLSTM(nn.Module):
         h = self.xlstm_stack(h)
         h = self.norm(h)
         return self.decoder(h)
-        
