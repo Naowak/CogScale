@@ -15,36 +15,30 @@ def _generate_train_test_samples(n_train, n_valid, n_test, generate_one_sample, 
     - generate_one_sample (function): Function to generate one sample
     
     Returns:
-    - data (dict): Dictionary containing the training, testing and validation sets and their respective prediction timesteps.
-    It also contains the category flag.
+    - data (dict): Dictionary containing the training, testing and validation sets where targets
+    use the -100 mask on non-prediction steps. It also contains the category flag.
     """
     # Generate the samples
     n_samples = n_train + n_test + n_valid
-    input, target, timesteps = zip(*[generate_one_sample() for _ in range(n_samples)])
-    input, target, timesteps = np.array(input), np.array(target), np.array(timesteps)
+    input, target = zip(*[generate_one_sample() for _ in range(n_samples)])
+    input, target = np.array(input), np.array(target)
     
     # Split the data into training and testing set
     X_train = input[:n_train, :, :]
     Y_train = target[:n_train, :, :]
-    T_train = timesteps[:n_train, :] # timesteps to predict
     X_valid = input[n_train:n_train+n_valid, :, :]
     Y_valid = target[n_train:n_train+n_valid, :, :]
-    T_valid = timesteps[n_train:n_train+n_valid, :] # timesteps to predict
     X_test = input[n_train+n_valid:, :, :]
     Y_test = target[n_train+n_valid:, :, :]
-    T_test = timesteps[n_train+n_valid:, :] # timesteps to predict
 
     # Create the data dictionary
     data = {
         'X_train': X_train,
         'Y_train': Y_train,
-        'T_train': T_train,
         'X_valid': X_valid,
         'Y_valid': Y_valid,
-        'T_valid': T_valid,
         'X_test': X_test,
         'Y_test': Y_test,
-        'T_test': T_test,
         'category': category
     }
 
@@ -71,16 +65,19 @@ def generate_discrete_postcasting(n_train=1000, n_valid=200, n_test=200, sequenc
 
     Return:
     - data (dict): dictionary containing the training, validation and test sets as well as
-    their respective prediction timesteps. It also contains the category flag.
+    their respective targets using -100 as a mask on non-evaluated timesteps. It also contains the category flag.
     """
     def generate_one_sample():
         # Generate the sequence
         sequence = rng.integers(0, n_symbols, size=sequence_length)
         input = np.eye(n_symbols)[sequence].reshape(sequence_length, n_symbols)
-        target = np.concatenate([np.zeros((delay, n_symbols)), input[:-delay, :]], axis=0)
-        timesteps = np.arange(delay, sequence_length)
+        
+        # Initialize the target with -100.0 everywhere
+        target = np.full((sequence_length, n_symbols), -100.0)
+        # Place the correct targets starting from the delay offset
+        target[delay:, :] = input[:-delay, :]
 
-        return input, target, timesteps
+        return input, target
     
     # Generate the samples
     rng = np.random.default_rng(seed)
@@ -105,15 +102,17 @@ def generate_continuous_postcasting(n_train=1000, n_valid=200, n_test=200, seque
 
     Return:
     - data (dict): dictionary containing the training, validation and test sets as well as
-    their respective prediction timesteps. It also contains the category flag.
+    their respective targets using -100 as a mask on non-evaluated timesteps. It also contains the category flag.
     """
     def generate_one_sample():
         # Generate the sequence
         input = rng.uniform(-0.8, 0.8, size=sequence_length).reshape(sequence_length, 1)
-        target = np.concatenate([np.zeros((delay, 1)), input[:-delay, :]], axis=0)
-        timesteps = np.arange(delay, sequence_length)
+        
+        # Initialize target with -100.0 mask value
+        target = np.full((sequence_length, 1), -100.0)
+        target[delay:, :] = input[:-delay, :]
 
-        return input, target, timesteps
+        return input, target
     
     # Generate the samples
     rng = np.random.default_rng(seed)
@@ -137,7 +136,7 @@ def generate_sinus_forecasting(sequence_length=1000, forecast_length=1, training
 
     Return:
     - data (dict): dictionary containing the training, validation and test sets as well as
-    their respective prediction timesteps. It also contains the category flag.
+    their respective targets using -100 as a mask on non-evaluated timesteps. It also contains the category flag.
     """
     # Check the ratios
     if training_ratio + testing_ratio + validation_ratio != 1:
@@ -159,29 +158,28 @@ def generate_sinus_forecasting(sequence_length=1000, forecast_length=1, training
     # Split the data into training and testing set
     training_size = int(sequence_length * training_ratio)
     validation_size = int(sequence_length * (training_ratio + validation_ratio))
+    
+    # On applique les masques de valeur -100.0 directement sur Y selon les phases d'évaluation
     X_train = input[:, :training_size, :]
-    Y_train = target[:, :training_size, :]
+    Y_train = target[:, :training_size, :].copy()
+    Y_train[:, :forecast_length, :] = -100.0  # Masqué pour l'entraînement
+    
     X_valid = input[:, :validation_size, :]
-    Y_valid = target[:, :validation_size, :]
+    Y_valid = target[:, :validation_size, :].copy()
+    Y_valid[:, :training_size, :] = -100.0    # Ne valide que la zone de validation
+    
     X_test = input
-    Y_test = target
-
-    # Prediction timestep
-    T_train = np.arange(forecast_length, training_size).reshape(1, -1)
-    T_valid = np.arange(training_size, validation_size).reshape(1, -1)
-    T_test = np.arange(validation_size, sequence_length).reshape(1, -1)
+    Y_test = target.copy()
+    Y_test[:, :validation_size, :] = -100.0   # Ne teste que la zone de test
 
     # Create the data dictionary
     data = {
         'X_train': X_train,
         'Y_train': Y_train,
-        'T_train': T_train,
         'X_valid': X_valid,
         'Y_valid': Y_valid,
-        'T_valid': T_valid,
         'X_test': X_test,
         'Y_test': Y_test,
-        'T_test': T_test,
         'category': 'regression'
     }
 
@@ -203,7 +201,7 @@ def generate_chaotic_forecasting(sequence_length=1000, forecast_length=1, traini
 
     Return:
     - data (dict): dictionary containing the training, validation and test sets as well as
-    their respective prediction timesteps. It also contains the category flag.
+    their respective targets using -100 as a mask on non-evaluated timesteps. It also contains the category flag.
     """
     # Check the ratios
     if training_ratio + testing_ratio + validation_ratio != 1:
@@ -244,29 +242,28 @@ def generate_chaotic_forecasting(sequence_length=1000, forecast_length=1, traini
     # Split the data into training and testing set
     training_size = int(sequence_length * training_ratio)
     validation_size = int(sequence_length * (training_ratio + validation_ratio))
+    
+    # Masques explicites avec -100.0 selon la phase
     X_train = input[:, :training_size, :]
-    Y_train = target[:, :training_size, :]
+    Y_train = target[:, :training_size, :].copy()
+    Y_train[:, :forecast_length, :] = -100.0
+    
     X_valid = input[:, :validation_size, :]
-    Y_valid = target[:, :validation_size, :]
+    Y_valid = target[:, :validation_size, :].copy()
+    Y_valid[:, :training_size, :] = -100.0
+    
     X_test = input
-    Y_test = target
-
-    # Prediction timestep
-    T_train = np.arange(forecast_length, training_size).reshape(1, -1)
-    T_valid = np.arange(training_size, validation_size).reshape(1, -1)
-    T_test = np.arange(validation_size, sequence_length).reshape(1, -1)
+    Y_test = target.copy()
+    Y_test[:, :validation_size, :] = -100.0
 
     # Create the data dictionary
     data = {
         'X_train': X_train,
         'Y_train': Y_train,
-        'T_train': T_train,
         'X_valid': X_valid,
         'Y_valid': Y_valid,
-        'T_valid': T_valid,
         'X_test': X_test,
         'Y_test': Y_test,
-        'T_test': T_test,
         'category': 'regression'
     }
 
@@ -294,7 +291,7 @@ def generate_discrete_pattern_completion(n_train=1000, n_valid=200, n_test=200, 
 
     Return:
     - data (dict): dictionary containing the training, validation and test sets as well as
-    their respective prediction timesteps. It also contains the category flag.
+    their respective targets using -100 as a mask on non-evaluated timesteps. It also contains the category flag.
     """
     def generate_one_sample():
         # Generate a base pattern
@@ -309,10 +306,13 @@ def generate_discrete_pattern_completion(n_train=1000, n_valid=200, n_test=200, 
 
         # One-hot encoding
         input = np.eye(n_symbols+1)[masked_sequence]
-        target = np.eye(n_symbols)[sequence]
-        timesteps = mask
+        
+        # Initialize target with -100.0 mask value
+        target = np.full((sequence_length, n_symbols), -100.0)
+        # Assign values only for masked positions
+        target[mask] = np.eye(n_symbols)[sequence[mask]]
 
-        return input, target, timesteps
+        return input, target
 
     # Generate the samples
     rng = np.random.default_rng(seed)
@@ -337,7 +337,7 @@ def generate_continuous_pattern_completion(n_train=1000, n_valid=200, n_test=200
 
     Return:
     - data (dict): dictionary containing the training, validation and test sets as well as
-    their respective prediction timesteps. It also contains the category flag.
+    their respective targets using -100 as a mask on non-evaluated timesteps. It also contains the category flag.
     """
     def generate_one_sample():
         # Generate a base pattern
@@ -352,10 +352,12 @@ def generate_continuous_pattern_completion(n_train=1000, n_valid=200, n_test=200
 
         # One-hot encoding
         input = masked_sequence.reshape(-1, 1)
-        target = sequence.reshape(-1, 1)
-        timesteps = mask
+        
+        # Initialize target with -100.0 mask value
+        target = np.full((sequence_length, 1), -100.0)
+        target[mask] = sequence[mask].reshape(-1, 1)
 
-        return input, target, timesteps
+        return input, target
     
     # Generate the samples
     rng = np.random.default_rng(seed)
@@ -378,7 +380,7 @@ def generate_simple_copy(n_train=1000, n_valid=200, n_test=200, sequence_length=
 
     Return:
     - data (dict): dictionary containing the training, validation and test sets as well as
-    their respective prediction timesteps. It also contains the category flag.
+    their respective targets using -100 as a mask on non-evaluated timesteps. It also contains the category flag.
     """
     def generate_one_sample():
         # Generate a random sequence
@@ -390,12 +392,10 @@ def generate_simple_copy(n_train=1000, n_valid=200, n_test=200, sequence_length=
         input_sequence[:sequence_length, :n_symbols] = sequence_onehot
         input_sequence[sequence_length + delay, n_symbols] = 1  # marker
 
-        target_sequence = np.zeros((sequence_length + delay + 1 + sequence_length, n_symbols))
+        target_sequence = np.full((sequence_length + delay + 1 + sequence_length, n_symbols), -100.0)
         target_sequence[sequence_length + delay + 1:, :] = sequence_onehot
 
-        timesteps = np.arange(sequence_length + delay + 1, sequence_length + delay + 1 + sequence_length)
-
-        return input_sequence, target_sequence, timesteps
+        return input_sequence, target_sequence
 
     # Generate the samples
     rng = np.random.default_rng(seed)
@@ -419,7 +419,7 @@ def generate_selective_copy(n_train=1000, n_valid=200, n_test=200, sequence_leng
 
     Return: 
     - data (dict): dictionary containing the training, validation and test sets as well as
-    their respective prediction timesteps. It also contains the category flag.
+    their respective targets using -100 as a mask on non-evaluated timesteps. It also contains the category flag.
     """
     def generate_one_sample():
         # generate random sequence
@@ -435,13 +435,10 @@ def generate_selective_copy(n_train=1000, n_valid=200, n_test=200, sequence_leng
         input[sequence_length + delay, n_symbols + 1] = 1
 
         # Create the target
-        target = np.zeros((sequence_length + delay + 1 + n_markers, n_symbols))
+        target = np.full((sequence_length + delay + 1 + n_markers, n_symbols), -100.0)
         target[-n_markers:, :] = sequence_onehot[selected_indices, :]
 
-        # Create the timesteps
-        timesteps = np.arange(sequence_length + delay + 1, sequence_length + delay + 1 + n_markers)
-
-        return input, target, timesteps
+        return input, target
     
     # Generate the samples
     rng = np.random.default_rng(seed)
@@ -465,7 +462,7 @@ def generate_adding_problem(n_train=1000, n_valid=200, n_test=200, sequence_leng
 
     Return:
     - data (dict): dictionary containing the training, validation and test sets as well as
-    their respective prediction timesteps. It also contains the category flag.
+    their respective targets using -100 as a mask on non-evaluated timesteps. It also contains the category flag.
     """
     def generate_one_sample():
         # Generate the sequence
@@ -480,13 +477,10 @@ def generate_adding_problem(n_train=1000, n_valid=200, n_test=200, sequence_leng
         input[sequence_length, max_number+1] = 1 # Trigger
 
         # Create target
-        target = np.zeros((sequence_length+2, max_number*2-1))
+        target = np.full((sequence_length+2, max_number*2-1), -100.0)
         target[-1, result-2] = 1
 
-        # Create timesteps
-        timesteps = np.arange(sequence_length+1, sequence_length+2)
-
-        return input, target, timesteps
+        return input, target
 
     # Generate the samples
     rng = np.random.default_rng(seed)
@@ -508,7 +502,7 @@ def generate_sorting_problem(n_train=1000, n_valid=200, n_test=200, sequence_len
 
     Return:
     - data (dict): dictionary containing the training, validation and test sets as well as
-    their respective prediction timesteps. It also contains the category flag.
+    their respective targets using -100 as a mask on non-evaluated timesteps. It also contains the category flag.
     """
     def generate_one_sample():
         # Create a sequence of symbols & a random order
@@ -527,13 +521,11 @@ def generate_sorting_problem(n_train=1000, n_valid=200, n_test=200, sequence_len
 
         # Create the input & target
         input = np.concatenate([sequence_order, marker, zero_input_pad], axis=0)
-        target = np.zeros((sequence_length+1+sequence_length, n_symbols))
+        
+        target = np.full((sequence_length+1+sequence_length, n_symbols), -100.0)
         target[sequence_length + 1 + order] = sequence_onehot
 
-        # Create the timesteps
-        timesteps = np.arange(sequence_length + 1, sequence_length + 1 + sequence_length)
-
-        return input, target, timesteps
+        return input, target
     
     # Generate the samples
     rng = np.random.default_rng(seed)
@@ -556,7 +548,7 @@ def generate_bracket_matching(n_train=1000, n_valid=200, n_test=200, sequence_le
 
     Return:
     - data (dict): dictionary containing the training, validation and test sets as well as
-    their respective prediction timesteps. It also contains the category flag.
+    their respective targets using -100 as a mask on non-evaluated timesteps. It also contains the category flag.
     """
     def generate_valid_sequence(length, max_depth):
         sequence = []
@@ -607,13 +599,11 @@ def generate_bracket_matching(n_train=1000, n_valid=200, n_test=200, sequence_le
 
         # Create the input & target
         input = sequence_onehot
-        target = np.zeros((sequence_length+2, 2))
+        
+        target = np.full((sequence_length+2, 2), -100.0)
         target[-1, int(validity)] = 1
 
-        # Create the timesteps
-        timesteps = np.arange(sequence_length+1, sequence_length+2)
-
-        return input, target, timesteps
+        return input, target
 
     # Generate the samples
     rng = np.random.default_rng(seed)
@@ -637,7 +627,7 @@ def generate_csl(n_train=1000, n_valid=200, n_test=200, objects=None, colors=Non
 
     Return:
     - data (dict): dictionary containing the training, validation and test sets 
-    as well as their respective prediction timesteps. It also contains the category flag.
+    as well as their respective targets using -100 as a mask on non-evaluated timesteps. It also contains the category flag.
     """
     
     # Default parameters
@@ -664,14 +654,11 @@ def generate_csl(n_train=1000, n_valid=200, n_test=200, objects=None, colors=Non
         # Retrieval of the input sequence (encoded sentence)
         input_seq = X_all[idx]  # Shape: (n_steps, n_symbols)
         
-        # We fill with zeros and place the true target only at the end
-        target_seq = np.zeros((n_steps, n_labels))
+        # We fill with mask values (-100.0) and place the true target only at the end
+        target_seq = np.full((n_steps, n_labels), -100.0)
         target_seq[-1, :] = Y_all[idx]
-        
-        # The model must predict only at the end of the sentence
-        timesteps = np.array([n_steps - 1])
 
-        return input_seq, target_seq, timesteps
+        return input_seq, target_seq
 
     # Generation of samples
     rng = np.random.default_rng(seed)
@@ -718,15 +705,12 @@ def generate_associative_recall(n_train=1000, n_valid=200, n_test=200, sequence_
         # 4. Encodage One-hot de l'entrée
         input_seq = np.eye(n_symbols)[tokens]
         
-        # 5. Création de la cible (uniquement valide à la fin)
-        target_seq = np.zeros((sequence_length, n_symbols))
+        # 5. Création de la cible (uniquement valide à la fin, reste masqué avec -100.0)
+        target_seq = np.full((sequence_length, n_symbols), -100.0)
         target_value = values[query_idx]
         target_seq[-1, target_value] = 1
         
-        # 6. Définition du timestep à évaluer (le dernier token)
-        timesteps = np.array([sequence_length - 1])
-        
-        return input_seq, target_seq, timesteps
+        return input_seq, target_seq
 
     return _generate_train_test_samples(n_train, n_valid, n_test, generate_one_sample, category='classification')
 
@@ -754,15 +738,13 @@ def generate_induction_heads(n_train=1000, n_valid=200, n_test=200, sequence_len
         # One-hot encoding of the input sequence
         input_seq = np.eye(n_symbols)[sequence]
         
-        # Create the target sequence: the model must predict the next token in the second half
-        target_seq = np.zeros((sequence_length, n_symbols))
+        # Create the target sequence: initialized with -100.0 mask value
+        target_seq = np.full((sequence_length, n_symbols), -100.0)
 
         # The model must predict the next token in the second half, which is the same as the first half        
         for t in range(half_len, sequence_length - 1):
             target_seq[t, sequence[t+1]] = 1
             
-        timesteps = np.arange(half_len, sequence_length - 1)
-        
-        return input_seq, target_seq, timesteps
+        return input_seq, target_seq
 
     return _generate_train_test_samples(n_train, n_valid, n_test, generate_one_sample, category='classification')

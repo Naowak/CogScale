@@ -11,7 +11,7 @@ import re
 import os
 
 import sys
-sys.path.append("../")
+sys.path.append("../../")
 import cogscale as cog
 from baseline.scripts.models import DynamicLSTM, DynamicGRU, DynamicTransformerDecoderOnly, \
     DynamicTransformerEncoderDecoder, DynamicESN, \
@@ -47,39 +47,30 @@ def parse_report_configs(filepath="report.md"):
             
     return configs
 
-def get_masked_loss(preds, targets, timesteps, category):
-    B = timesteps.shape[0]
-    O = preds.shape[-1]
+def get_masked_loss(preds, targets, category):
+    # Les cibles contiennent -100.0 là où elles sont masquées.
+    # On crée un masque booléen là où au moins un élément n'est pas égal à -100.
+    mask = (targets != -100.0).any(dim=-1)
     
-    p_list = [preds[i, timesteps[i], :] for i in range(B)]
-    t_list = [targets[i, timesteps[i], :] for i in range(B)]
-        
-    p_tensor = torch.stack(p_list)
-    t_tensor = torch.stack(t_list)
+    p_flat = preds[mask]
+    t_flat = targets[mask]
     
     if category == 'classification':
-        t_class = torch.argmax(t_tensor, dim=-1) 
-        p_flat = p_tensor.view(-1, O)            
-        t_flat = t_class.view(-1)                
-        loss = nn.CrossEntropyLoss()(p_flat, t_flat)
+        t_class = torch.argmax(t_flat, dim=-1) 
+        loss = nn.CrossEntropyLoss()(p_flat, t_class)
         
     elif category == 'multi_classification':
-        p_flat = p_tensor.view(-1, O)
-        t_flat = t_tensor.view(-1, O)
         loss = nn.BCEWithLogitsLoss()(p_flat, t_flat)
         
     elif category == 'regression':
-        loss = nn.MSELoss()(p_tensor, t_tensor)
+        loss = nn.MSELoss()(p_flat, t_flat)
         
     return loss
 
-def find_best_threshold(preds_logits, targets, timesteps):
-    B = timesteps.shape[0]
-    p_list = [preds_logits[i, timesteps[i], :] for i in range(B)]
-    t_list = [targets[i, timesteps[i], :] for i in range(B)]
-    
-    preds = np.stack(p_list, axis=0)
-    truths = np.stack(t_list, axis=0)
+def find_best_threshold(preds_logits, targets):
+    mask = (targets != -100.0).any(axis=-1)
+    preds = preds_logits[mask]
+    truths = targets[mask]
     
     sigmoid = lambda x: 1 / (1 + np.exp(-x))
     preds_probs = sigmoid(preds)
@@ -91,7 +82,7 @@ def find_best_threshold(preds_logits, targets, timesteps):
     
     for t in thresholds:
         preds_bin = (preds_probs >= t).astype(int)
-        correct_samples = np.all(preds_bin == truths, axis=(1, 2))
+        correct_samples = np.all(preds_bin == truths, axis=-1)
         score = 1 - np.mean(correct_samples)
         
         if score < best_score:
@@ -161,20 +152,20 @@ def run_experiment():
             # 1. Trouver la longueur maximale (généralement X_test)
             max_seq_len = max(task_data['X_train'].shape[1], task_data['X_valid'].shape[1], task_data['X_test'].shape[1])
             
-            # 2. Fonction pour rajouter des zéros à la fin de la dimension temporelle (dim 1)
-            def pad_to_max(arr, max_len):
+            # 2. Fonction pour rajouter des zéros ou des valeurs de masques (-100.0) à la fin de la dimension temporelle (dim 1)
+            def pad_to_max(arr, max_len, pad_value=0.0):
                 if arr.shape[1] < max_len:
-                    return np.pad(arr, ((0, 0), (0, max_len - arr.shape[1]), (0, 0)), mode='constant')
+                    return np.pad(arr, ((0, 0), (0, max_len - arr.shape[1]), (0, 0)), mode='constant', constant_values=pad_value)
                 return arr
 
-            # 3. Application du padding
-            task_data['X_train'] = pad_to_max(task_data['X_train'], max_seq_len)
-            task_data['X_valid'] = pad_to_max(task_data['X_valid'], max_seq_len)
-            task_data['X_test'] = pad_to_max(task_data['X_test'], max_seq_len)
+            # 3. Application du padding (les inputs à 0.0 et les targets à -100.0)
+            task_data['X_train'] = pad_to_max(task_data['X_train'], max_seq_len, pad_value=0.0)
+            task_data['X_valid'] = pad_to_max(task_data['X_valid'], max_seq_len, pad_value=0.0)
+            task_data['X_test'] = pad_to_max(task_data['X_test'], max_seq_len, pad_value=0.0)
             
-            task_data['Y_train'] = pad_to_max(task_data['Y_train'], max_seq_len)
-            task_data['Y_valid'] = pad_to_max(task_data['Y_valid'], max_seq_len)
-            task_data['Y_test'] = pad_to_max(task_data['Y_test'], max_seq_len)
+            task_data['Y_train'] = pad_to_max(task_data['Y_train'], max_seq_len, pad_value=-100.0)
+            task_data['Y_valid'] = pad_to_max(task_data['Y_valid'], max_seq_len, pad_value=-100.0)
+            task_data['Y_test'] = pad_to_max(task_data['Y_test'], max_seq_len, pad_value=-100.0)
             
             input_dim = task_data['X_train'].shape[-1]
             output_dim = task_data['Y_train'].shape[-1]
@@ -205,21 +196,19 @@ def run_experiment():
             )
             print(f"Modèle ESN initialisé avec {model.actual_params} paramètres (N={hparams['N']}, lr={hparams['lr']:.3f}, sr={hparams['sr']:.3f}, is={hparams['input_scaling']:.3f}).")
             
-            # Entraînement avec recherche automatique du Ridge sur la validation
+            # Entraînement avec recherche automatique du Ridge sur la validation (sans t_train/t_valid)
             model.fit(
                 X_train=task_data['X_train'], 
                 Y_train=task_data['Y_train'], 
-                T_train=task_data['T_train'],
                 X_valid=task_data['X_valid'], 
                 Y_valid=task_data['Y_valid'], 
-                T_valid=task_data['T_valid'],
                 category=category
             )
             
             # Optimisation du threshold (si multi_classification)
             if category == 'multi_classification':
                 preds_val_np = model.predict(task_data['X_valid'])
-                best_threshold = find_best_threshold(preds_val_np, task_data['Y_valid'], task_data['T_valid'])
+                best_threshold = find_best_threshold(preds_val_np, task_data['Y_valid'])
                 print(f"  -> Meilleur threshold trouvé sur la validation : {best_threshold:.2f}")
 
             # Prédiction Test
@@ -229,17 +218,15 @@ def run_experiment():
         # BRANCHE 2 : RÉSEAUX DE NEURONES (PyTorch)
         # ----------------------------------------------------
         else:
-            # Préparation Tensors
+            # Préparation Tensors (les masques -100.0 sont portés par Y_train et Y_valid_np)
             X_train = torch.tensor(task_data['X_train'], dtype=torch_dtype)
             Y_train = torch.tensor(task_data['Y_train'], dtype=torch_dtype)
-            T_train = torch.tensor(task_data['T_train'], dtype=torch.long)
             
             X_valid = torch.tensor(task_data['X_valid'], dtype=torch_dtype).to(device)
             Y_valid_np = task_data['Y_valid']
-            T_valid_np = task_data['T_valid']
             X_test = torch.tensor(task_data['X_test'], dtype=torch_dtype).to(device)
             
-            train_dataset = TensorDataset(X_train, Y_train, T_train)
+            train_dataset = TensorDataset(X_train, Y_train)
             train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True)
             
             # Instanciation
@@ -270,11 +257,11 @@ def run_experiment():
             
             for epoch in range(args.epochs):
                 model.train()
-                for bx, by, bt in train_loader:
-                    bx, by, bt = bx.to(device), by.to(device), bt.to(device)
+                for bx, by in train_loader:
+                    bx, by = bx.to(device), by.to(device)
                     optimizer.zero_grad()
                     preds = model(bx)
-                    loss = get_masked_loss(preds, by, bt, category)
+                    loss = get_masked_loss(preds, by, category)
                     loss.backward()
                     optimizer.step()
 
@@ -286,7 +273,7 @@ def run_experiment():
                         preds_val_list.append(model(batch_val).cpu().numpy())
                     preds_val_np = np.concatenate(preds_val_list, axis=0)
                     
-                val_score = cog.compute_score(Y=Y_valid_np, Y_hat=preds_val_np, prediction_timesteps=T_valid_np, category=category)
+                val_score = cog.compute_score(Y=Y_valid_np, Y_hat=preds_val_np, category=category)
                 
                 if val_score < best_val_score:
                     best_val_score = val_score
@@ -310,7 +297,7 @@ def run_experiment():
                         batch_val = X_valid[i:i+args.batch_size]
                         preds_val_list.append(model(batch_val).cpu().numpy())
                     preds_val_np = np.concatenate(preds_val_list, axis=0)
-                best_threshold = find_best_threshold(preds_val_np, Y_valid_np, T_valid_np)
+                best_threshold = find_best_threshold(preds_val_np, Y_valid_np)
                 print(f"  -> Meilleur threshold trouvé sur la validation : {best_threshold:.2f}")
 
             model.eval()
@@ -327,7 +314,6 @@ def run_experiment():
         score = cog.compute_score(
             Y=task_data['Y_test'],
             Y_hat=preds_test_np,
-            prediction_timesteps=task_data['T_test'],
             category=category,
             threshold=best_threshold
         )

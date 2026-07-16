@@ -18,14 +18,13 @@ tasks = [
     'induction_heads',
 ]
 
-def compute_score(Y, Y_hat, prediction_timesteps, category, threshold=0.5):
+def compute_score(Y, Y_hat, category, threshold=0.5):
     """
-    Compute the accuracy of the model.
+    Compute the accuracy of the model using -100 as a mask.
 
     Parameters:
-    - Y (np.ndarray): Target array [B, T, O]
+    - Y (np.ndarray): Target array [B, T, O] (contains -100 where masked)
     - Y_hat (np.ndarray): Predicted array [B, T, O]
-    - prediction_timesteps (list): List of prediction timesteps
     - category (str): Category of the task -> 'classification' (acc) or 'regression' (mse) or 'multi_classification'
 
     Returns:
@@ -36,33 +35,29 @@ def compute_score(Y, Y_hat, prediction_timesteps, category, threshold=0.5):
         Y = np.array(Y, dtype=np.float32)
         Y_hat = np.array(Y_hat, dtype=np.float32)
 
-    # Select only the prediction timesteps
-    preds = []
-    truths = []
-    for j in range(Y.shape[0]):
-        preds.append(Y_hat[j, prediction_timesteps[j], :])
-        truths.append(Y[j, prediction_timesteps[j], :])
+    # Create the mask: True for timesteps where the target is not completely -100
+    mask = np.any(Y != -100.0, axis=-1)
+    
+    # Select only the non-masked prediction timesteps
+    preds = Y_hat[mask]
+    truths = Y[mask]
 
     if category=='classification':
         # Compute the accuracy
-        preds = np.argmax(np.stack(preds, axis=0), axis=-1)  # [B, prediction_timesteps] int: class
-        truths = np.argmax(np.stack(truths, axis=0), axis=-1)  # [B, prediction_timesteps] int: class
-        score = np.sum(preds == truths) / (truths.shape[0] * len(prediction_timesteps[0]))
+        preds_class = np.argmax(preds, axis=-1)  # [N] int: class
+        truths_class = np.argmax(truths, axis=-1)  # [N] int: class
+        score = np.sum(preds_class == truths_class) / truths_class.shape[0]
         score = 1 - score
 
     elif category=='multi_classification':
         # Compute the accuracy
         sigmoid = lambda x: 1/(1 + np.exp(-x))
-        preds = np.stack(preds, axis=0)  # [B, prediction_timesteps] int: class
-        truths = np.stack(truths, axis=0)  # [B, prediction_timesteps] int: class
         preds_bin = (sigmoid(preds) >= threshold).astype(int)
         correct_samples = (preds_bin == truths)
         score = 1 - np.mean(correct_samples)
 
     elif category=='regression':
         # Compute the MSE
-        preds = np.stack(preds, axis=0).reshape(-1, Y.shape[-1])  # [B * prediction_timesteps, O] float: logits
-        truths = np.stack(truths, axis=0).reshape(-1, Y.shape[-1])
         score = np.mean((preds - truths) ** 2)
 
     else:
