@@ -1,0 +1,657 @@
+
+# >>>>>>>>>>>>>>>>>>>>>> ERROR REPORT <<<<<<<<<<<<<<<<<<<<<<
+
+    Traceback (most recent call last):
+      File "/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-conda-25.9.1/lib/python3.12/site-packages/conda/exception_handler.py", line 28, in __call__
+        return func(*args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^
+      File "/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-conda-25.9.1/lib/python3.12/site-packages/conda/cli/main.py", line 61, in main_subshell
+        exit_code = do_call(args, parser)
+                    ^^^^^^^^^^^^^^^^^^^^^
+      File "/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-conda-25.9.1/lib/python3.12/site-packages/conda/cli/conda_argparse.py", line 205, in do_call
+        result = getattr(module, func_name)(args, parser)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-conda-25.9.1/lib/python3.12/site-packages/conda/cli/main_init.py", line 183, in execute
+        return initialize(
+               ^^^^^^^^^^^
+      File "/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-conda-25.9.1/lib/python3.12/site-packages/conda/core/initialize.py", line 142, in initialize
+        run_plan_elevated(plan2)
+      File "/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-conda-25.9.1/lib/python3.12/site-packages/conda/core/initialize.py", line 1080, in run_plan_elevated
+        result = subprocess_call(
+                 ^^^^^^^^^^^^^^^^
+      File "/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-conda-25.9.1/lib/python3.12/site-packages/conda/gateways/subprocess.py", line 129, in subprocess_call
+        raise CalledProcessError(rc, command, output=formatted_output)
+    subprocess.CalledProcessError: Command '['sudo', '/gnu/store/nizx2naydfz73pjng6yyf7y1588c30qg-python-wrapper-3.12.12/bin/python', '-m', 'conda.core.initialize']' returned non-zero exit status 1.
+
+`$ /gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-conda-25.9.1/bin/.conda-real init`
+
+  environment variables:
+                 CIO_TEST=<not set>
+        CMAKE_PREFIX_PATH=/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-
+                          conda-25.9.1/:/gnu/store/hs1h3dvvvsf3irv0g0yrpza2yd2f6d6z-python-
+                          conda-libmamba-
+                          solver-25.11.0/:/gnu/store/p41gp6504s2cbidgybngbym853if14fd-python-
+                          zstandard-0.23.0/:/gnu/store/ghzas5syn4ysc2m5cgbfqd86ld6fijg0-python-
+                          requests-2.32.5/:/gnu/store/qqb48rwydpypgmmmh836l8fmb92b3b5c-python-
+                          urllib3-2.5.0/:/gnu/store/1lr1l4wy6fdy4m8v0vkvqagnl7br1jvs-python-
+                          pysocks-1.7.1/:/gnu/store/ybyl4q87in3002gzd4ih7v20717pnbh8-python-
+                          pyopenssl-24.3.0/:/gnu/store/m6hgswrp4mbxd02x9dw06sr5kfk4yz6n-python-
+                          cryptography-44.0.0/:/gnu/store/62pqpnh7v31qzhvfq79kmw6y8hvrk2mv-
+                          python-cffi-1.17.1/:/gnu/store/h48p8gwd87v5pyyr7fkfm4lcf0xi5may-
+                          python-pycparser-2.22/:/gnu/store/hkvfh3cxi7iylyr2z7229yhr75ck8lwa-
+                          python-idna-3.10/:/gnu/store/4lfbsgf20jz3ys0xjf3nfply518pqyy0-python-
+                          charset-normalizer-3.4.2/:/gnu/store/d0k8rpz9zks4m2mpvsbn8a5qfnli81yq-
+                          python-
+                          certifi-2025.06.15/:/gnu/store/av22zzxda91wipv1waq0z0fqrkqpr0vs-
+                          python-
+                          msgpack-1.1.2/:/gnu/store/c9i3jxhzk85ayjp69jnffm0l7v7v3gs9-python-
+                          libmambapy-2.3.2/:/gnu/store/9sh45ccmdcy30snpqpxi74jwm5nmz27a-yaml-
+                          cpp-0.9.0/:/gnu/store/vafl2nya57rkn6cnicgpvk2bdm6xk1jd-spdlog-
+                          1.15.3/:/gnu/store/kxgbccxdmkkbmwfmjhkahwj05clnfka5-reproc-
+                          14.2.5/:/gnu/store/xskr5mwjq6l8vp4iy9qvyzckxcflp0s0-nlohmann-
+                          json-3.12.0/:/gnu/store/vd1ygsmcyga8adi631vpvjrgzm152rsf-libexpected-
+                          1.1.0/:/gnu/store/3wr66aznj7cp0d5nc0nhswdlh2x35k6k-fmt-
+                          11.2.0/:/gnu/store/v50gf47qlg3rwrc10jijdfyk0s9sdj68-python-
+                          boltons-25.0.0/
+        CONDA_DEFAULT_ENV=base
+          CONDA_ENVS_PATH=/home/ybendiou/.conda/envs
+                CONDA_EXE=/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-
+                          conda-25.9.1/bin/conda:/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-
+                          conda-25.9.1/bin/conda
+          CONDA_PKGS_DIRS=/home/ybendiou/.conda/pkgs
+             CONDA_PREFIX=/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-conda-25.9.1
+           CONDA_PREFIX_1=/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-conda-25.9.1
+           CONDA_PREFIX_2=/beegfs/ybendiou/ESN-SB/venv
+    CONDA_PROMPT_MODIFIER=(base)
+         CONDA_PYTHON_EXE=/gnu/store/nizx2naydfz73pjng6yyf7y1588c30qg-python-
+                          wrapper-3.12.12/bin/python
+               CONDA_ROOT=/gnu/store/rh3vyrap1hswvgn122i7n7p5yba2spid-python-3.12.12
+              CONDA_SHLVL=3
+                    CPATH=/gnu/store/9sh45ccmdcy30snpqpxi74jwm5nmz27a-yaml-
+                          cpp-0.9.0/include:/gnu/store/vafl2nya57rkn6cnicgpvk2bdm6xk1jd-spdlog-
+                          1.15.3/include:/gnu/store/kxgbccxdmkkbmwfmjhkahwj05clnfka5-reproc-
+                          14.2.5/include:/gnu/store/xskr5mwjq6l8vp4iy9qvyzckxcflp0s0-nlohmann-
+                          json-3.12.0/include:/gnu/store/vd1ygsmcyga8adi631vpvjrgzm152rsf-libexp
+                          ected-1.1.0/include:/gnu/store/3wr66aznj7cp0d5nc0nhswdlh2x35k6k-fmt-
+                          11.2.0/include
+       CPLUS_INCLUDE_PATH=/gnu/store/9sh45ccmdcy30snpqpxi74jwm5nmz27a-yaml-
+                          cpp-0.9.0/include:/gnu/store/vafl2nya57rkn6cnicgpvk2bdm6xk1jd-spdlog-
+                          1.15.3/include:/gnu/store/kxgbccxdmkkbmwfmjhkahwj05clnfka5-reproc-
+                          14.2.5/include:/gnu/store/xskr5mwjq6l8vp4iy9qvyzckxcflp0s0-nlohmann-
+                          json-3.12.0/include:/gnu/store/vd1ygsmcyga8adi631vpvjrgzm152rsf-libexp
+                          ected-1.1.0/include:/gnu/store/3wr66aznj7cp0d5nc0nhswdlh2x35k6k-fmt-
+                          11.2.0/include
+           CURL_CA_BUNDLE=<not set>
+           C_INCLUDE_PATH=/gnu/store/9sh45ccmdcy30snpqpxi74jwm5nmz27a-yaml-
+                          cpp-0.9.0/include:/gnu/store/vafl2nya57rkn6cnicgpvk2bdm6xk1jd-spdlog-
+                          1.15.3/include:/gnu/store/kxgbccxdmkkbmwfmjhkahwj05clnfka5-reproc-
+                          14.2.5/include:/gnu/store/xskr5mwjq6l8vp4iy9qvyzckxcflp0s0-nlohmann-
+                          json-3.12.0/include:/gnu/store/vd1ygsmcyga8adi631vpvjrgzm152rsf-libexp
+                          ected-1.1.0/include:/gnu/store/3wr66aznj7cp0d5nc0nhswdlh2x35k6k-fmt-
+                          11.2.0/include
+ DEBUGINFOD_IMA_CERT_PATH=/etc/keys/ima:
+             GUIX_LOCPATH=/gnu/store/id83mipynrm6zb225v6qc1inifi0yfsi-glibc-
+                          locales-2.41/lib/locale:/home/ybendiou/.guix-
+                          profile/lib/locale:/var/guix/profiles/per-user/root/guix-
+                          profile/lib/locale
+          GUIX_PYTHONPATH=/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-
+                          conda-25.9.1/lib/python3.12/site-
+                          packages:/gnu/store/2xx8q8drxz6q3m1hcvmlzs4pr0w4fyxx-python-pytest-
+                          guix-0.0.1/lib/python3.12/site-
+                          packages:/gnu/store/x4hcdszhr3w738a41lqq4863l3mwnj6s-python-hatch-
+                          vcs-0.5.0/lib/python3.12/site-
+                          packages:/gnu/store/rb8856c2gijc0hfykyg250ykc3hgfq49-python-anaconda-
+                          client-1.13.1/lib/python3.12/site-
+                          packages:/gnu/store/vz8d46glnjch3l18qmcapz8a9684dckh-python-
+                          flaky-3.8.1/lib/python3.12/site-
+                          packages:/gnu/store/c4y37n7025pjrqa6fly9gqgb12za0jvw-python-
+                          flask-3.1.0/lib/python3.12/site-
+                          packages:/gnu/store/ijz4d6nyhqqiic468zpb0j9yf7wnvjps-python-
+                          hatchling-1.27.0/lib/python3.12/site-
+                          packages:/gnu/store/9bwpgi9hbdd1w8ja607cgxjs9lspjjns-python-importlib-
+                          resources-6.5.2/lib/python3.12/site-
+                          packages:/gnu/store/xj3y8mr4s1p6pisf702mwm8la8zngfmb-python-
+                          pexpect-4.9.0/lib/python3.12/site-
+                          packages:/gnu/store/c8azmz28xrkkdldldfyn9w0w3q2vqdnf-python-
+                          pytest-9.0.2/lib/python3.12/site-
+                          packages:/gnu/store/czbhzyfwjm8ymb3bs8wrxwwdsyf702jg-python-pytest-
+                          mock-3.15.1/lib/python3.12/site-
+                          packages:/gnu/store/ikblpcwrzyjanb03gwjh3rf533mg6qw5-python-pytest-
+                          rerunfailures-15.1/lib/python3.12/site-
+                          packages:/gnu/store/byja8r8kbdi7hcyivv3808nf9a4b1b57-python-pytest-
+                          split-0.10.0/lib/python3.12/site-
+                          packages:/gnu/store/daxp29hahgzqyvhrvsvdflap1c8grzmc-python-pytest-
+                          timeout-2.4.0/lib/python3.12/site-
+                          packages:/gnu/store/4i5bdcpw5cyzdgqachmy35g45fllbbqz-python-pytest-
+                          xdist-3.8.0/lib/python3.12/site-
+                          packages:/gnu/store/x2n6q40d5f3vmcdg7jr7v64pybfgin9n-python-pytest-
+                          xprocess-1.0.2/lib/python3.12/site-
+                          packages:/gnu/store/w88pnkcdq1kh6av4xvmvqx04j2q9cib5-python-
+                          responses-0.25.3/lib/python3.12/site-
+                          packages:/gnu/store/dgyqaq5iv4lqd24ll6k0dcamb53100mh-python-
+                          werkzeug-3.1.3/lib/python3.12/site-
+                          packages:/gnu/store/xymp6kfr2c4dsg6nwdd7vizg5dxhjfx0-python-
+                          archspec-0.2.5/lib/python3.12/site-
+                          packages:/gnu/store/v50gf47qlg3rwrc10jijdfyk0s9sdj68-python-
+                          boltons-25.0.0/lib/python3.12/site-
+                          packages:/gnu/store/bhfrsn73jblpqhg1kjzr08x9x1af19w0-python-
+                          boto3-1.42.5/lib/python3.12/site-
+                          packages:/gnu/store/4lfbsgf20jz3ys0xjf3nfply518pqyy0-python-charset-
+                          normalizer-3.4.2/lib/python3.12/site-
+                          packages:/gnu/store/cqvp3bk7wb6jiz0p3z9vb7r2b2w6xjca-python-conda-
+                          package-handling-2.4.0/lib/python3.12/site-
+                          packages:/gnu/store/6zhyczv3gf6s1chzd442a73q3mrcj1ap-python-conda-
+                          content-trust-0.2.0/lib/python3.12/site-
+                          packages:/gnu/store/gbz1kvsncld16pczspjjzgrrifaib1sp-python-
+                          distro-1.9.0/lib/python3.12/site-
+                          packages:/gnu/store/22cd8ih59d4xrs8hy1lii0pc5xn5v17x-python-
+                          frozendict-2.4.6/lib/python3.12/site-
+                          packages:/gnu/store/6c0sqk7aa1m4ll0h8dl76hy7kh14xkzh-python-
+                          jsonpatch-1.33/lib/python3.12/site-
+                          packages:/gnu/store/kjwwcmxngwkcgr5n238r8vrqqx059mx4-python-
+                          menuinst-2.4.1/lib/python3.12/site-
+                          packages:/gnu/store/2h989xriszygl5n705zhks9jkgmlb4zz-python-
+                          packaging-25.0/lib/python3.12/site-
+                          packages:/gnu/store/33x5kpb5xwzbzd28fy7hcpifj6bzpcb5-python-
+                          platformdirs-4.3.6/lib/python3.12/site-
+                          packages:/gnu/store/f1p2gc91d6axlc9xi8kpv4jiikymcr9a-python-
+                          pluggy-1.6.0/lib/python3.12/site-
+                          packages:/gnu/store/9wayf0aj0ryz4gva4484s8470sac8lay-python-
+                          pycosat-0.6.6/lib/python3.12/site-
+                          packages:/gnu/store/ghzas5syn4ysc2m5cgbfqd86ld6fijg0-python-
+                          requests-2.32.5/lib/python3.12/site-
+                          packages:/gnu/store/vrqnw97ilbicg4l7jd4vsxgmr1zppjw8-python-
+                          ruamel.yaml-0.18.14/lib/python3.12/site-
+                          packages:/gnu/store/m1dbgmkn95j5w7v4d2j2l70i0igwifj9-python-
+                          setuptools-80.9.0/lib/python3.12/site-
+                          packages:/gnu/store/qwlc0l52hwcgdcpbz7s92gfhpsalywpq-python-
+                          tqdm-4.67.1/lib/python3.12/site-
+                          packages:/gnu/store/h2nhwb6x6qcnxrya3bmrxidlc6404873-python-
+                          truststore-0.10.4/lib/python3.12/site-
+                          packages:/gnu/store/p41gp6504s2cbidgybngbym853if14fd-python-
+                          zstandard-0.23.0/lib/python3.12/site-
+                          packages:/gnu/store/hs1h3dvvvsf3irv0g0yrpza2yd2f6d6z-python-conda-
+                          libmamba-solver-25.11.0/lib/python3.12/site-
+                          packages:/gnu/store/rh3vyrap1hswvgn122i7n7p5yba2spid-
+                          python-3.12.12/lib/python3.12/site-
+                          packages:/gnu/store/4a40306i4ihgysv50jz0nfjnrav8lrr3-python-
+                          setuptools-scm-8.3.1/lib/python3.12/site-
+                          packages:/gnu/store/qqb48rwydpypgmmmh836l8fmb92b3b5c-python-
+                          urllib3-2.5.0/lib/python3.12/site-
+                          packages:/gnu/store/rdyjki4amp57j6zlbvcqw4cr3qpqjlj9-python-requests-
+                          toolbelt-1.0.0/lib/python3.12/site-
+                          packages:/gnu/store/6dj938i9bam4ydzqxyl0a6brz3s3678h-python-
+                          pyyaml-6.0.2/lib/python3.12/site-
+                          packages:/gnu/store/bgkbijbjks2hlzy36m1ymf5d9fcziik0-python-
+                          pytz-2025.1/lib/python3.12/site-
+                          packages:/gnu/store/v8fi6llwfj7gavr74f8fim26b4a3pgmz-python-
+                          pillow-12.1.1/lib/python3.12/site-
+                          packages:/gnu/store/y7r76kjdsb6am84pjj79w4m0h730wmz0-python-
+                          nbformat-5.10.4/lib/python3.12/site-
+                          packages:/gnu/store/1b23wby35kn9anjp1ahbnagxmwhg0yz4-python-
+                          defusedxml-0.7.1-0.c744588/lib/python3.12/site-
+                          packages:/gnu/store/qvy74sq4m33ldavrqi6lmmpfrcpvfys8-python-
+                          dateutil-2.9.0/lib/python3.12/site-
+                          packages:/gnu/store/pf1qxdsnn03xy81gimhsy0is3p9m87xy-python-conda-
+                          package-streaming-0.12.0/lib/python3.12/site-
+                          packages:/gnu/store/1iyma90wwd0lhhgqifpdn8idhhg71m21-python-anaconda-
+                          cli-base-0.8.1/lib/python3.12/site-
+                          packages:/gnu/store/2in7v295irfhsczmzhvfkv76a3f4d7hh-python-
+                          jinja2-3.1.2/lib/python3.12/site-
+                          packages:/gnu/store/41yw0zs62p0xl71palq57d3g91vd4wli-python-
+                          itsdangerous-2.2.0/lib/python3.12/site-
+                          packages:/gnu/store/xffp9pkrx0lz2h0373i77v4n0nz8r86m-python-
+                          blinker-1.9.0/lib/python3.12/site-
+                          packages:/gnu/store/2pslcg6ihrcckvljb6w25mml0iicjv3l-python-
+                          click-8.3.1/lib/python3.12/site-
+                          packages:/gnu/store/flk162ld84l31pd5q47606k0lclnihp1-python-
+                          asgiref-3.8.1/lib/python3.12/site-
+                          packages:/gnu/store/j0h52zng1vbnma83vxkd2myskvxdal01-python-trove-
+                          classifiers-2025.5.9.12/lib/python3.12/site-
+                          packages:/gnu/store/zabl1mb25iwkxdx770csinhg8fsxjg79-python-
+                          tomli-2.2.1/lib/python3.12/site-
+                          packages:/gnu/store/7fb1jzcsblw2sixlqqbmw2rgirxscdhz-python-
+                          pathspec-1.0.4/lib/python3.12/site-
+                          packages:/gnu/store/zs4ij983r7w0n560jncpywwnwhk2dcmv-python-packaging-
+                          bootstrap-25.0/lib/python3.12/site-
+                          packages:/gnu/store/xim2ffch03sm65xcpw48srb30hgias7i-python-
+                          ptyprocess-0.7.0/lib/python3.12/site-
+                          packages:/gnu/store/0nj283nvzydr5rjlfp2gpw1scfsppbzy-python-pygments-
+                          bootstrap-2.19.2/lib/python3.12/site-
+                          packages:/gnu/store/wxb1wbabhpj7yf7z5p0awdcswqkhkb6h-python-
+                          iniconfig-2.1.0/lib/python3.12/site-
+                          packages:/gnu/store/0gp7kl7kvspi4mrszvd6qrsd4ccypg16-python-
+                          execnet-2.1.2/lib/python3.12/site-
+                          packages:/gnu/store/1kgjp962i2gcbnv93qw8mh00aahqvlsa-python-
+                          psutil-7.2.2/lib/python3.12/site-
+                          packages:/gnu/store/2vvcrd7bhqsxbibhm0794bnbg9j5azf9-python-
+                          markupsafe-3.0.3/lib/python3.12/site-
+                          packages:/gnu/store/na95jkiidsh9sgsgqg9zch6ppbjv37yx-
+                          python-s3transfer-0.16.0/lib/python3.12/site-
+                          packages:/gnu/store/hykll43dvxm6m4akx5yxd4fdcz57xbvb-python-
+                          jmespath-1.0.1/lib/python3.12/site-
+                          packages:/gnu/store/jjr7rv39jajqi8srfpjrwzcrp88wbwd4-python-
+                          botocore-1.42.5/lib/python3.12/site-
+                          packages:/gnu/store/m6hgswrp4mbxd02x9dw06sr5kfk4yz6n-python-
+                          cryptography-44.0.0/lib/python3.12/site-
+                          packages:/gnu/store/hbm1naaddzppdfn55c6ghx74qqdsp800-python-
+                          jsonpointer-3.0.0/lib/python3.12/site-
+                          packages:/gnu/store/nza10m2b2b9c9za7nl5xyymz9z4l4x5m-python-
+                          six-1.17.0/lib/python3.12/site-
+                          packages:/gnu/store/kblr30s6kw4ms3bff2r11kw7s5n23rn3-python-
+                          pyparsing-3.2.3/lib/python3.12/site-
+                          packages:/gnu/store/hkvfh3cxi7iylyr2z7229yhr75ck8lwa-python-
+                          idna-3.10/lib/python3.12/site-
+                          packages:/gnu/store/d0k8rpz9zks4m2mpvsbn8a5qfnli81yq-python-
+                          certifi-2025.06.15/lib/python3.12/site-
+                          packages:/gnu/store/gci8a135li8v6g5kl3bkb2i2h1va42bp-python-
+                          ruamel.yaml.clib-0.2.12/lib/python3.12/site-
+                          packages:/gnu/store/hd591k68dm3ami78czcagfzimz44f19d-python-
+                          wheel-0.46.1/lib/python3.12/site-
+                          packages:/gnu/store/achsk10r74cmczrzipm97yfahdblrcw6-python-more-
+                          itertools-10.6.0/lib/python3.12/site-
+                          packages:/gnu/store/apc3pl5fvz4azc9cjsqj9pf7w1yvmi9w-python-jaraco-
+                          text-4.0.0/lib/python3.12/site-
+                          packages:/gnu/store/a886vqymkpr3gxcy82sww05qr0bc2z2x-python-jaraco-
+                          functools-4.2.1/lib/python3.12/site-
+                          packages:/gnu/store/1vlrydklhvggjmi6d0dhzha45k0mr1jn-
+                          python-3.12.12/lib/python3.12/site-
+                          packages:/gnu/store/62pqpnh7v31qzhvfq79kmw6y8hvrk2mv-python-
+                          cffi-1.17.1/lib/python3.12/site-
+                          packages:/gnu/store/av22zzxda91wipv1waq0z0fqrkqpr0vs-python-
+                          msgpack-1.1.2/lib/python3.12/site-
+                          packages:/gnu/store/c9i3jxhzk85ayjp69jnffm0l7v7v3gs9-python-
+                          libmambapy-2.3.2/lib/python3.12/site-
+                          packages:/gnu/store/r34p52knl911ba6rkhnj5n499agj0qv5-python-
+                          setuptools-bootstrap-80.9.0/lib/python3.12/site-
+                          packages:/gnu/store/1lr1l4wy6fdy4m8v0vkvqagnl7br1jvs-python-
+                          pysocks-1.7.1/lib/python3.12/site-
+                          packages:/gnu/store/ybyl4q87in3002gzd4ih7v20717pnbh8-python-
+                          pyopenssl-24.3.0/lib/python3.12/site-
+                          packages:/gnu/store/dpmbnzx2wxilmlx6iq303i612p4ppimr-python-
+                          traitlets-5.14.3/lib/python3.12/site-
+                          packages:/gnu/store/6ihgh4s3450x8awal1z5hfnrysnrawp2-python-jupyter-
+                          core-5.9.1/lib/python3.12/site-
+                          packages:/gnu/store/f5fahzb3q8ladl7j3d1imkl703rq94is-python-
+                          jsonschema-4.23.0/lib/python3.12/site-
+                          packages:/gnu/store/kzq88vlzaqb1hdw8n6w5l0cfy3phfzxa-python-
+                          fastjsonschema-2.21.1/lib/python3.12/site-
+                          packages:/gnu/store/iah20ag9dm893czhz3ms3bx742qd4gxx-python-
+                          typer-0.22.0/lib/python3.12/site-
+                          packages:/gnu/store/j4d4kw73sqq6fqvsnccxgpgqzlk89vz4-python-
+                          tomlkit-0.13.3/lib/python3.12/site-
+                          packages:/gnu/store/0cpj616p5xgxvcpq7a6hlj0mivy29cjc-python-
+                          rich-14.3.3/lib/python3.12/site-
+                          packages:/gnu/store/bi3iw72i2yzy1yv1l46jia4gwgcn6gcv-python-
+                          readchar-4.2.1/lib/python3.12/site-
+                          packages:/gnu/store/dk7z9i2y1blvd3kn7iqgd8vdpjkl6vl5-python-pydantic-
+                          settings-2.12.0/lib/python3.12/site-
+                          packages:/gnu/store/yp945m30wzq2yhxlazhngz5696zm3213-python-jaraco-
+                          context-6.0.1/lib/python3.12/site-
+                          packages:/gnu/store/5w9jf739vrd30hzc68byy1bc7g2yzf0c-python-
+                          inflect-7.5.0/lib/python3.12/site-
+                          packages:/gnu/store/wghs7fwrj14x9jfdij76g4pmbkh9mfa5-python-
+                          autocommand-2.2.2/lib/python3.12/site-
+                          packages:/gnu/store/h48p8gwd87v5pyyr7fkfm4lcf0xi5may-python-
+                          pycparser-2.22/lib/python3.12/site-
+                          packages:/gnu/store/s2fri8w9ffc1ks76wc0s7ajf5kkj4ljd-python-
+                          webcolors-24.11.1/lib/python3.12/site-
+                          packages:/gnu/store/3f0586z24mx62gya57sy2npl2k23k2hg-python-uri-
+                          template-1.3.0/lib/python3.12/site-
+                          packages:/gnu/store/qnzw5yrk694kp10iqra38vg645zag0is-python-rpds-
+                          py-0.10.6/lib/python3.12/site-
+                          packages:/gnu/store/28qss327bs7q8z0rzf04x67nkpsbpmdv-python-
+                          referencing-bootstrap-0.35.1/lib/python3.12/site-
+                          packages:/gnu/store/w3ad5x2izql3pbdkrs9gcw4g8p8cm0v2-python-
+                          rfc3986-validator-0.1.1/lib/python3.12/site-
+                          packages:/gnu/store/nlzx5nj6ps2q58n7d7y9dirhxlhb2r3h-python-
+                          rfc3339-validator-0.1.4/lib/python3.12/site-
+                          packages:/gnu/store/3516gkc2nl81sbcfcw7avva2dchqmhw0-python-
+                          jsonschema-specifications-2024.10.1/lib/python3.12/site-
+                          packages:/gnu/store/5h4gx2f0mx28i07x9vxw69j57vxys843-python-
+                          isoduration-20.11.0/lib/python3.12/site-
+                          packages:/gnu/store/q8hbx4jfyigdjqp8qd9zwp6zwgrzcvvc-python-
+                          fqdn-1.5.1/lib/python3.12/site-
+                          packages:/gnu/store/vdkvw8a4cp2x740c9j287ic1fvgahbbr-python-
+                          attrs-25.3.0/lib/python3.12/site-
+                          packages:/gnu/store/x1k0w2azfkg6l80pzigmbxa32hm8c0rm-python-
+                          shellingham-1.5.4/lib/python3.12/site-
+                          packages:/gnu/store/x29xkfxfa6qjmsi87lgx49fqw1zhgy4w-python-annotated-
+                          doc-0.0.4/lib/python3.12/site-
+                          packages:/gnu/store/7nd75n07lrdkq03g6vgscfsd9clgnm04-python-typing-
+                          extensions-4.15.0/lib/python3.12/site-
+                          packages:/gnu/store/93bcavcwzg119nx6vvga0qwgid6p9hhv-python-
+                          pygments-2.19.2/lib/python3.12/site-
+                          packages:/gnu/store/69n4a4rgilqllvg5xmqjiqcqc8rxl23n-python-markdown-
+                          it-py-4.0.0/lib/python3.12/site-
+                          packages:/gnu/store/7p46vz8yin4z3kszk21fdny83lxnqi7l-python-typing-
+                          inspection-0.4.2/lib/python3.12/site-
+                          packages:/gnu/store/zs2a1rwyawi5jck9g56kwvnfc3x3lki9-python-
+                          pydantic-2.12.5/lib/python3.12/site-
+                          packages:/gnu/store/9cwz5yqyyp0v748f2l5j4jqjfi9qqlh9-python-
+                          dotenv-1.1.1/lib/python3.12/site-
+                          packages:/gnu/store/pqi0gs7d9fh2igrlcmd73av9v59pc28d-python-backports-
+                          tarfile-1.2.0/lib/python3.12/site-
+                          packages:/gnu/store/wyq32i0rflibxvvx8l87pp4dwx33khrn-python-
+                          typeguard-4.4.4/lib/python3.12/site-
+                          packages:/gnu/store/v3fmqa231k994ah5cxmm2n2incnmsnwi-python-
+                          arrow-1.3.0/lib/python3.12/site-
+                          packages:/gnu/store/4xr7gbrkn44a461g6hycm5h0hjzxq5ly-python-cached-
+                          property-2.0.1/lib/python3.12/site-
+                          packages:/gnu/store/ijifk6bq3qrks97s1l6z0ddjvf6i8wx0-python-
+                          panflute-2.3.1/lib/python3.12/site-
+                          packages:/gnu/store/fa776fcg07y2zaax3xzvsdxkv0pp9x07-python-
+                          mistune-3.1.3/lib/python3.12/site-
+                          packages:/gnu/store/ya3r1nzdcmx11y2s1dx48i99rjgsk1yj-python-
+                          mistletoe-1.3.0/lib/python3.12/site-
+                          packages:/gnu/store/4y2in0mq1c3amcl4hgrhvhj5a3xr0clx-python-
+                          mdurl-0.1.2/lib/python3.12/site-
+                          packages:/gnu/store/8243kx47clymm2wdh45x48957sx27bvy-python-
+                          markdown-3.10/lib/python3.12/site-
+                          packages:/gnu/store/z5wl297xrgxajhlbasi90wavqhynkimh-python-linkify-
+                          it-py-2.0.0/lib/python3.12/site-
+                          packages:/gnu/store/5v0aisbmwzvsqr9zd2kxd4m9xjkbpbcx-python-
+                          commonmark-0.9.1/lib/python3.12/site-
+                          packages:/gnu/store/xyrls9civ7ff30nlvhhzbm9dsgbqzcpz-python-pydantic-
+                          core-2.41.5/lib/python3.12/site-
+                          packages:/gnu/store/qgdsnizvjr27cjnsng20qaqfpx5gshsj-python-annotated-
+                          types-0.7.0/lib/python3.12/site-
+                          packages:/gnu/store/cx45psrcgkd0n6qbykxkachl3sgmfi0d-python-types-
+                          python-dateutil-2.9.0.20250708/lib/python3.12/site-
+                          packages:/gnu/store/7gl8kq6y5379bm7sjmj4lryzz651zlvp-python-uc-micro-
+                          py-1.0.1/lib/python3.12/site-
+                          packages:/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-
+                          conda-25.9.1/lib/python3.12/site-
+                          packages:/gnu/store/hs1h3dvvvsf3irv0g0yrpza2yd2f6d6z-python-conda-
+                          libmamba-solver-25.11.0/lib/python3.12/site-
+                          packages:/gnu/store/p41gp6504s2cbidgybngbym853if14fd-python-
+                          zstandard-0.23.0/lib/python3.12/site-
+                          packages:/gnu/store/ghzas5syn4ysc2m5cgbfqd86ld6fijg0-python-
+                          requests-2.32.5/lib/python3.12/site-
+                          packages:/gnu/store/qqb48rwydpypgmmmh836l8fmb92b3b5c-python-
+                          urllib3-2.5.0/lib/python3.12/site-
+                          packages:/gnu/store/1lr1l4wy6fdy4m8v0vkvqagnl7br1jvs-python-
+                          pysocks-1.7.1/lib/python3.12/site-
+                          packages:/gnu/store/ybyl4q87in3002gzd4ih7v20717pnbh8-python-
+                          pyopenssl-24.3.0/lib/python3.12/site-
+                          packages:/gnu/store/m6hgswrp4mbxd02x9dw06sr5kfk4yz6n-python-
+                          cryptography-44.0.0/lib/python3.12/site-
+                          packages:/gnu/store/62pqpnh7v31qzhvfq79kmw6y8hvrk2mv-python-
+                          cffi-1.17.1/lib/python3.12/site-
+                          packages:/gnu/store/h48p8gwd87v5pyyr7fkfm4lcf0xi5may-python-
+                          pycparser-2.22/lib/python3.12/site-
+                          packages:/gnu/store/hkvfh3cxi7iylyr2z7229yhr75ck8lwa-python-
+                          idna-3.10/lib/python3.12/site-
+                          packages:/gnu/store/4lfbsgf20jz3ys0xjf3nfply518pqyy0-python-charset-
+                          normalizer-3.4.2/lib/python3.12/site-
+                          packages:/gnu/store/d0k8rpz9zks4m2mpvsbn8a5qfnli81yq-python-
+                          certifi-2025.06.15/lib/python3.12/site-
+                          packages:/gnu/store/av22zzxda91wipv1waq0z0fqrkqpr0vs-python-
+                          msgpack-1.1.2/lib/python3.12/site-
+                          packages:/gnu/store/c9i3jxhzk85ayjp69jnffm0l7v7v3gs9-python-
+                          libmambapy-2.3.2/lib/python3.12/site-
+                          packages:/gnu/store/v50gf47qlg3rwrc10jijdfyk0s9sdj68-python-
+                          boltons-25.0.0/lib/python3.12/site-packages
+               LD_PRELOAD=<not set>
+             LIBRARY_PATH=/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-
+                          conda-25.9.1/lib:/gnu/store/hs1h3dvvvsf3irv0g0yrpza2yd2f6d6z-python-
+                          conda-libmamba-
+                          solver-25.11.0/lib:/gnu/store/p41gp6504s2cbidgybngbym853if14fd-python-
+                          zstandard-0.23.0/lib:/gnu/store/ghzas5syn4ysc2m5cgbfqd86ld6fijg0-
+                          python-requests-
+                          2.32.5/lib:/gnu/store/qqb48rwydpypgmmmh836l8fmb92b3b5c-python-
+                          urllib3-2.5.0/lib:/gnu/store/1lr1l4wy6fdy4m8v0vkvqagnl7br1jvs-python-
+                          pysocks-1.7.1/lib:/gnu/store/ybyl4q87in3002gzd4ih7v20717pnbh8-python-p
+                          yopenssl-24.3.0/lib:/gnu/store/m6hgswrp4mbxd02x9dw06sr5kfk4yz6n-
+                          python-
+                          cryptography-44.0.0/lib:/gnu/store/62pqpnh7v31qzhvfq79kmw6y8hvrk2mv-
+                          python-cffi-1.17.1/lib:/gnu/store/h48p8gwd87v5pyyr7fkfm4lcf0xi5may-
+                          python-pycparser-2.22/lib:/gnu/store/hkvfh3cxi7iylyr2z7229yhr75ck8lwa-
+                          python-
+                          idna-3.10/lib:/gnu/store/4lfbsgf20jz3ys0xjf3nfply518pqyy0-python-
+                          charset-
+                          normalizer-3.4.2/lib:/gnu/store/d0k8rpz9zks4m2mpvsbn8a5qfnli81yq-
+                          python-
+                          certifi-2025.06.15/lib:/gnu/store/av22zzxda91wipv1waq0z0fqrkqpr0vs-
+                          python-
+                          msgpack-1.1.2/lib:/gnu/store/c9i3jxhzk85ayjp69jnffm0l7v7v3gs9-python-
+                          libmambapy-2.3.2/lib:/gnu/store/9sh45ccmdcy30snpqpxi74jwm5nmz27a-yaml-
+                          cpp-0.9.0/lib:/gnu/store/vafl2nya57rkn6cnicgpvk2bdm6xk1jd-spdlog-
+                          1.15.3/lib:/gnu/store/kxgbccxdmkkbmwfmjhkahwj05clnfka5-reproc-
+                          14.2.5/lib:/gnu/store/3wr66aznj7cp0d5nc0nhswdlh2x35k6k-fmt-
+                          11.2.0/lib:/gnu/store/v50gf47qlg3rwrc10jijdfyk0s9sdj68-python-
+                          boltons-25.0.0/lib
+               MODULEPATH=/etc/scl/modulefiles:/cm/shared/dev/modules/abaca/x86_64/latest:/cm/sh
+                          ared/dev/modules/abaca-dev/x86_64/latest
+    OBJCPLUS_INCLUDE_PATH=/gnu/store/9sh45ccmdcy30snpqpxi74jwm5nmz27a-yaml-
+                          cpp-0.9.0/include:/gnu/store/vafl2nya57rkn6cnicgpvk2bdm6xk1jd-spdlog-
+                          1.15.3/include:/gnu/store/kxgbccxdmkkbmwfmjhkahwj05clnfka5-reproc-
+                          14.2.5/include:/gnu/store/xskr5mwjq6l8vp4iy9qvyzckxcflp0s0-nlohmann-
+                          json-3.12.0/include:/gnu/store/vd1ygsmcyga8adi631vpvjrgzm152rsf-libexp
+                          ected-1.1.0/include:/gnu/store/3wr66aznj7cp0d5nc0nhswdlh2x35k6k-fmt-
+                          11.2.0/include
+        OBJC_INCLUDE_PATH=/gnu/store/9sh45ccmdcy30snpqpxi74jwm5nmz27a-yaml-
+                          cpp-0.9.0/include:/gnu/store/vafl2nya57rkn6cnicgpvk2bdm6xk1jd-spdlog-
+                          1.15.3/include:/gnu/store/kxgbccxdmkkbmwfmjhkahwj05clnfka5-reproc-
+                          14.2.5/include:/gnu/store/xskr5mwjq6l8vp4iy9qvyzckxcflp0s0-nlohmann-
+                          json-3.12.0/include:/gnu/store/vd1ygsmcyga8adi631vpvjrgzm152rsf-libexp
+                          ected-1.1.0/include:/gnu/store/3wr66aznj7cp0d5nc0nhswdlh2x35k6k-fmt-
+                          11.2.0/include
+                     PATH=/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-
+                          conda-25.9.1/bin:/gnu/store/hs1h3dvvvsf3irv0g0yrpza2yd2f6d6z-python-
+                          conda-libmamba-
+                          solver-25.11.0/bin:/gnu/store/p41gp6504s2cbidgybngbym853if14fd-python-
+                          zstandard-0.23.0/bin:/gnu/store/ghzas5syn4ysc2m5cgbfqd86ld6fijg0-
+                          python-requests-
+                          2.32.5/bin:/gnu/store/qqb48rwydpypgmmmh836l8fmb92b3b5c-python-
+                          urllib3-2.5.0/bin:/gnu/store/1lr1l4wy6fdy4m8v0vkvqagnl7br1jvs-python-
+                          pysocks-1.7.1/bin:/gnu/store/ybyl4q87in3002gzd4ih7v20717pnbh8-python-p
+                          yopenssl-24.3.0/bin:/gnu/store/m6hgswrp4mbxd02x9dw06sr5kfk4yz6n-
+                          python-
+                          cryptography-44.0.0/bin:/gnu/store/62pqpnh7v31qzhvfq79kmw6y8hvrk2mv-
+                          python-cffi-1.17.1/bin:/gnu/store/h48p8gwd87v5pyyr7fkfm4lcf0xi5may-
+                          python-pycparser-2.22/bin:/gnu/store/hkvfh3cxi7iylyr2z7229yhr75ck8lwa-
+                          python-
+                          idna-3.10/bin:/gnu/store/4lfbsgf20jz3ys0xjf3nfply518pqyy0-python-
+                          charset-
+                          normalizer-3.4.2/bin:/gnu/store/d0k8rpz9zks4m2mpvsbn8a5qfnli81yq-
+                          python-
+                          certifi-2025.06.15/bin:/gnu/store/av22zzxda91wipv1waq0z0fqrkqpr0vs-
+                          python-
+                          msgpack-1.1.2/bin:/gnu/store/c9i3jxhzk85ayjp69jnffm0l7v7v3gs9-python-l
+                          ibmambapy-2.3.2/bin:/gnu/store/v50gf47qlg3rwrc10jijdfyk0s9sdj68-
+                          python-boltons-25.0.0/bin:/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-
+                          conda-25.9.1/bin:/gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-conda-
+                          25.9.1/condabin:/usr/share/Modules/bin:/home/ybendiou/.config/guix/cur
+                          rent/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/dell/s
+                          rvadmin/bin:/home/ybendiou/bin:/home/ybendiou/.local/bin
+          PKG_CONFIG_PATH=/gnu/store/9sh45ccmdcy30snpqpxi74jwm5nmz27a-yaml-
+                          cpp-0.9.0/lib/pkgconfig:/gnu/store/vafl2nya57rkn6cnicgpvk2bdm6xk1jd-sp
+                          dlog-1.15.3/lib/pkgconfig:/gnu/store/kxgbccxdmkkbmwfmjhkahwj05clnfka5-
+                          reproc-
+                          14.2.5/lib/pkgconfig:/gnu/store/xskr5mwjq6l8vp4iy9qvyzckxcflp0s0-
+                          nlohmann-json-
+                          3.12.0/share/pkgconfig:/gnu/store/3wr66aznj7cp0d5nc0nhswdlh2x35k6k-
+                          fmt-11.2.0/lib/pkgconfig
+       REQUESTS_CA_BUNDLE=<not set>
+            SSL_CERT_FILE=<not set>
+__MODULES_SHARE_GUIX_LOCPATH=/gnu/store/id83mipynrm6zb225v6qc1inifi0yfsi-glibc-
+                          locales-2.41/lib/locale:22
+                ftp_proxy=<set>
+               ftps_proxy=<set>
+               http_proxy=<set>
+              https_proxy=<set>
+                 no_proxy=<set>
+
+     active environment : base
+    active env location : /gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-conda-25.9.1
+            shell level : 3
+       user config file : /home/ybendiou/.condarc
+ populated config files : /home/ybendiou/.condarc
+          conda version : 25.9.1
+    conda-build version : not installed
+         python version : 3.12.12.final.0
+                 solver : libmamba (default)
+       virtual packages : __archspec=1=cascadelake
+                          __conda=25.9.1=0
+                          __glibc=2.41=0
+                          __linux=5.14.0=0
+                          __unix=0=0
+       base environment : /gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-conda-25.9.1  (read only)
+      conda av data dir : /gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-conda-25.9.1/etc/conda
+  conda av metadata url : None
+           channel URLs : https://repo.anaconda.com/pkgs/main/linux-64
+                          https://repo.anaconda.com/pkgs/main/noarch
+                          https://repo.anaconda.com/pkgs/r/linux-64
+                          https://repo.anaconda.com/pkgs/r/noarch
+          package cache : /home/ybendiou/.conda/pkgs
+       envs directories : /home/ybendiou/.conda/envs
+                          /gnu/store/fccgkdpxd1r6a8nmb73c7nv1pzv2h8id-conda-25.9.1/envs
+               platform : linux-64
+             user-agent : conda/25.9.1 requests/2.32.5 CPython/3.12.12 Linux/5.14.0-687.26.1.el9_8.x86_64 almalinux/9.8 glibc/2.41 solver/libmamba conda-libmamba-solver/25.11.0 libmambapy/2.3.2
+                UID:GID : 11329:11086
+             netrc file : None
+           offline mode : False
+
+
+An unexpected error has occurred. Conda has prepared the above report.
+If you suspect this error is being caused by a malfunctioning plugin,
+consider using the --no-plugins option to turn off plugins.
+
+Example: conda --no-plugins install <package>
+
+Alternatively, you can set the CONDA_NO_PLUGINS environment variable on
+the command line to run the command without plugins enabled.
+
+Example: CONDA_NO_PLUGINS=true conda install <package>
+
+srun: Step created for StepId=4795606.12
+srun: Step created for StepId=4795606.13
+srun: Step created for StepId=4795606.14
+srun: Step created for StepId=4795606.15
+srun: Step created for StepId=4795606.16
+srun: Step created for StepId=4795606.17
+srun: Step created for StepId=4795606.18
+srun: Step created for StepId=4795606.19
+srun: Step created for StepId=4795606.20
+srun: Step created for StepId=4795606.21
+srun: Step created for StepId=4795606.22
+srun: Step created for StepId=4795606.23
+srun: Step created for StepId=4795606.24
+srun: Step created for StepId=4795606.25
+srun: Step created for StepId=4795606.26
+srun: Step created for StepId=4795606.27
+srun: Step created for StepId=4795606.29
+srun: Step created for StepId=4795606.30
+srun: Step created for StepId=4795606.31
+srun: Step created for StepId=4795606.32
+srun: Step created for StepId=4795606.33
+[Parallel(n_jobs=32)]: Using backend LokyBackend with 32 concurrent workers.
+srun: Step created for StepId=4795606.34
+srun: Step created for StepId=4795606.35
+srun: Step created for StepId=4795606.36
+srun: Step created for StepId=4795606.37
+srun: Step created for StepId=4795606.38
+srun: Step created for StepId=4795606.39
+srun: Step created for StepId=4795606.40
+srun: Step created for StepId=4795606.41
+srun: Step created for StepId=4795606.42
+bracket_matching.large.N100.multiple_instances : Analysis config file 'experiences/bracket_matching/bracket_matching.large.N100.multiple_instances.explore_top.config.json' does not exist. Explore top canceled.
+srun: error: bora028: task 0: Exited with exit code 1
+srun: Step created for StepId=4795606.43
+srun: Step created for StepId=4795606.44
+[Parallel(n_jobs=32)]: Using backend LokyBackend with 32 concurrent workers.
+srun: Step created for StepId=4795606.45
+srun: Step created for StepId=4795606.46
+associative_recall.large.N100.multiple_instances : Analysis config file 'experiences/associative_recall/associative_recall.large.N100.multiple_instances.explore_top.config.json' does not exist. Explore top canceled.
+srun: error: bora025: task 0: Exited with exit code 1
+srun: Step created for StepId=4795606.47
+induction_heads.large.N100.multiple_instances : Analysis config file 'experiences/induction_heads/induction_heads.large.N100.multiple_instances.explore_top.config.json' does not exist. Explore top canceled.
+srun: error: bora025: task 0: Exited with exit code 1
+srun: Step created for StepId=4795606.48
+srun: Step created for StepId=4795606.49
+adding_problem.large.N100.multiple_instances : Analysis config file 'experiences/adding_problem/adding_problem.large.N100.multiple_instances.explore_top.config.json' does not exist. Explore top canceled.
+srun: error: bora025: task 0: Exited with exit code 1
+srun: Step created for StepId=4795606.50
+srun: Step created for StepId=4795606.51
+srun: Step created for StepId=4795606.52
+srun: Step created for StepId=4795606.53
+srun: Step created for StepId=4795606.54
+srun: Step created for StepId=4795606.55
+srun: Step created for StepId=4795606.56
+srun: Step created for StepId=4795606.57
+srun: Step created for StepId=4795606.58
+discrete_postcasting.large.N100.multiple_instances : Analysis config file 'experiences/discrete_postcasting/discrete_postcasting.large.N100.multiple_instances.explore_top.config.json' does not exist. Explore top canceled.
+srun: error: bora027: task 0: Exited with exit code 1
+srun: Step created for StepId=4795606.59
+srun: Step created for StepId=4795606.60
+srun: Step created for StepId=4795606.61
+joblib.externals.loky.process_executor._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/beegfs/ybendiou/ESN-SB/venv/lib/python3.11/site-packages/joblib/externals/loky/process_executor.py", line 453, in _process_worker
+    call_item = call_queue.get(block=True, timeout=timeout)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beegfs/ybendiou/ESN-SB/venv/lib/python3.11/multiprocessing/queues.py", line 122, in get
+    return _ForkingPickler.loads(res)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beegfs/ybendiou/ESN-SB/src/lib/hypersearch.py", line 14, in <module>
+    import pandas as pd
+  File "/beegfs/ybendiou/ESN-SB/venv/lib/python3.11/site-packages/pandas/__init__.py", line 44, in <module>
+    import pandas.core.config_init  # pyright: ignore[reportUnusedImport] # noqa: F401
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beegfs/ybendiou/ESN-SB/venv/lib/python3.11/site-packages/pandas/core/config_init.py", line 31, in <module>
+    from pandas.errors import Pandas4Warning
+  File "/beegfs/ybendiou/ESN-SB/venv/lib/python3.11/site-packages/pandas/errors/__init__.py", line 12, in <module>
+    from pandas._libs.tslibs import (
+  File "/beegfs/ybendiou/ESN-SB/venv/lib/python3.11/site-packages/pandas/_libs/__init__.py", line 18, in <module>
+    from pandas._libs.interval import Interval
+  File "pandas/_libs/interval.pyx", line 1, in init pandas._libs.interval
+  File "pandas/_libs/hashtable.pyx", line 1, in init pandas._libs.hashtable
+  File "pandas/_libs/missing.pyx", line 1, in init pandas._libs.missing
+  File "/beegfs/ybendiou/ESN-SB/venv/lib/python3.11/site-packages/pandas/_libs/tslibs/__init__.py", line 41, in <module>
+    from pandas._libs.tslibs.conversion import localize_pydatetime
+  File "pandas/_libs/tslibs/conversion.pyx", line 1, in init pandas._libs.tslibs.conversion
+  File "pandas/_libs/tslibs/offsets.pyx", line 1, in init pandas._libs.tslibs.offsets
+  File "pandas/_libs/tslibs/timestamps.pyx", line 1, in init pandas._libs.tslibs.timestamps
+  File "pandas/_libs/tslibs/timedeltas.pyx", line 1, in init pandas._libs.tslibs.timedeltas
+ImportError: /beegfs/ybendiou/ESN-SB/venv/lib/python3.11/site-packages/pandas/_libs/tslibs/timezones.cpython-311-x86_64-linux-gnu.so: cannot read file data: Input/output error
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/beegfs/ybendiou/ESN-SB/src/stream_hypersearch.py", line 210, in <module>
+    main(
+  File "/beegfs/ybendiou/ESN-SB/src/stream_hypersearch.py", line 178, in main
+    parallel_research(
+  File "/beegfs/ybendiou/ESN-SB/src/lib/hypersearch.py", line 217, in parallel_research
+    for kwargs, returned_dict, trial_id in pbar:
+  File "/beegfs/ybendiou/ESN-SB/venv/lib/python3.11/site-packages/tqdm/std.py", line 1188, in __iter__
+    for obj in iterable:
+  File "/beegfs/ybendiou/ESN-SB/venv/lib/python3.11/site-packages/joblib/parallel.py", line 1682, in _get_outputs
+    yield from self._retrieve()
+  File "/beegfs/ybendiou/ESN-SB/venv/lib/python3.11/site-packages/joblib/parallel.py", line 1784, in _retrieve
+    self._raise_error_fast()
+  File "/beegfs/ybendiou/ESN-SB/venv/lib/python3.11/site-packages/joblib/parallel.py", line 1859, in _raise_error_fast
+    error_job.get_result(self.timeout)
+  File "/beegfs/ybendiou/ESN-SB/venv/lib/python3.11/site-packages/joblib/parallel.py", line 758, in get_result
+    return self._return_or_raise()
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/beegfs/ybendiou/ESN-SB/venv/lib/python3.11/site-packages/joblib/parallel.py", line 773, in _return_or_raise
+    raise self._result
+joblib.externals.loky.process_executor.BrokenProcessPool: A task has failed to un-serialize. Please ensure that the arguments of the function are all picklable.
+srun: error: bora030: task 0: Exited with exit code 1
+srun: Step created for StepId=4795606.62
+srun: Step created for StepId=4795606.63
+chaotic_forecasting.large.N100.multiple_instances : Analysis config file 'experiences/chaotic_forecasting/chaotic_forecasting.large.N100.multiple_instances.explore_top.config.json' does not exist. Explore top canceled.
+srun: error: bora030: task 0: Exited with exit code 1
+srun: Step created for StepId=4795606.64
+srun: Step created for StepId=4795606.65
+srun: Step created for StepId=4795606.66
+srun: Step created for StepId=4795606.67
+sinus_forecasting.large.N100.multiple_instances : Analysis config file 'experiences/sinus_forecasting/sinus_forecasting.large.N100.multiple_instances.explore_top.config.json' does not exist. Explore top canceled.
+srun: error: bora029: task 0: Exited with exit code 1
+srun: Step created for StepId=4795606.68
+continuous_postcasting.large.N100.multiple_instances : Analysis config file 'experiences/continuous_postcasting/continuous_postcasting.large.N100.multiple_instances.explore_top.config.json' does not exist. Explore top canceled.
+srun: error: bora029: task 0: Exited with exit code 1

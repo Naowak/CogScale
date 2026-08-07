@@ -9,11 +9,12 @@ from torch.utils.data import TensorDataset, DataLoader
 import copy
 import re
 import os
+import json
 
 import sys
 sys.path.append("../")
 import cogscale as cog
-from baseline.scripts.models import DynamicLSTM, DynamicGRU, DynamicTransformerDecoderOnly, \
+from models import DynamicLSTM, DynamicGRU, DynamicTransformerDecoderOnly, \
     DynamicTransformerEncoderDecoder, DynamicESN, \
     DynamicMamba, DynamicxLSTM
 
@@ -107,7 +108,7 @@ def run_experiment():
                         help='Type de modèle à entrainer')
     parser.add_argument('--tasks', nargs='+', default=['all'], help='Liste des tâches')
     parser.add_argument('--difficulties', nargs='+', default=['small'], choices=['small', 'medium', 'large'], help='Niveaux de difficulté')
-    parser.add_argument('--sizes', nargs='+', type=int, default=[1000, 10000], help='Tailles des paramètres visées')
+    parser.add_argument('--sizes', nargs='+', type=int, default=[1000, 10000, 100000], help='Tailles des paramètres visées')
     parser.add_argument('--lrs', nargs='+', type=float, default=[1e-2, 3e-3, 1e-3, 3e-4, 1e-4], help='Learning rates à tester (Ignoré par ESN)')
     parser.add_argument('--seeds', type=int, default=10, help='Nombre de seeds par run')
     parser.add_argument('--epochs', type=int, default=50, help='Nombre d\'epochs (Ignoré par ESN)')
@@ -116,6 +117,7 @@ def run_experiment():
     parser.add_argument('--device', type=str, default='cuda' if torch.cuda.is_available() else 'cpu', help='Device (cuda/cpu)')
     parser.add_argument('--dtype', type=str, default='float32', help='Type de données Pytorch')
     parser.add_argument('--output', type=str, default='results.csv', help='Fichier CSV de sortie')
+    parser.add_argument('--skip-done', action='store_true', help='Skip tasks that are already done (JSON file exists)')
     
     args = parser.parse_args()
 
@@ -127,7 +129,7 @@ def run_experiment():
         args.tasks = cog.tasks[len(cog.tasks)//2:]
         
     # Charger les configs ESN si nécessaire
-    esn_configs = parse_report_configs('results/esn_hp_opti/report.md') if 'esn' in args.model_types else {}
+    esn_configs = parse_report_configs('../results/esn_hp_report.md') if 'esn' in args.model_types else {}
     
     torch_dtype = getattr(torch, args.dtype)
     device = torch.device(args.device)
@@ -139,6 +141,19 @@ def run_experiment():
         combinations += list(itertools.product(['esn'], args.tasks, args.difficulties, args.sizes, [None], range(args.seeds)))
     
     for model_type, task_name, difficulty, size, lr, seed in combinations:
+        safe_lr = str(lr).replace('.', '_') if lr is not None else 'NA'
+        json_filename = f"logs/{model_type}_{task_name}_{difficulty}_p{size}_lr{safe_lr}_s{seed}.json"
+        
+        if args.skip_done and os.path.exists(json_filename):
+            try:
+                with open(json_filename, "r", encoding="utf-8") as f:
+                    run_result = json.load(f)
+                results.append(run_result)
+                print(f"Skipping completed task (loaded from JSON): {json_filename}")
+                continue
+            except Exception as e:
+                print(f"Error loading completed task {json_filename}: {e}. Executing task instead.")
+                
         print(f"\n--- Model: {model_type.upper()} | Task: {task_name} | Diff: {difficulty} | Size: {size} | LR: {lr} | Seed: {seed} ---")
         
         try:
@@ -187,7 +202,8 @@ def run_experiment():
         # BRANCHE 1 : ECHO STATE NETWORK (ReservoirPy)
         # ----------------------------------------------------
         if model_type == 'esn':
-            config_key = f"{task_name}.{difficulty}.N{size//10}"
+            conf_diff = 'medium' if difficulty == "large" else difficulty
+            config_key = f"{task_name}.{conf_diff}.N{size//10}"
             if config_key not in esn_configs:
                 print(f"  -> Configuration ESN introuvable pour '{config_key}' dans report.md. Skip.")
                 continue
@@ -332,8 +348,9 @@ def run_experiment():
             threshold=best_threshold
         )
         print(f"Score de Test final: {score:.4f}")
-        
-        results.append({
+
+        # 1. Stocker le résultat dans une variable
+        run_result = {
             'Model': model_type.upper(),
             'Task': task_name,
             'Difficulty': difficulty,
@@ -344,7 +361,18 @@ def run_experiment():
             'Category': category,
             'Best_Val_Score': best_val_score,
             'Test_Score': score
-        })
+        }
+        
+        results.append(run_result)
+
+        # 2. Sauvegarde individuelle au format JSON
+        os.makedirs("logs", exist_ok=True)
+        # On remplace le point par un underscore dans le LR pour éviter les problèmes d'extension de fichier
+        safe_lr = str(lr).replace('.', '_') if lr is not None else 'NA'
+        json_filename = f"logs/{model_type}_{task_name}_{difficulty}_p{size}_lr{safe_lr}_s{seed}.json"
+        
+        with open(json_filename, "w", encoding="utf-8") as f:
+            json.dump(run_result, f, indent=4)
         
     df = pd.DataFrame(results)
     df.to_csv(args.output, index=False)

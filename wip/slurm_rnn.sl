@@ -1,16 +1,16 @@
 #!/bin/bash
-#SBATCH --job-name=STREAM-eval
+#SBATCH --job-name=S_2gru-lstm
 #SBATCH --output=output_%j.txt
 #SBATCH --error=error_%j.txt
 #SBATCH --nodes=1
 #SBATCH --ntasks=2
 #SBATCH --cpus-per-task=8
 
-MODELS_GPU0=${1:-"lstm"}
-MODELS_GPU1=${2:-"transformer_decoder"}
+MODELS_GPU0=${1:-"gru"}
+MODELS_GPU1=${2:-"lstm"}
 
-OUTPUT_FILE_GPU0="results_${MODELS_GPU0}.csv"
-OUTPUT_FILE_GPU1="results_${MODELS_GPU1}.csv"
+OUTPUT_FILE_GPU0="results_${MODELS_GPU0}_2.csv"
+OUTPUT_FILE_GPU1="results_${MODELS_GPU1}_2.csv"
 
 export TORCH_EXTENSIONS_DIR=/beegfs/ybendiou/bstream/torch_extensions
 export TRITON_CACHE_DIR=/beegfs/ybendiou/bstream/triton_cache
@@ -32,14 +32,15 @@ if [ "$MODELS_GPU0" == "$MODELS_GPU1" ]; then
     TASKS_GPU0='first_half'
     TASKS_GPU1='second_half'
 else
-    TASKS_GPU0='all'
-    TASKS_GPU1='all'
+    # TASKS_GPU0='simple_copy selective_copy sorting_problem'
+    TASKS_GPU0='associative_recall induction_heads bracket_matching'
+    TASKS_GPU1='associative_recall induction_heads bracket_matching'
 fi
 
 echo "Lancement sur GPU 0 des modèles : $MODELS_GPU0"
 srun --ntasks=1 python run.py \
     --tasks $TASKS_GPU0 \
-    --difficulties small medium \
+    --difficulties large \
     --sizes 1000 10000 100000 \
     --seeds 10 \
     --epochs 200 \
@@ -50,7 +51,7 @@ srun --ntasks=1 python run.py \
 echo "Lancement sur GPU 1 des modèles : $MODELS_GPU1"
 srun --ntasks=1 python run.py \
     --tasks $TASKS_GPU1 \
-    --difficulties small medium \
+    --difficulties large \
     --sizes 1000 10000 100000 \
     --seeds 10 \
     --epochs 200 \

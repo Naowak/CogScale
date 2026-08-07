@@ -1,0 +1,12 @@
+{
+    "Model": "ESN",
+    "Task": "induction_heads",
+    "Difficulty": "large",
+    "Target_Params": 10000,
+    "Actual_Params": 20000,
+    "LR": "N/A",
+    "Seed": 0,
+    "Category": "classification",
+    "Best_Val_Score": null,
+    "Test_Score": 0.9499975806451613
+}
